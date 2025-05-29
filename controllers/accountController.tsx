@@ -1,10 +1,15 @@
 import { app } from "../configs/firebase";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 class AccountController {
-  auth = getAuth(app)
+  auth = getAuth(app);
 
-  getUserId() {
+  getUserId(): string {
     const uid = this.auth.currentUser?.uid;
     if (!uid) {
       throw new Error("User is not authenticated.");
@@ -18,6 +23,10 @@ class AccountController {
 
   signUp(email: string, password: string) {
     return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+  signOut() {
+    return signOut(this.auth);
   }
 }
 
