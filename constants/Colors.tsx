@@ -1,0 +1,14 @@
+export default {
+  primary: "#F5C54E",
+  secondary: "#808080",
+  danger: "#FF0000",
+  success: "#04B544",
+  lightGray: "#F4F4F4",
+  lightGray200: "#E7E7E7",
+  gray400: "#B6B6B6",
+  gray600: "#B2B2B2",
+  white: "#FFFFFF",
+  black: "#000000",
+  yellow300: "#F0C049",
+  blue: "#2196F3",
+}
