@@ -5,7 +5,6 @@ import {
   ScrollView,
   View,
   Alert,
-  ImageBackground,
   TouchableOpacity,
   Image,
 } from "react-native";
@@ -14,10 +13,10 @@ import { Form, Input, Button, Flex, Switch } from "@ant-design/react-native";
 import { useToggle } from "../../hooks";
 import { useApp } from "../../providers/AppProvider";
 import Colors from "../../constants/Colors";
-import Feather from "@expo/vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigation } from "../../App";
+import PasswordEyeToggle from "../../components/PasswordEyeToggle";
 
 const SignInScreen = () => {
   const { signIn } = useApp();
@@ -62,126 +61,119 @@ const SignInScreen = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <ImageBackground
-        style={styles.background}
-        resizeMode="cover"
-        // source={require("../../assets/XXXX.png")}
-        imageStyle={{ opacity: 0.11 }}
-      >
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          <Flex
-            direction="column"
-            justify="center"
-            align="center"
-            style={styles.brandWrapper}
-          >
-            <Image
-              resizeMode="contain"
-              source={require("../../assets/brand.png")}
-              style={styles.brand}
-            />
-            <Text style={styles.brandText}>
-              The Best Way to Track Your Stock Portfolio
-            </Text>
-          </Flex>
-          <Form
-            form={form}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            styles={{
-              Body: {
-                borderTopWidth: 0,
-              },
-              BodyBottomLine: {
-                display: "none",
-              },
-            }}
-            style={styles.form}
-            autoComplete="false"
-            initialValues={{
-              rememberMe: true,
-            }}
-          >
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Email</Text>
-              <Form.Item
-                name="email"
-                rules={[
-                  { required: true },
-                  { type: "email", message: "Invalid email format" },
-                ]}
-                noStyle
-              >
-                <Input
-                  textContentType="oneTimeCode"
-                  placeholder="required"
-                  inputStyle={styles.input}
-                  placeholderTextColor={Colors.gray600}
-                />
-              </Form.Item>
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Password</Text>
-              <Form.Item name="password" rules={[{ required: true }]} noStyle>
-                <Input
-                  textContentType="oneTimeCode"
-                  placeholder="required"
-                  type={passwordVisible.state ? "text" : "password"}
-                  inputStyle={styles.input}
-                  placeholderTextColor={Colors.gray600}
-                  suffix={
-                    <TouchableOpacity onPress={passwordVisible.toggle}>
-                      {passwordVisible.state ? (
-                        <Feather
-                          name="eye"
-                          size={16}
-                          color={Colors.secondary}
-                        />
-                      ) : (
-                        <Feather
-                          name="eye-off"
-                          size={16}
-                          color={Colors.secondary}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  }
-                />
-              </Form.Item>
-            </View>
-
-            <Flex justify="end" style={{ marginBottom: 20 }}>
-              <Text style={{ marginRight: 18 }}>Remember Me</Text>
-              <Form.Item name="rememberMe" noStyle valuePropName="checked">
-                <Switch color={Colors.primary} />
-              </Form.Item>
-            </Flex>
-
-            <Button
-              size="large"
-              type="primary"
-              onPress={onSubmit}
-              disabled={isLoading.state}
-              loading={isLoading.state}
-              style={{ borderRadius: 10, height: "auto", paddingVertical: 15, marginBottom: 18, }}
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Flex
+          direction="column"
+          justify="center"
+          align="center"
+          style={styles.brandWrapper}
+        >
+          <Image
+            resizeMode="contain"
+            source={require("../../assets/brand.png")}
+            style={styles.brand}
+          />
+          <Text style={styles.brandText}>
+            The Best Way to Track Your Stock Portfolio
+          </Text>
+        </Flex>
+        <Form
+          form={form}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          styles={{
+            Body: {
+              borderTopWidth: 0,
+            },
+            BodyBottomLine: {
+              display: "none",
+            },
+          }}
+          style={styles.form}
+          autoComplete="false"
+          initialValues={{
+            rememberMe: true,
+          }}
+        >
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Email</Text>
+            <Form.Item
+              name="email"
+              rules={[
+                { required: true },
+                { type: "email", message: "Invalid email format" },
+              ]}
+              noStyle
             >
-              <Text
-                style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
-              >
-                Sign In
-              </Text>
-            </Button>
+              <Input
+                textContentType="oneTimeCode"
+                placeholder="required"
+                inputStyle={styles.input}
+                placeholderTextColor={Colors.gray600}
+              />
+            </Form.Item>
+          </View>
 
-            <Flex justify="center">
-              <Text style={{ fontWeight: 300, marginRight: 6, color: Colors.black }}>Don't have an account?</Text>
-              <TouchableOpacity onPress={() => navigate("SignUp")}>
-                <Text style={{ fontWeight: 500, color: Colors.black }}>Sign Up</Text>
-              </TouchableOpacity>
-            </Flex>
-          </Form>
-        </ScrollView>
-      </ImageBackground>
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Password</Text>
+            <Form.Item name="password" rules={[{ required: true }]} noStyle>
+              <Input
+                textContentType="oneTimeCode"
+                placeholder="required"
+                type={passwordVisible.state ? "text" : "password"}
+                inputStyle={styles.input}
+                placeholderTextColor={Colors.gray600}
+                suffix={
+                  <PasswordEyeToggle
+                    visible={passwordVisible.state}
+                    onPress={passwordVisible.toggle}
+                  />
+                }
+              />
+            </Form.Item>
+          </View>
+
+          <Flex justify="end" style={{ marginBottom: 20 }}>
+            <Text style={{ marginRight: 18 }}>Remember Me</Text>
+            <Form.Item name="rememberMe" noStyle valuePropName="checked">
+              <Switch color={Colors.primary} />
+            </Form.Item>
+          </Flex>
+
+          <Button
+            size="large"
+            type="primary"
+            onPress={onSubmit}
+            disabled={isLoading.state}
+            loading={isLoading.state}
+            style={{
+              borderRadius: 10,
+              height: "auto",
+              paddingVertical: 15,
+              marginBottom: 18,
+            }}
+          >
+            <Text
+              style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
+            >
+              Sign In
+            </Text>
+          </Button>
+
+          <Flex justify="center">
+            <Text
+              style={{ fontWeight: 300, marginRight: 6, color: Colors.black }}
+            >
+              Don't have an account?
+            </Text>
+            <TouchableOpacity onPress={() => navigate("SignUp")}>
+              <Text style={{ fontWeight: 500, color: Colors.black }}>
+                Sign Up
+              </Text>
+            </TouchableOpacity>
+          </Flex>
+        </Form>
+      </ScrollView>
     </SafeAreaView>
   );
 };
