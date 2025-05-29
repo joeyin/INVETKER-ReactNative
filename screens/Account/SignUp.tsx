@@ -12,10 +12,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Form, Input, Button, Flex } from "@ant-design/react-native";
 import { useToggle } from "../../hooks";
 import Colors from "../../constants/Colors";
-import Feather from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigation } from "../../App";
 import accountController from "../../controllers/accountController";
+import PasswordEyeToggle from "../../components/PasswordEyeToggle";
 
 const SignUpScreen = () => {
   const isLoading = useToggle();
@@ -108,7 +108,7 @@ const SignUpScreen = () => {
             <Text style={styles.label}>Password</Text>
             <Form.Item
               name="password"
-              rules={[{ required: true }, { len: 6 }]}
+              rules={[{ required: true }, { min: 6 }]}
               noStyle
             >
               <Input
@@ -117,21 +117,10 @@ const SignUpScreen = () => {
                 inputStyle={styles.input}
                 placeholderTextColor={Colors.gray600}
                 suffix={
-                  <TouchableOpacity onPress={passwordVisible.toggle}>
-                    {passwordVisible.state ? (
-                      <Feather
-                        name="eye"
-                        size={16}
-                        color={Colors.secondary}
-                      />
-                    ) : (
-                      <Feather
-                        name="eye-off"
-                        size={16}
-                        color={Colors.secondary}
-                      />
-                    )}
-                  </TouchableOpacity>
+                  <PasswordEyeToggle
+                    visible={passwordVisible.state}
+                    onPress={passwordVisible.toggle}
+                  />
                 }
               />
             </Form.Item>
@@ -144,15 +133,13 @@ const SignUpScreen = () => {
               dependencies={["password"]}
               rules={[
                 { required: true },
-                { len: 6 },
+                { min: 6 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(
-                      new Error("Passwords do not match")
-                    );
+                    return Promise.reject(new Error("Passwords do not match"));
                   },
                 }),
               ]}
@@ -164,21 +151,10 @@ const SignUpScreen = () => {
                 inputStyle={styles.input}
                 placeholderTextColor={Colors.gray600}
                 suffix={
-                  <TouchableOpacity onPress={confirmPasswordVisible.toggle}>
-                    {confirmPasswordVisible.state ? (
-                      <Feather
-                        name="eye"
-                        size={16}
-                        color={Colors.secondary}
-                      />
-                    ) : (
-                      <Feather
-                        name="eye-off"
-                        size={16}
-                        color={Colors.secondary}
-                      />
-                    )}
-                  </TouchableOpacity>
+                  <PasswordEyeToggle
+                    visible={confirmPasswordVisible.state}
+                    onPress={confirmPasswordVisible.toggle}
+                  />
                 }
               />
             </Form.Item>
@@ -194,7 +170,7 @@ const SignUpScreen = () => {
               borderRadius: 10,
               paddingVertical: 15,
               marginBottom: 18,
-              height: "auto"
+              height: "auto",
             }}
           >
             <Text
