@@ -4,20 +4,21 @@ import {
   DefaultTheme,
   NavigationProp,
 } from "@react-navigation/native";
+import { useFonts } from "expo-font";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "@ant-design/react-native";
-import { AppProvider, useApp } from "./providers/AppProvider";
+import { AppProvider, useApp } from "@/providers/AppProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
-import Colors from "./constants/Colors";
-import HomeScreen from "./screens/Home";
-import TransactionsScreen from "./screens/Transactions";
-import SettingsScreen from "./screens/Settings";
-import SignUpScreen from "./screens/Account/SignUp";
-import SignInScreen from "./screens/Account/SignIn";
+import Colors from "@/constants/Colors";
+import HomeScreen from "@/screens/Home";
+import TransactionsScreen from "@/screens/Transactions";
+import SettingsScreen from "@/screens/Settings";
+import SignUpScreen from "@/screens/Account/SignUp";
+import SignInScreen from "@/screens/Account/SignIn";
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
@@ -116,12 +117,19 @@ const AntdTheme = {
 };
 
 export default function App() {
+  useFonts({
+    antoutline: require("@ant-design/icons-react-native/fonts/antoutline.ttf"),
+  });
+
   return (
     <Provider locale={enUS} theme={AntdTheme}>
       <AppProvider>
         <NavigationContainer theme={MyTheme}>
           <GestureHandlerRootView>
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.lightGray} />
+            <StatusBar
+              barStyle="dark-content"
+              backgroundColor={Colors.lightGray}
+            />
             <RootNavigator />
           </GestureHandlerRootView>
         </NavigationContainer>
