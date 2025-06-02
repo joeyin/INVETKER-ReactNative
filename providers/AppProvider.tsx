@@ -44,6 +44,9 @@ export const AppProvider = ({ children }) => {
         if (rememberMe) {
           await AsyncStorage.setItem("email", email);
           await AsyncStorage.setItem("password", password);
+        } else {
+          await AsyncStorage.removeItem("email");
+          await AsyncStorage.removeItem("password");
         }
         await AsyncStorage.setItem("rememberMe", rememberMe ? "true" : "false");
         return userCredential.user;
