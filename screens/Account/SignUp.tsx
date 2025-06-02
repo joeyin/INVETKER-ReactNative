@@ -19,7 +19,7 @@ import Form, { Input } from "@/components/Form";
 const SignUpScreen = () => {
   const isLoading = useToggle();
   const [form] = Form.useForm();
-  const { navigate } = useNavigation<StackNavigation>();
+  const { goBack, navigate } = useNavigation<StackNavigation>();
 
   const onSubmit = () => {
     isLoading.on();
@@ -70,19 +70,8 @@ const SignUpScreen = () => {
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          styles={{
-            Body: {
-              borderTopWidth: 0,
-            },
-            BodyBottomLine: {
-              display: "none",
-            },
-          }}
           style={styles.form}
           autoComplete="false"
-          initialValues={{
-            rememberMe: true,
-          }}
         >
           <Form.Item
             label="Email"
@@ -91,24 +80,16 @@ const SignUpScreen = () => {
               { required: true },
               { type: "email", message: "Invalid email format" },
             ]}
-            noStyle
           >
-            <Input
-              placeholder="required"
-              inputStyle={styles.input}
-              placeholderTextColor={Colors.gray600}
-            />
+            <Input placeholder="required" />
           </Form.Item>
 
           <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true }, { min: 6 }]}
-            noStyle
           >
-            <Input.Password
-              placeholder="required"
-            />
+            <Input.Password placeholder="required" />
           </Form.Item>
 
           <Form.Item
@@ -127,11 +108,8 @@ const SignUpScreen = () => {
                 },
               }),
             ]}
-            noStyle
           >
-            <Input.Password
-              placeholder="required"
-            />
+            <Input.Password placeholder="required" />
           </Form.Item>
 
           <Button
@@ -164,7 +142,7 @@ const SignUpScreen = () => {
             >
               Already have an account?
             </Text>
-            <TouchableOpacity onPress={() => navigate("SignIn")}>
+            <TouchableOpacity onPress={goBack}>
               <Text style={{ fontWeight: 500, color: Colors.black }}>
                 Sign In
               </Text>
