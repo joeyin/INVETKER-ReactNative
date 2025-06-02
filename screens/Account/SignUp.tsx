@@ -3,24 +3,21 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  View,
   Alert,
   TouchableOpacity,
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Form, Input, Button, Flex } from "@ant-design/react-native";
-import { useToggle } from "../../hooks";
-import Colors from "../../constants/Colors";
+import { Button, Flex } from "@ant-design/react-native";
+import { useToggle } from "@/hooks";
+import Colors from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigation } from "../../App";
-import accountController from "../../controllers/accountController";
-import PasswordEyeToggle from "../../components/PasswordEyeToggle";
+import { StackNavigation } from "@/App";
+import accountController from "@/controllers/accountController";
+import Form, { Input } from "@/components/Form";
 
 const SignUpScreen = () => {
   const isLoading = useToggle();
-  const passwordVisible = useToggle();
-  const confirmPasswordVisible = useToggle();
   const [form] = Form.useForm();
   const { navigate } = useNavigation<StackNavigation>();
 
@@ -61,13 +58,14 @@ const SignUpScreen = () => {
         >
           <Image
             resizeMode="contain"
-            source={require("../../assets/brand.png")}
+            source={require("@/assets/brand.png")}
             style={styles.brand}
           />
           <Text style={styles.brandText}>
             The Best Way to Track Your Stock Portfolio
           </Text>
         </Flex>
+
         <Form
           form={form}
           onFinish={onFinish}
@@ -86,79 +84,55 @@ const SignUpScreen = () => {
             rememberMe: true,
           }}
         >
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Email</Text>
-            <Form.Item
-              name="email"
-              rules={[
-                { required: true },
-                { type: "email", message: "Invalid email format" },
-              ]}
-              noStyle
-            >
-              <Input
-                placeholder="required"
-                inputStyle={styles.input}
-                placeholderTextColor={Colors.gray600}
-              />
-            </Form.Item>
-          </View>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true },
+              { type: "email", message: "Invalid email format" },
+            ]}
+            noStyle
+          >
+            <Input
+              placeholder="required"
+              inputStyle={styles.input}
+              placeholderTextColor={Colors.gray600}
+            />
+          </Form.Item>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Password</Text>
-            <Form.Item
-              name="password"
-              rules={[{ required: true }, { min: 6 }]}
-              noStyle
-            >
-              <Input
-                placeholder="required"
-                type={passwordVisible.state ? "text" : "password"}
-                inputStyle={styles.input}
-                placeholderTextColor={Colors.gray600}
-                suffix={
-                  <PasswordEyeToggle
-                    visible={passwordVisible.state}
-                    onPress={passwordVisible.toggle}
-                  />
-                }
-              />
-            </Form.Item>
-          </View>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true }, { min: 6 }]}
+            noStyle
+          >
+            <Input.Password
+              placeholder="required"
+            />
+          </Form.Item>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Confirm Password</Text>
-            <Form.Item
-              name="confirmPassword"
-              dependencies={["password"]}
-              rules={[
-                { required: true },
-                { min: 6 },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error("Passwords do not match"));
-                  },
-                }),
-              ]}
-              noStyle
-            >
-              <Input
-                placeholder="required"
-                type={confirmPasswordVisible.state ? "text" : "password"}
-                inputStyle={styles.input}
-                placeholderTextColor={Colors.gray600}
-                suffix={
-                  <PasswordEyeToggle
-                    visible={confirmPasswordVisible.state}
-                    onPress={confirmPasswordVisible.toggle}
-                  />
-                }
-              />
-            </Form.Item>
-          </View>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            dependencies={["password"]}
+            rules={[
+              { required: true },
+              { min: 6 },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Passwords do not match"));
+                },
+              }),
+            ]}
+            noStyle
+          >
+            <Input.Password
+              placeholder="required"
+            />
+          </Form.Item>
 
           <Button
             size="large"
@@ -231,25 +205,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginHorizontal: 15,
     paddingHorizontal: 15,
-  },
-  formGroup: {
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderColor: Colors.gray400,
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: 700,
-    color: Colors.black,
-    marginBlock: 5,
-  },
-  input: {
-    fontSize: 17,
-    color: Colors.black,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    borderBottomWidth: 0,
   },
 });
 

@@ -3,25 +3,23 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  View,
   Alert,
   TouchableOpacity,
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Form, Input, Button, Flex, Switch } from "@ant-design/react-native";
-import { useToggle } from "../../hooks";
-import { useApp } from "../../providers/AppProvider";
-import Colors from "../../constants/Colors";
+import { Button, Flex } from "@ant-design/react-native";
+import { useToggle } from "@/hooks";
+import { useApp } from "@/providers/AppProvider";
+import Colors from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigation } from "../../App";
-import PasswordEyeToggle from "../../components/PasswordEyeToggle";
+import { StackNavigation } from "@/App";
+import Form, { Input, Switch } from "@/components/Form";
 
 const SignInScreen = () => {
   const { signIn } = useApp();
   const isLoading = useToggle();
-  const passwordVisible = useToggle();
   const [form] = Form.useForm();
   const { navigate } = useNavigation<StackNavigation>();
 
@@ -29,9 +27,11 @@ const SignInScreen = () => {
     (async () => {
       const email = await AsyncStorage.getItem("email");
       const password = await AsyncStorage.getItem("password");
+      const rememberMe = await AsyncStorage.getItem("rememberMe");
 
       email && form.setFieldValue("email", email);
       password && form.setFieldValue("password", password);
+      rememberMe === "true" && form.setFieldValue("rememberMe", true);
     })();
   }, []);
 
@@ -70,75 +70,52 @@ const SignInScreen = () => {
         >
           <Image
             resizeMode="contain"
-            source={require("../../assets/brand.png")}
+            source={require("@/assets/brand.png")}
             style={styles.brand}
           />
           <Text style={styles.brandText}>
             The Best Way to Track Your Stock Portfolio
           </Text>
         </Flex>
+
         <Form
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          styles={{
-            Body: {
-              borderTopWidth: 0,
-            },
-            BodyBottomLine: {
-              display: "none",
-            },
-          }}
           style={styles.form}
           autoComplete="false"
-          initialValues={{
-            rememberMe: true,
-          }}
         >
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Email</Text>
-            <Form.Item
-              name="email"
-              rules={[
-                { required: true },
-                { type: "email", message: "Invalid email format" },
-              ]}
-              noStyle
-            >
-              <Input
-                textContentType="oneTimeCode"
-                placeholder="required"
-                inputStyle={styles.input}
-                placeholderTextColor={Colors.gray600}
-              />
-            </Form.Item>
-          </View>
+          <Form.Item
+            required
+            label="Email"
+            name="email"
+            rules={[
+              { required: true },
+              { type: "email", message: "Invalid email format" },
+            ]}
+          >
+            <Input textContentType="oneTimeCode" placeholder="required" />
+          </Form.Item>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Password</Text>
-            <Form.Item name="password" rules={[{ required: true }]} noStyle>
-              <Input
-                textContentType="oneTimeCode"
-                placeholder="required"
-                type={passwordVisible.state ? "text" : "password"}
-                inputStyle={styles.input}
-                placeholderTextColor={Colors.gray600}
-                suffix={
-                  <PasswordEyeToggle
-                    visible={passwordVisible.state}
-                    onPress={passwordVisible.toggle}
-                  />
-                }
-              />
-            </Form.Item>
-          </View>
+          <Form.Item
+            required
+            label="Password"
+            name="password"
+            rules={[{ required: true }]}
+          >
+            <Input.Password placeholder="required" />
+          </Form.Item>
 
-          <Flex justify="end" style={{ marginBottom: 20 }}>
-            <Text style={{ marginRight: 18 }}>Remember Me</Text>
-            <Form.Item name="rememberMe" noStyle valuePropName="checked">
-              <Switch color={Colors.primary} />
-            </Form.Item>
-          </Flex>
+          <Form.Item
+            label="Remember Me"
+            name="rememberMe"
+            valuePropName="checked"
+            layout="horizontal"
+            labelStyle={{ fontWeight: "normal" }}
+            wrapperStyle={{ justifyContent: "flex-end", borderBottomWidth: 0 }}
+          >
+            <Switch color={Colors.primary} />
+          </Form.Item>
 
           <Button
             size="large"
@@ -211,25 +188,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginHorizontal: 15,
     paddingHorizontal: 15,
-  },
-  formGroup: {
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderColor: Colors.gray400,
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 15,
-    fontWeight: 700,
-    color: Colors.black,
-    marginBlock: 5,
-  },
-  input: {
-    fontSize: 17,
-    color: Colors.black,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    borderBottomWidth: 0,
   },
 });
 

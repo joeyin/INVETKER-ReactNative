@@ -45,6 +45,7 @@ export const AppProvider = ({ children }) => {
           await AsyncStorage.setItem("email", email);
           await AsyncStorage.setItem("password", password);
         }
+        await AsyncStorage.setItem("rememberMe", rememberMe ? "true" : "false");
         return userCredential.user;
       } catch (error) {
         console.error("Sign in failed:", error);

@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import NavigationFlatListView from "../../components/NavigationFlatListView";
+import NavigationFlatListView from "@/components/NavigationFlatListView";
 import { Flex } from "@ant-design/react-native";
-import Colors from "../../constants/Colors";
-import { useApp } from "../../providers/AppProvider";
+import Colors from "@/constants/Colors";
+import { useApp } from "@/providers/AppProvider";
 
 const SettingsScreen = () => {
   const { signOut, user } = useApp();
@@ -17,7 +17,7 @@ const SettingsScreen = () => {
       {
         title: "",
         items: [
-          { name: "Signout", onPress: signOut, textColor: Colors.danger },
+          { name: "Sign Out", onPress: signOut, textColor: Colors.danger },
         ],
       },
     ],
