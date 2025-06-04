@@ -1,16 +1,23 @@
 import React from "react";
 import { User, onAuthStateChanged, getAuth } from "firebase/auth";
+import transactionController from "../controllers/transactionController";
+import { Transaction } from "../models/Transaction";
+import positionController from "../controllers/positionController";
+import { Position } from "../models/Position";
 import accountController from "../controllers/accountController";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AppContextType {
   user: User | null;
+  transactions: Transaction[];
+  positions: Position[];
   signIn: (
     email: string,
     password: string,
     rememberMe: boolean
   ) => Promise<User>;
   signOut: () => void;
+  refetchTransaction: () => Promise<Transaction[]>;
 }
 
 export const AppContext = React.createContext<AppContextType | undefined>(
@@ -26,15 +33,30 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<User | null | undefined>(undefined);
+  const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [positions, setPositions] = React.useState<Position[]>([]);
 
   React.useEffect(() => {
     const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
 
+  React.useEffect(() => {
+    positionController.all(transactions).then(setPositions);
+  }, [JSON.stringify(transactions)]);
+
   const handleAuthStateChanged = React.useCallback((user) => {
     setUser(user);
+    if (user) {
+      refetchTransaction();
+    }
+  }, []);
+
+  const refetchTransaction = React.useCallback(async () => {
+    const newTransactions = await transactionController.all();
+    setTransactions(newTransactions);
+    return newTransactions;
   }, []);
 
   const signIn = React.useCallback(
@@ -71,8 +93,11 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         user,
+        transactions,
+        positions,
         signIn,
         signOut,
+        refetchTransaction,
       }}
     >
       {children}

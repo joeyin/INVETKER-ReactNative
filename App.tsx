@@ -20,9 +20,11 @@ import FavoritesScreen from "@/screens/Favorites";
 import Colors from "@/constants/Colors";
 import HomeScreen from "@/screens/Home";
 import TransactionsScreen from "@/screens/Transactions";
+import NewTransactionScreen from "@/screens/Transactions/NewTransaction";
 import SignInScreen from "@/screens/Account/SignIn";
 import SettingsScreen from "@/screens/Settings";
 import SignUpScreen from "@/screens/Account/SignUp";
+import SelectTickerScreen from "@/screens/Transactions/SelectTicker";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -109,6 +111,8 @@ function RootNavigator() {
   return (
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={MainTabNavigator} />
+      <Stack.Screen name="NewTransaction" component={NewTransactionScreen} />
+      <Stack.Screen name="SelectTicker" component={SelectTickerScreen} />
     </Stack.Navigator>
   );
 }
