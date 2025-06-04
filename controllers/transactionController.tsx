@@ -8,8 +8,9 @@ import {
 } from "firebase/firestore";
 import { app } from "../configs/firebase";
 import { getFirestore } from "firebase/firestore";
-import { Transaction, NewTransaction } from "../models/Transaction";
+import { Transaction, NewTransaction, Action } from "../models/Transaction";
 import accountController from "./accountController";
+import { Position } from "@/models/Position";
 
 class TransactionController {
   collectionRef = collection(getFirestore(app), "transactions");
@@ -58,8 +59,15 @@ class TransactionController {
     }
   }
 
-  async insert(transaction: NewTransaction) {
+  async insert(transaction: NewTransaction, positions: Position[]) {
     try {
+      if (transaction.action === Action.SELL) {
+        const ticker = positions.find(p => p.ticker === transaction.ticker);
+        if (!ticker || ticker.position < transaction.quantity) {
+          throw new Error("Insufficient quantity to sell");
+        }
+      }
+
       const userId = accountController.getUserId();
       const docRef = await addDoc(this.collectionRef, {
         userId,

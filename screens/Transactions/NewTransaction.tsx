@@ -20,7 +20,7 @@ import Card from "@/components/Card";
 const NewTransaction = () => {
   const { navigate, goBack }: NavigationProp<ParamListBase> = useNavigation();
   const isLoading = useToggle();
-  const { refetchTransaction } = useApp();
+  const { refetchTransaction, positions } = useApp();
   const [form] = Form.useForm();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
 
@@ -38,7 +38,7 @@ const NewTransaction = () => {
         price: parseFloat(values.price),
         fee: parseFloat(values.fee),
         date: new Date(values.date).getTime(),
-      });
+      }, positions);
       refetchTransaction();
       goBack();
       isLoading.toggle();

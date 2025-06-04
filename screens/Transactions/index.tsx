@@ -1,16 +1,21 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import NavigationFlatListView from "../../components/NavigationFlatListView";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import NavigationFlatListView from "@/components/NavigationFlatListView";
 import Feather from "@expo/vector-icons/Feather";
-import Colors from "../../constants/Colors";
-import transactionController from "../../controllers/transactionController";
+import Colors from "@/constants/Colors";
+import transactionController from "@/controllers/transactionController";
 import moment from "moment";
-import { Action, Transaction } from "../../models/Transaction";
-import { formatDecimal } from "../../helpers/formatHelpers";
+import { Action, Transaction } from "@/models/Transaction";
+import { formatDecimal } from "@/helpers/formatHelpers";
 import SwipeableFlatList from "rn-gesture-swipeable-flatlist";
 import { Flex } from "@ant-design/react-native";
-import { useApp } from "../../providers/AppProvider";
-import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
+import { useApp } from "@/providers/AppProvider";
+import {
+  useNavigation,
+  ParamListBase,
+  NavigationProp,
+} from "@react-navigation/native";
+import List from "@/components/List";
 
 function TransactionsScreen() {
   const { transactions, refetchTransaction } = useApp();
@@ -46,36 +51,50 @@ function TransactionsScreen() {
   const renderItem = React.useCallback(({ item }: { item: Transaction }) => {
     const color = item.action === Action.BUY ? Colors.success : Colors.danger;
     return (
-      <View style={styles.itemContainer}>
-        <Flex justify="between" align="center" style={styles.item}>
-          <Text style={styles.ticker}>{item.ticker}</Text>
-          <Text style={styles.date}>
-            {moment(item.date).format("YYYY-MM-DD")}
-          </Text>
-        </Flex>
-
+      <List.Item style={styles.item}>
         {[
-          { label: "Action", value: item.action, color },
+          {
+            label: <Text style={styles.ticker}>{item.ticker}</Text>,
+            value: (
+              <Text style={styles.date}>
+                {moment(item.date).format("YYYY-MM-DD")}
+              </Text>
+            ),
+          },
+          {
+            label: "Action",
+            value: <Text style={[styles.value, { color }]}>{item.action}</Text>,
+          },
           { label: "Quantity", value: formatDecimal(item.quantity) },
           { label: "Price", value: `$${formatDecimal(item.price)}` },
           { label: "Fee", value: `$${formatDecimal(item.fee)}` },
           {
             label: "Amount",
-            value: `$${formatDecimal(item.price * item.quantity + item.fee)}`,
-            color,
+            value: (
+              <Text style={[styles.value, { color }]}>{`$${formatDecimal(
+                item.price * item.quantity + item.fee
+              )}`}</Text>
+            ),
           },
-        ].map(({ label, value, color = "black" }, index) => (
+        ].map(({ label, value }, index) => (
           <Flex
-            key={label}
+            key={index}
             justify="between"
-            align="center"
-            style={index !== 4 && { ...styles.item }}
+            style={[styles.column, index === 5 && { marginBottom: 0 }]}
           >
-            <Text style={styles.name}>{label}</Text>
-            <Text style={[styles.value, { color }]}>{value}</Text>
+            {typeof label === "function" ? (
+              label
+            ) : (
+              <Text style={styles.name}>{label}</Text>
+            )}
+            {typeof value === "function" ? (
+              value
+            ) : (
+              <Text style={styles.value}>{value}</Text>
+            )}
           </Flex>
         ))}
-      </View>
+      </List.Item>
     );
   }, []);
 
@@ -111,26 +130,29 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
   },
-  itemContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
-  },
   item: {
-    marginBottom: 2,
+    padding: 10,
+    justifyContent: "flex-start",
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  column: {
+    width: "100%",
+    marginBottom: 3,
   },
   ticker: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: 600,
+    color: Colors.black,
   },
   date: {
-    fontSize: 12,
+    fontSize: 13,
+    fontWeight: 300,
     color: Colors.secondary,
   },
   name: {
     color: Colors.secondary,
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 300,
   },
   value: {
