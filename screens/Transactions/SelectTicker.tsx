@@ -11,6 +11,7 @@ import { Text, StyleSheet, FlatList } from "react-native";
 import List from "@/components/List";
 import Tickers from "@/assets/tickers.json";
 import { Flex } from "@ant-design/react-native";
+import { Ticker } from "@/models/TIcker";
 
 const SelectTickerScreen = () => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
@@ -31,7 +32,7 @@ const SelectTickerScreen = () => {
     }
   }, [search]);
 
-  const Item = (item) => (
+  const Item = React.memo((item: Ticker) => (
     <List.Item
       touchable
       onPress={() =>
@@ -49,7 +50,7 @@ const SelectTickerScreen = () => {
       </Flex>
       <Text style={styles.name}>{item.name}</Text>
     </List.Item>
-  );
+  ));
 
   return (
     <FormView
@@ -82,6 +83,7 @@ const SelectTickerScreen = () => {
         data={tickers}
         renderItem={({ item }) => <Item {...item} />}
         keyExtractor={(item) => item.ticker}
+        showsVerticalScrollIndicator={false}
       />
     </FormView>
   );
