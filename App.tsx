@@ -1,29 +1,28 @@
 import React from "react";
-import {
-  NavigationContainer,
-  DefaultTheme,
-  NavigationProp,
-} from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Provider } from "@ant-design/react-native";
-import { AppProvider, useApp } from "@/providers/AppProvider";
+import { AppProvider, useApp } from "./providers/AppProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
-import Colors from "@/constants/Colors";
-import HomeScreen from "@/screens/Home";
-import TransactionsScreen from "@/screens/Transactions";
-import SettingsScreen from "@/screens/Settings";
-import SignUpScreen from "@/screens/Account/SignUp";
-import SignInScreen from "@/screens/Account/SignIn";
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from "react-native-reanimated";
 import { StatusBar } from "react-native";
+import PortfolioScreen from "@/screens/Portfolio";
+import FavoritesScreen from "@/screens/Favorites";
+import Colors from "@/constants/Colors";
+import HomeScreen from "@/screens/Home";
+import TransactionsScreen from "@/screens/Transactions";
+import SignInScreen from "@/screens/Account/SignIn";
+import SettingsScreen from "@/screens/Settings";
+import SignUpScreen from "@/screens/Account/SignUp";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,17 +31,6 @@ configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false,
 });
-
-// https://stackoverflow.com/questions/68739045/how-to-properly-type-usenavigation-in-react-navigation
-export type ScreenNames = [
-  "Home",
-  "Transactions",
-  "Settings",
-  "SignUp",
-  "SignIn"
-];
-export type RootStackParamList = Record<ScreenNames[number], undefined>;
-export type StackNavigation = NavigationProp<RootStackParamList>;
 
 function MainTabNavigator() {
   return (
@@ -63,11 +51,29 @@ function MainTabNavigator() {
         }}
       />
       <Tab.Screen
+        name="Portfolio"
+        component={PortfolioScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="pie-chart" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Transactions"
         component={TransactionsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Fontisto name="arrow-swap" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="favorite" color={color} size={size} />
           ),
         }}
       />
@@ -86,6 +92,10 @@ function MainTabNavigator() {
 
 function RootNavigator() {
   const { user } = useApp();
+
+  if (user === undefined) {
+    return null;
+  }
 
   if (!user) {
     return (
