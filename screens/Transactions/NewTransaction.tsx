@@ -104,7 +104,15 @@ const NewTransaction = () => {
               },
             }}
           >
-            <Form.Item name="ticker" wrapperStyle={{ display: "none" }}>
+            <Form.Item
+              name="ticker"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+              wrapperStyle={{ display: "none" }}
+            >
               <Input
                 placeholder="required"
                 inputStyle={{ textAlign: "right", color: Colors.secondary }}
