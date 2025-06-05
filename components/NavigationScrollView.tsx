@@ -4,32 +4,34 @@ import {
   Text,
   ViewStyle,
   StyleProp,
-  FlatListProps,
 } from "react-native";
 import {
   Header,
   LargeHeader,
   ScalingView,
+  ScrollViewWithHeaders,
   FlatListWithHeaders,
   ScrollHeaderProps,
   ScrollLargeHeaderProps,
 } from "@codeherence/react-native-header";
-import { runOnJS, useDerivedValue, useSharedValue } from "react-native-reanimated";
+import { runOnJS, useDerivedValue } from "react-native-reanimated";
 
-function NavigationFlatListView({
+function NavigationScrollView({
   title,
   contentContainerStyle,
   children,
+  center,
   left,
   right,
   ...props
 }: {
   title: String;
   children?: React.ReactNode;
+  center?: React.ReactNode;
   left?: React.ReactNode;
   right?: React.ReactNode;
   contentContainerStyle?: StyleProp<ViewStyle> | undefined;
-} & FlatListProps<any>) {
+}) {
   const HeaderComponent = ({ showNavBar }: ScrollHeaderProps) => {
     const [navBarVisible, setNavBarVisible] = React.useState(showNavBar.value);
 
@@ -41,7 +43,7 @@ function NavigationFlatListView({
       <Header
         showNavBar={showNavBar}
         noBottomBorder={navBarVisible == 0}
-        headerCenter={<Text style={styles.title}>{title}</Text>}
+        headerCenter={<Text style={styles.title}>{center ?? title}</Text>}
         headerLeft={left}
         headerRight={right}
       />
@@ -57,18 +59,17 @@ function NavigationFlatListView({
   );
 
   return (
-    <FlatListWithHeaders
+    <ScrollViewWithHeaders
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
       HeaderComponent={HeaderComponent}
       LargeHeaderComponent={LargeHeaderComponent}
-      data={props.data}
-      renderItem={props.renderItem}
-      windowSize={10}
-      initialNumToRender={0}
-      maxToRenderPerBatch={100}
-      keyExtractor={(_, i) => `text-row-${i}`}
+      contentContainerStyle={Object.assign({}, contentContainerStyle)}
       {...props}
-    />
-  )
+    >
+      {children}
+    </ScrollViewWithHeaders>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -83,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NavigationFlatListView;
+export default NavigationScrollView;

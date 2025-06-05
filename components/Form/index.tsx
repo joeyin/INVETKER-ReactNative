@@ -6,6 +6,8 @@ import {
 } from "@ant-design/react-native";
 import Input from "./Input";
 import Switch from "./Switch";
+import Picker from "./Picker";
+import DatePicker from "./DatePicker";
 
 interface FormProps extends AntFormProps {
   children: React.ReactNode;
@@ -20,6 +22,7 @@ const BaseForm = ({ children, ...props }: FormProps) => (
       BodyBottomLine: {
         display: "none",
       },
+      ...props.styles,
     }}
     {...props}
   >
@@ -30,8 +33,10 @@ const BaseForm = ({ children, ...props }: FormProps) => (
 const Form = Object.assign(BaseForm, {
   Item,
   useForm: AntForm.useForm,
-  Input: Input,
-  Switch: Switch,
+  Input,
+  Switch,
+  Picker,
+  DatePicker,
 });
 
 export default Form;
@@ -39,3 +44,5 @@ export default Form;
 export { default as Item } from "./Item";
 export { default as Input } from "./Input";
 export { default as Switch } from "./Switch";
+export { default as Picker } from "./Picker";
+export { default as DatePicker } from "./DatePicker";

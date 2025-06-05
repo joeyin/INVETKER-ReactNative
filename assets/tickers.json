@@ -1938,12 +1938,6 @@
 		"exchange": "NASDAQ"
 	},
 	{
-		"ticker": "AMOV",
-		"name": "America Movil, S.A.B. de C.V.",
-		"is_etf": null,
-		"exchange": "NYSE"
-	},
-	{
 		"ticker": "AMP",
 		"name": "AMERIPRISE FINANCIAL SERVICES, INC.",
 		"is_etf": null,
