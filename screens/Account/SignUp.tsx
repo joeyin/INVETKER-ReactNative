@@ -11,15 +11,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Flex } from "@ant-design/react-native";
 import { useToggle } from "@/hooks";
 import Colors from "@/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigation } from "@/App";
+import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
 import accountController from "@/controllers/accountController";
 import Form, { Input } from "@/components/Form";
 
 const SignUpScreen = () => {
   const isLoading = useToggle();
   const [form] = Form.useForm();
-  const { goBack, navigate } = useNavigation<StackNavigation>();
+  const { goBack, navigate }: NavigationProp<ParamListBase> = useNavigation();
 
   const onSubmit = () => {
     isLoading.on();
@@ -74,25 +73,32 @@ const SignUpScreen = () => {
           autoComplete="false"
         >
           <Form.Item
+            required
             label="Email"
             name="email"
             rules={[
               { required: true },
               { type: "email", message: "Invalid email format" },
             ]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
           >
             <Input placeholder="required" />
           </Form.Item>
 
           <Form.Item
+            required
             label="Password"
             name="password"
             rules={[{ required: true }, { min: 6 }]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
           >
             <Input.Password placeholder="required" />
           </Form.Item>
 
           <Form.Item
+            required
             label="Confirm Password"
             name="confirmPassword"
             dependencies={["password"]}
@@ -108,6 +114,8 @@ const SignUpScreen = () => {
                 },
               }),
             ]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
           >
             <Input.Password placeholder="required" />
           </Form.Item>
@@ -180,7 +188,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   form: {
-    backgroundColor: "transparent",
+    backgroundColor: Colors.lightGray,
     marginHorizontal: 15,
     paddingHorizontal: 15,
   },

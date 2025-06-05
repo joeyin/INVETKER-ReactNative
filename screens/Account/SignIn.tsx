@@ -13,15 +13,14 @@ import { useToggle } from "@/hooks";
 import { useApp } from "@/providers/AppProvider";
 import Colors from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigation } from "@/App";
+import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
 import Form, { Input, Switch } from "@/components/Form";
 
 const SignInScreen = () => {
   const { signIn } = useApp();
   const isLoading = useToggle();
   const [form] = Form.useForm();
-  const { navigate } = useNavigation<StackNavigation>();
+  const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
   React.useEffect(() => {
     (async () => {
@@ -93,6 +92,8 @@ const SignInScreen = () => {
               { required: true },
               { type: "email", message: "Invalid email format" },
             ]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
           >
             <Input textContentType="oneTimeCode" placeholder="required" />
           </Form.Item>
@@ -102,6 +103,8 @@ const SignInScreen = () => {
             label="Password"
             name="password"
             rules={[{ required: true }]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
           >
             <Input.Password placeholder="required" />
           </Form.Item>
@@ -111,10 +114,11 @@ const SignInScreen = () => {
             name="rememberMe"
             valuePropName="checked"
             layout="horizontal"
-            labelStyle={{ fontWeight: "normal" }}
+            labelStyle={{ fontWeight: 300, marginRight: 15, fontSize: 15 }}
             wrapperStyle={{ justifyContent: "flex-end", borderBottomWidth: 0 }}
+            bodyStyle={{ flex: 0 }}
           >
-            <Switch color={Colors.primary} />
+            <Switch />
           </Form.Item>
 
           <Button
@@ -159,10 +163,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  background: {
-    width: "100%",
-    height: "100%",
-  },
   scrollViewContent: {
     flexGrow: 1,
     justifyContent: "center",
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   form: {
-    backgroundColor: "transparent",
     marginHorizontal: 15,
     paddingHorizontal: 15,
   },
