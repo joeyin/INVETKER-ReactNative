@@ -15,11 +15,43 @@ import { Ticker } from "@/models/Ticker";
 import LOGODEV_API_KEY from "@/configs/logodev";
 import { formatLocalizedCapitalized } from "@/helpers/formatHelpers";
 
+const ITEM_HEIGHT = 53;
+
+const TickerItem = React.memo(
+  ({ item, onPress }: { item: Ticker; onPress: () => void }) => {
+    const [imgLoadFailed, setImgLoadFailed] = React.useState(false);
+    const uri = `https://img.logo.dev/ticker/${item.ticker}?token=${LOGODEV_API_KEY}&format=webp&retina=true`;
+
+    return (
+      <List.Item touchable onPress={onPress} style={styles.item}>
+        {imgLoadFailed ? (
+          <View style={styles.defaultLogo}>
+            <Text style={styles.defaultLogoText}>
+              {formatLocalizedCapitalized(item.ticker[0])}
+            </Text>
+          </View>
+        ) : (
+          <Image
+            source={{ uri }}
+            style={styles.logo}
+            onError={() => setImgLoadFailed(true)}
+          />
+        )}
+
+        <Flex style={{ flex: 1 }} direction="column" align="start">
+          <Text style={styles.value}>{item.ticker}</Text>
+          <Text style={styles.name}>{item.name}</Text>
+        </Flex>
+      </List.Item>
+    );
+  }
+);
+
 const SelectTickerScreen = () => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const [form] = Form.useForm();
   const [search, setSearch] = React.useState("");
-  const [tickers, setTickers] = React.useState(Tickers);
+  const [tickers, setTickers] = React.useState<Ticker[]>(Tickers);
 
   React.useEffect(() => {
     if (search === "") {
@@ -33,41 +65,6 @@ const SelectTickerScreen = () => {
       setTickers(filtered);
     }
   }, [search]);
-
-  const Item = React.memo((item: Ticker) => {
-    const [imgLoadFailed, setImgLoadFailed] = React.useState(undefined);
-
-    return (
-      <List.Item
-        touchable
-        onPress={() =>
-          navigate("NewTransaction", { ticker: item.ticker }, { pop: true })
-        }
-        style={styles.item}
-      >
-        {imgLoadFailed === true ? (
-          <View style={styles.defaultLogo}>
-            <Text style={styles.defaultLogoText}>
-              {formatLocalizedCapitalized(item.ticker[0])}
-            </Text>
-          </View>
-        ) : (
-          <Image
-            source={{
-              uri: `https://img.logo.dev/ticker/${item.ticker}?token=${LOGODEV_API_KEY}&format=webp&retina=true`,
-            }}
-            style={styles.logo}
-            onError={() => setImgLoadFailed(true)}
-          />
-        )}
-
-        <Flex style={{ flex: 1 }} direction="column" align="start">
-          <Text style={styles.value}>{item.ticker}</Text>
-          <Text style={styles.name}>{item.name}</Text>
-        </Flex>
-      </List.Item>
-    );
-  });
 
   const subTitle = React.useMemo(
     () => (
@@ -94,6 +91,20 @@ const SelectTickerScreen = () => {
     []
   );
 
+  const handleNavigate = React.useCallback(
+    (ticker: string) => {
+      navigate("NewTransaction", { ticker }, { pop: true });
+    },
+    []
+  );
+
+  const renderItem = React.useCallback(
+    ({ item }: { item: Ticker }) => (
+      <TickerItem item={item} onPress={() => handleNavigate(item.ticker)} />
+    ),
+    []
+  );
+
   return (
     <FormView
       title="Ticker"
@@ -103,8 +114,16 @@ const SelectTickerScreen = () => {
     >
       <FlatList
         data={tickers}
-        renderItem={({ item }) => <Item {...item} />}
+        renderItem={renderItem}
         keyExtractor={(item) => item.ticker}
+        getItemLayout={(_, index) => ({
+          length: ITEM_HEIGHT,
+          offset: ITEM_HEIGHT * index,
+          index,
+        })}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
         showsVerticalScrollIndicator={false}
       />
     </FormView>
@@ -126,18 +145,18 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     color: Colors.black,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   logo: {
     width: 33,
     height: 33,
-    borderRadius: 100,
+    borderRadius: 5,
     marginRight: 15,
   },
   defaultLogo: {
     width: 33,
     height: 33,
-    borderRadius: 100,
+    borderRadius: 5,
     marginRight: 15,
     backgroundColor: Colors.lightGray,
     display: "flex",
@@ -146,7 +165,7 @@ const styles = StyleSheet.create({
   },
   defaultLogoText: {
     fontSize: 15,
-    fontWeight: 600,
+    fontWeight: "600",
     color: Colors.secondary,
   },
 });
