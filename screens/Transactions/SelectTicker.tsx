@@ -7,11 +7,13 @@ import {
   NavigationProp,
 } from "@react-navigation/native";
 import Colors from "@/constants/Colors";
-import { Text, StyleSheet, FlatList } from "react-native";
+import { Text, StyleSheet, FlatList, Image, View } from "react-native";
 import List from "@/components/List";
 import Tickers from "@/assets/tickers.json";
 import { Flex } from "@ant-design/react-native";
 import { Ticker } from "@/models/Ticker";
+import LOGODEV_API_KEY from "@/configs/logodev";
+import { formatLocalizedCapitalized } from "@/helpers/formatHelpers";
 
 const SelectTickerScreen = () => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
@@ -32,52 +34,72 @@ const SelectTickerScreen = () => {
     }
   }, [search]);
 
-  const Item = React.memo((item: Ticker) => (
-    <List.Item
-      touchable
-      onPress={() =>
-        navigate("NewTransaction", { ticker: item.ticker }, { pop: true })
-      }
-      style={{
-        padding: 10,
-        justifyContent: "flex-start",
-        flexDirection: "column",
-        alignItems: "flex-start",
-      }}
-    >
-      <Flex>
-        <Text style={styles.value}>{item.ticker}</Text>
-      </Flex>
-      <Text style={styles.name}>{item.name}</Text>
-    </List.Item>
-  ));
+  const Item = React.memo((item: Ticker) => {
+    const [imgLoadFailed, setImgLoadFailed] = React.useState(undefined);
+
+    return (
+      <List.Item
+        touchable
+        onPress={() =>
+          navigate("NewTransaction", { ticker: item.ticker }, { pop: true })
+        }
+        style={styles.item}
+      >
+        {imgLoadFailed === true ? (
+          <View style={styles.defaultLogo}>
+            <Text style={styles.defaultLogoText}>
+              {formatLocalizedCapitalized(item.ticker[0])}
+            </Text>
+          </View>
+        ) : (
+          <Image
+            source={{
+              uri: `https://img.logo.dev/ticker/${item.ticker}?token=${LOGODEV_API_KEY}&format=webp&retina=true`,
+            }}
+            style={styles.logo}
+            onError={() => setImgLoadFailed(true)}
+          />
+        )}
+
+        <Flex style={{ flex: 1 }} direction="column" align="start">
+          <Text style={styles.value}>{item.ticker}</Text>
+          <Text style={styles.name}>{item.name}</Text>
+        </Flex>
+      </List.Item>
+    );
+  });
+
+  const subTitle = React.useMemo(
+    () => (
+      <Form form={form} style={{ marginHorizontal: 10 }}>
+        <Form.Item
+          name="search"
+          layout="horizontal"
+          wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+        >
+          <Input
+            placeholder="Search"
+            inputStyle={{
+              backgroundColor: Colors.gray800,
+              borderRadius: 6,
+              height: 36,
+              paddingHorizontal: 13,
+              marginBottom: 5,
+            }}
+            onChangeText={setSearch}
+          />
+        </Form.Item>
+      </Form>
+    ),
+    []
+  );
 
   return (
     <FormView
       title="Ticker"
       allowSave={false}
-      style={{ backgroundColor: Colors.white, borderRadius: 8 }}
-      subTitle={
-        <Form form={form} style={{ marginHorizontal: 10 }}>
-          <Form.Item
-            name="search"
-            layout="horizontal"
-            wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
-          >
-            <Input
-              placeholder="Search"
-              inputStyle={{
-                backgroundColor: Colors.gray800,
-                borderRadius: 6,
-                height: 36,
-                paddingHorizontal: 13,
-                marginBottom: 5,
-              }}
-              onChangeText={setSearch}
-            />
-          </Form.Item>
-        </Form>
-      }
+      style={styles.container}
+      subTitle={subTitle}
     >
       <FlatList
         data={tickers}
@@ -90,6 +112,13 @@ const SelectTickerScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.white,
+    height: "100%",
+  },
+  item: {
+    padding: 10,
+  },
   name: {
     fontSize: 13,
     color: Colors.secondary,
@@ -97,7 +126,28 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     color: Colors.black,
-    fontWeight: 500,
+    fontWeight: 600,
+  },
+  logo: {
+    width: 33,
+    height: 33,
+    borderRadius: 100,
+    marginRight: 15,
+  },
+  defaultLogo: {
+    width: 33,
+    height: 33,
+    borderRadius: 100,
+    marginRight: 15,
+    backgroundColor: Colors.lightGray,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  defaultLogoText: {
+    fontSize: 15,
+    fontWeight: 600,
+    color: Colors.secondary,
   },
 });
 
