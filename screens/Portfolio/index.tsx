@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import NavigationScrollView from "../../components/NavigationScrollView";
+import NavigationScrollView from "@/components/NavigationScrollView";
 import Header from "./Header";
 import Holdings from "./Holdings";
-import { useApp } from '../../providers/AppProvider';
+import { useApp } from '@/providers/AppProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SheetProvider } from "react-native-actions-sheet";
 import './sheets';

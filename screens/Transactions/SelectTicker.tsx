@@ -11,7 +11,7 @@ import { Text, StyleSheet, FlatList } from "react-native";
 import List from "@/components/List";
 import Tickers from "@/assets/tickers.json";
 import { Flex } from "@ant-design/react-native";
-import { Ticker } from "@/models/TIcker";
+import { Ticker } from "@/models/Ticker";
 
 const SelectTickerScreen = () => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();

@@ -7,9 +7,9 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import { formatDecimal } from "../../helpers/formatHelpers";
+import { formatDecimal } from "@/helpers/formatHelpers";
 import { Flex } from "@ant-design/react-native";
-import Colors from "../../constants/Colors";
+import Colors from "@/constants/Colors";
 import { SheetManager } from 'react-native-actions-sheet';
 
 const TopPortfolio = ({ positions }) => {
