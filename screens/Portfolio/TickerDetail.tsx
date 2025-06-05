@@ -9,13 +9,13 @@ import {
   Alert,
 } from "react-native";
 import ActionSheet from "react-native-actions-sheet";
-import Colors from "../../constants/Colors";
+import Colors from "@/constants/Colors";
 import { Flex } from "@ant-design/react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import {
   formatDecimal,
   formatLocalizedCapitalized,
-} from "../../helpers/formatHelpers";
+} from "@/helpers/formatHelpers";
 
 function TickerDetail({ payload }) {
   const { ticker } = payload;

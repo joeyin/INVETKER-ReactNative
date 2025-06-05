@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { formatDecimal } from "../../helpers/formatHelpers";
-import Colors from "../../constants/Colors";
+import { formatDecimal } from "@/helpers/formatHelpers";
+import Colors from "@/constants/Colors";
 
 const Header = ({ positions }) => {
   const [netLiquidation, setNetLiquidation] = React.useState<number>(0);

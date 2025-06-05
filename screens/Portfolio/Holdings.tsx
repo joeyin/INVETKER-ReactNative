@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import Colors from "../../constants/Colors";
-import { formatDecimal } from "../../helpers/formatHelpers";
+import Colors from "@/constants/Colors";
+import { formatDecimal } from "@/helpers/formatHelpers";
 import { SheetManager } from "react-native-actions-sheet";
 
 const tableHead = [
