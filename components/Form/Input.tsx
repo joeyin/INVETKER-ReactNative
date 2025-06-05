@@ -5,12 +5,11 @@ import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
 import { useToggle } from "@/hooks";
 
-export const Input = ({ allowClear = true, ...props }: InputProps) => (
+export const Input = ({ ...props }: InputProps) => (
   <AntInput
-    inputStyle={styles.input}
     placeholderTextColor={Colors.gray600}
-    allowClear={allowClear}
     {...props}
+    inputStyle={[styles.input, props.inputStyle]}
   />
 );
 
@@ -42,6 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingVertical: 0,
     borderBottomWidth: 0,
+    height: 35,
   },
 });
 

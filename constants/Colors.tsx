@@ -7,6 +7,7 @@ export default {
   lightGray200: "#E7E7E7",
   gray400: "#B6B6B6",
   gray600: "#B2B2B2",
+  gray800: "#E5E5E5",
   white: "#FFFFFF",
   black: "#000000",
   yellow300: "#F0C049",
