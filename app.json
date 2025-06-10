@@ -17,13 +17,21 @@
       "bundleIdentifier": "com.anonymous.INVETKER"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.INVETKER"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "75ada6c5-b7da-42b4-bc33-7245f1e60ee5"
+      }
+    },
+    "owner": "joeyin"
   }
 }
