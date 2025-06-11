@@ -1,4 +1,4 @@
-import FINNHUB_API_KEY from "../configs/finnhub";
+import FINNHUB_API_KEY from "@/configs/finnhub";
 
 class MarketController {
   apiURL(): string {
