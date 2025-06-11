@@ -1,6 +1,6 @@
-import FINNHUB_API_KEY from "../configs/finnhub";
-import { Position } from "../models/Position";
-import { Transaction } from "../models/Transaction";
+import FINNHUB_API_KEY from "@/configs/finnhub";
+import { Position } from "@/models/Position";
+import { Transaction } from "@/models/Transaction";
 
 enum Endpoint {
   PROFILE = "PROFILE",
