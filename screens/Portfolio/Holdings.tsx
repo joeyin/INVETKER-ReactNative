@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { formatDecimal } from "@/helpers/formatHelpers";
-import { SheetManager } from "react-native-actions-sheet";
 
 const tableHead = [
   "Ticker",
@@ -51,13 +50,7 @@ const Holdings = ({ positions }) => {
                     key={index}
                     data={[
                       <TouchableOpacity
-                        onPress={() => {
-                          SheetManager.show("TickerDetail", {
-                            payload: {
-                              ticker: p,
-                            },
-                          });
-                        }}
+                        onPress={() => {}}
                       >
                         <Text>{p.ticker}</Text>
                       </TouchableOpacity>,

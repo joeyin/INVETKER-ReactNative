@@ -4,34 +4,35 @@ import {
   Text,
   ViewStyle,
   StyleProp,
+  FlatListProps,
 } from "react-native";
 import {
   Header,
   LargeHeader,
   ScalingView,
-  ScrollViewWithHeaders,
   FlatListWithHeaders,
   ScrollHeaderProps,
   ScrollLargeHeaderProps,
 } from "@codeherence/react-native-header";
 import { runOnJS, useDerivedValue } from "react-native-reanimated";
 
-function NavigationScrollView({
-  title,
-  contentContainerStyle,
-  children,
-  center,
-  left,
-  right,
-  ...props
-}: {
+interface Props extends Omit<FlatListProps<any>, "title | center"> {
   title: String;
   children?: React.ReactNode;
-  center?: React.ReactNode;
   left?: React.ReactNode;
   right?: React.ReactNode;
   contentContainerStyle?: StyleProp<ViewStyle> | undefined;
-}) {
+  style?: StyleProp<ViewStyle>;
+}
+
+function FlatListView({
+  title,
+  contentContainerStyle,
+  children,
+  left,
+  right,
+  ...props
+}: Props) {
   const HeaderComponent = ({ showNavBar }: ScrollHeaderProps) => {
     const [navBarVisible, setNavBarVisible] = React.useState(showNavBar.value);
 
@@ -43,7 +44,7 @@ function NavigationScrollView({
       <Header
         showNavBar={showNavBar}
         noBottomBorder={navBarVisible == 0}
-        headerCenter={<Text style={styles.title}>{center ?? title}</Text>}
+        headerCenter={<Text style={styles.title}>{title}</Text>}
         headerLeft={left}
         headerRight={right}
       />
@@ -59,24 +60,25 @@ function NavigationScrollView({
   );
 
   return (
-    <ScrollViewWithHeaders
-      showsHorizontalScrollIndicator={false}
-      showsVerticalScrollIndicator={false}
+    <FlatListWithHeaders
       HeaderComponent={HeaderComponent}
       LargeHeaderComponent={LargeHeaderComponent}
-      contentContainerStyle={Object.assign({}, contentContainerStyle)}
+      data={props.data}
+      renderItem={props.renderItem}
+      windowSize={10}
+      initialNumToRender={0}
+      maxToRenderPerBatch={100}
+      keyExtractor={(_, i) => `text-row-${i}`}
       {...props}
-    >
-      {children}
-    </ScrollViewWithHeaders>
-  );
+    />
+  )
 }
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
-    paddingVertical: 10,
+    paddingBottom: 6,
   },
   largeTitle: {
     fontSize: 35,
@@ -84,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NavigationScrollView;
+export default FlatListView;

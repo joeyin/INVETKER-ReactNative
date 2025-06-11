@@ -3,7 +3,7 @@ import { Text, Alert, TouchableOpacity, StyleSheet, View } from "react-native";
 import Colors from "@/constants/Colors";
 import transactionController from "@/controllers/transactionController";
 import { Action } from "@/models/Transaction";
-import NavigationScrollView from "@/components/NavigationScrollView";
+import ScrollView from "@/components/Layout/ScrollView";
 import {
   useRoute,
   useNavigation,
@@ -72,7 +72,7 @@ const NewTransaction = () => {
   }, [route?.params?.ticker]);
 
   return (
-    <NavigationScrollView
+    <ScrollView
       title="New Transaction"
       left={
         <TouchableOpacity onPress={goBack}>
@@ -248,7 +248,7 @@ const NewTransaction = () => {
           </Form>
         </Card>
       </View>
-    </NavigationScrollView>
+    </ScrollView>
   );
 };
 

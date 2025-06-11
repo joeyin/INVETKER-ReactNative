@@ -7,7 +7,7 @@ import {
   TextStyle,
   View,
 } from "react-native";
-import Colors from "../../constants/Colors";
+import Colors from "@/constants/Colors";
 import { Flex, Form, FormItemProps } from "@ant-design/react-native";
 
 interface Props extends FormItemProps {

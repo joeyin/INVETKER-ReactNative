@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import NavigationFlatListView from "@/components/NavigationFlatListView";
+import FlatListView from "@/components/Layout/FlatListView";
 import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
 import transactionController from "@/controllers/transactionController";
@@ -99,7 +99,7 @@ function TransactionsScreen() {
   }, []);
 
   return (
-    <NavigationFlatListView
+    <FlatListView
       title="Transactions"
       right={
         <TouchableOpacity onPress={() => navigate("NewTransaction")}>
