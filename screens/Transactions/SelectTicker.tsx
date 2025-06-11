@@ -1,5 +1,5 @@
 import React from "react";
-import FormView from "@/components/FormView";
+import FormView from "@/components/Layout/FormView";
 import Form, { Input } from "@/components/Form";
 import {
   useNavigation,

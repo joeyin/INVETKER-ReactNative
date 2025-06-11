@@ -133,9 +133,8 @@ const headerStyles = StyleSheet.create({
     width: 80,
   },
   title: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "bold",
-    paddingVertical: 10,
     textAlign: "center",
   },
 });
