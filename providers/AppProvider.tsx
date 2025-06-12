@@ -18,6 +18,7 @@ interface AppContextType {
   ) => Promise<User>;
   signOut: () => void;
   refetchTransaction: () => Promise<Transaction[]>;
+  reloadAuth: () => void;
 }
 
 export const AppContext = React.createContext<AppContextType | undefined>(
@@ -51,6 +52,17 @@ export const AppProvider = ({ children }) => {
     if (user) {
       refetchTransaction();
     }
+  }, []);
+
+  const reloadAuth = React.useCallback(() => {
+    getAuth()
+      .currentUser.reload()
+      .then(() => {
+        setUser({ ...getAuth().currentUser });
+      })
+      .catch((error) => {
+        console.error("Failed to reload user:", error);
+      });
   }, []);
 
   const refetchTransaction = React.useCallback(async () => {
@@ -98,6 +110,7 @@ export const AppProvider = ({ children }) => {
         signIn,
         signOut,
         refetchTransaction,
+        reloadAuth,
       }}
     >
       {children}

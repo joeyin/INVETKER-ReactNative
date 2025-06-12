@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { formatDecimal } from "@/helpers/formatHelpers";
+import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
 
 const tableHead = [
   "Ticker",
@@ -25,6 +26,8 @@ const tableHead = [
 const widthArr = [90, 90, 80, 80, 100, 100, 80, 100, 100];
 
 const Holdings = ({ positions }) => {
+  const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Positions</Text>
@@ -50,7 +53,7 @@ const Holdings = ({ positions }) => {
                     key={index}
                     data={[
                       <TouchableOpacity
-                        onPress={() => {}}
+                        onPress={() => navigate("Detail", { ticker: p.ticker })}
                       >
                         <Text>{p.ticker}</Text>
                       </TouchableOpacity>,
