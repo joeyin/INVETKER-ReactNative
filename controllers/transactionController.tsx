@@ -6,9 +6,9 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { app } from "../configs/firebase";
+import { app } from "@/configs/firebase";
 import { getFirestore } from "firebase/firestore";
-import { Transaction, NewTransaction, Action } from "../models/Transaction";
+import { Transaction, NewTransaction, Action } from "@/models/Transaction";
 import accountController from "./accountController";
 import { Position } from "@/models/Position";
 

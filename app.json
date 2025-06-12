@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,7 +19,7 @@
     "android": {
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.INVETKER"
@@ -32,6 +32,14 @@
         "projectId": "75ada6c5-b7da-42b4-bc33-7245f1e60ee5"
       }
     },
-    "owner": "joeyin"
+    "owner": "joeyin",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Please allow the app to access your photos so you can upload or select images."
+        }
+      ]
+    ]
   }
 }

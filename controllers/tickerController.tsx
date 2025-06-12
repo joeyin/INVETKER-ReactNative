@@ -1,4 +1,4 @@
-import POLYGON_API_KEY from "../configs/polygon";
+import POLYGON_API_KEY from "@/configs/polygon";
 
 class TickerController {
   apiURL(symbol: string): string {
