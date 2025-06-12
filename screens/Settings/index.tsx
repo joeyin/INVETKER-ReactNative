@@ -25,7 +25,7 @@ import { useToggle } from "@/hooks";
 import fileController from "@/controllers/fileController";
 
 const SettingsScreen = () => {
-  const { signOut, user } = useApp();
+  const { signOut, user, reloadAuth } = useApp();
   const isLoading = useToggle();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
@@ -47,11 +47,10 @@ const SettingsScreen = () => {
 
       if (!result.canceled) {
         isLoading.on();
-        const photoURL = await fileController.uploadFile(
-          result.assets[0].uri
-        );
+        const photoURL = await fileController.uploadFile(result.assets[0].uri);
         await accountController.updateProfile({ photoURL });
         isLoading.off();
+        reloadAuth();
       }
     } catch (error) {
       isLoading.off();
