@@ -24,6 +24,7 @@ import NewTransactionScreen from "@/screens/Transactions/NewTransaction";
 import SignInScreen from "@/screens/Account/SignIn";
 import SettingsScreen from "@/screens/Settings";
 import SignUpScreen from "@/screens/Account/SignUp";
+import EditNameScreen from "@/screens/Settings/EditName";
 import SelectTickerScreen from "@/screens/Transactions/SelectTicker";
 
 const Stack = createNativeStackNavigator();
@@ -113,6 +114,7 @@ function RootNavigator() {
       <Stack.Screen name="Main" component={MainTabNavigator} />
       <Stack.Screen name="NewTransaction" component={NewTransactionScreen} />
       <Stack.Screen name="SelectTicker" component={SelectTickerScreen} />
+      <Stack.Screen name="EditName" component={EditNameScreen} />
     </Stack.Navigator>
   );
 }
