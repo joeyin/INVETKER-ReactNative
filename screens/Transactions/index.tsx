@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import FlatListView from "@/components/Layout/FlatListView";
 import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
@@ -15,10 +15,9 @@ import {
   ParamListBase,
   NavigationProp,
 } from "@react-navigation/native";
-import List from "@/components/List";
 
 function TransactionsScreen() {
-  const { transactions, refetchTransaction } = useApp();
+  const { transactions, refetchTransaction, positions } = useApp();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
   const sortedTransactions = React.useMemo(
@@ -31,9 +30,12 @@ function TransactionsScreen() {
 
   const handleDelete = React.useCallback(
     (id: string) => {
-      transactionController.delete(id).then(refetchTransaction);
+      transactionController
+        .delete(id, positions)
+        .then(refetchTransaction)
+        .catch((error) => Alert.alert("Error", error.message));
     },
-    [refetchTransaction]
+    [refetchTransaction, positions]
   );
 
   const renderRightActions = React.useCallback(
@@ -51,50 +53,36 @@ function TransactionsScreen() {
   const renderItem = React.useCallback(({ item }: { item: Transaction }) => {
     const color = item.action === Action.BUY ? Colors.success : Colors.danger;
     return (
-      <List.Item style={styles.item}>
+      <View style={styles.itemContainer}>
+        <Flex justify="between" align="center" style={styles.item}>
+          <Text style={styles.ticker}>{item.ticker}</Text>
+          <Text style={styles.date}>
+            {moment(item.date).format("YYYY-MM-DD")}
+          </Text>
+        </Flex>
+
         {[
-          {
-            label: <Text style={styles.ticker}>{item.ticker}</Text>,
-            value: (
-              <Text style={styles.date}>
-                {moment(item.date).format("YYYY-MM-DD")}
-              </Text>
-            ),
-          },
-          {
-            label: "Action",
-            value: <Text style={[styles.value, { color }]}>{item.action}</Text>,
-          },
+          { label: "Action", value: item.action, color },
           { label: "Quantity", value: formatDecimal(item.quantity) },
           { label: "Price", value: `$${formatDecimal(item.price)}` },
           { label: "Fee", value: `$${formatDecimal(item.fee)}` },
           {
             label: "Amount",
-            value: (
-              <Text style={[styles.value, { color }]}>{`$${formatDecimal(
-                item.price * item.quantity + item.fee
-              )}`}</Text>
-            ),
+            value: `$${formatDecimal(item.price * item.quantity + item.fee)}`,
+            color,
           },
-        ].map(({ label, value }, index) => (
+        ].map(({ label, value, color = "black" }, index) => (
           <Flex
-            key={index}
+            key={label}
             justify="between"
-            style={[styles.column, index === 5 && { marginBottom: 0 }]}
+            align="center"
+            style={index !== 4 && { ...styles.item }}
           >
-            {typeof label === "function" ? (
-              label
-            ) : (
-              <Text style={styles.name}>{label}</Text>
-            )}
-            {typeof value === "function" ? (
-              value
-            ) : (
-              <Text style={styles.value}>{value}</Text>
-            )}
+            <Text style={styles.name}>{label}</Text>
+            <Text style={[styles.value, { color }]}>{value}</Text>
           </Flex>
         ))}
-      </List.Item>
+      </View>
     );
   }, []);
 
@@ -130,29 +118,26 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
   },
-  item: {
-    padding: 10,
-    justifyContent: "flex-start",
-    flexDirection: "column",
-    alignItems: "flex-start",
+  itemContainer: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: Colors.lightGray200,
   },
-  column: {
-    width: "100%",
-    marginBottom: 3,
+  item: {
+    marginBottom: 2,
   },
   ticker: {
     fontSize: 15,
-    fontWeight: 600,
-    color: Colors.black,
+    fontWeight: "bold",
   },
   date: {
-    fontSize: 13,
-    fontWeight: 300,
+    fontSize: 12,
     color: Colors.secondary,
   },
   name: {
     color: Colors.secondary,
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 300,
   },
   value: {

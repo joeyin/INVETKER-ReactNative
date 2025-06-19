@@ -10,16 +10,27 @@ import Colors from "@/constants/Colors";
 import Card from "./Card";
 import { Flex } from "@ant-design/react-native";
 
-const List = ({ section = undefined, children, ...props }) => (
+const List = ({ section = undefined, children, style = {}, ...props }) => (
   <View>
     {section && <Text style={styles.section}>{section}</Text>}
     {children && (
-      <Card style={styles.card} {...props}>
+      <Card style={[styles.card, style]} {...props}>
         {React.Children.map(children, (child, index) =>
           React.cloneElement(child, {
-            style: React.Children.count(children) === 1
-              ? { borderBottomWidth: 0, paddingBottom: 0 }
-              : (index === children.length - 1 ? { borderBottomWidth: 0, paddingBottom: 0 } : {}),
+            style:
+              React.Children.count(children) === 1
+                ? {
+                    borderBottomWidth: 0,
+                    paddingBottom: 0,
+                    ...child?.props?.style,
+                  }
+                : index === children.length - 1
+                ? {
+                    borderBottomWidth: 0,
+                    paddingBottom: 0,
+                    ...child?.props?.style,
+                  }
+                : child?.props?.style,
           })
         )}
       </Card>
@@ -40,14 +51,12 @@ const ListItem = ({
 }) =>
   touchable ? (
     <TouchableOpacity style={{ flex: 1 }} onPress={onPress}>
-      <Flex direction="row" justify="between" style={[styles.item, style]} >
+      <Flex direction="row" justify="between" style={[styles.item, style]}>
         {children}
       </Flex>
     </TouchableOpacity>
   ) : (
-    <Flex direction="row" align="start" justify="between" style={[styles.item, style]} >
-      {children}
-    </Flex>
+    <View style={[styles.item, style]}>{children}</View>
   );
 
 const styles = StyleSheet.create({
@@ -64,6 +73,8 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.lightGray200,
     borderBottomWidth: 1,
     paddingBottom: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

@@ -25,8 +25,8 @@ import SignInScreen from "@/screens/Account/SignIn";
 import SettingsScreen from "@/screens/Settings";
 import SignUpScreen from "@/screens/Account/SignUp";
 import EditNameScreen from "@/screens/Settings/EditName";
-import SelectTickerScreen from "@/screens/Transactions/SelectTicker";
 import DetailScreen from "@/screens/Detail";
+import TickerListScreen from "./screens/TickerList";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -97,6 +97,16 @@ function MainTabNavigator() {
 function RootNavigator() {
   const { user } = useApp();
 
+  const onSelectTicker = React.useCallback((navigation, ticker) => {
+    const { getState, navigate } = navigation;
+    const state = getState();
+    const routes = state.routes;
+    const currentIndex = state.index;
+    const previousRoute = routes[currentIndex - 1];
+    const previousScreenName = previousRoute?.name;
+    navigate(previousScreenName, { ticker }, { pop: true });
+  }, []);
+
   if (user === undefined) {
     return null;
   }
@@ -114,7 +124,14 @@ function RootNavigator() {
     <Stack.Navigator id={undefined} screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={MainTabNavigator} />
       <Stack.Screen name="NewTransaction" component={NewTransactionScreen} />
-      <Stack.Screen name="SelectTicker" component={SelectTickerScreen} />
+      <Stack.Screen name="TickerList">
+        {(props) => (
+          <TickerListScreen
+            {...props}
+            onFinished={(ticker) => onSelectTicker(props.navigation, ticker)}
+          />
+        )}
+      </Stack.Screen>
       <Stack.Screen name="EditName" component={EditNameScreen} />
       <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
