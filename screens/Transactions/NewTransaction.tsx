@@ -20,9 +20,10 @@ import Card from "@/components/Card";
 const NewTransaction = () => {
   const { navigate, goBack }: NavigationProp<ParamListBase> = useNavigation();
   const isLoading = useToggle();
-  const { refetchTransaction, positions } = useApp();
+  const { refetchTransaction } = useApp();
   const [form] = Form.useForm();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
+  const { positions } = useApp();
 
   const onSubmit = () => {
     isLoading.on();
@@ -104,15 +105,7 @@ const NewTransaction = () => {
               },
             }}
           >
-            <Form.Item
-              name="ticker"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
-              wrapperStyle={{ display: "none" }}
-            >
+            <Form.Item name="ticker" wrapperStyle={{ display: "none" }}>
               <Input
                 placeholder="required"
                 inputStyle={{ textAlign: "right", color: Colors.secondary }}
@@ -133,7 +126,7 @@ const NewTransaction = () => {
                   height: 35,
                   alignItems: "center",
                 }}
-                onPress={() => navigate("SelectTicker")}
+                onPress={() => navigate("TickerList")}
               >
                 <Text style={[{ fontSize: 17, color: Colors.secondary }]}>
                   {route.params?.ticker ?? "Select Ticker"}

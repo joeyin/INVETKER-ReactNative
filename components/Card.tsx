@@ -10,7 +10,7 @@ type Props = {
   subtitle?: string | React.ReactNode;
 };
 
-const Card = ({ children, style, headerStyle, title, subtitle }: Props) => (
+const Card = ({ children, style = {}, headerStyle, title, subtitle }: Props) => (
   <View style={[styles.container, style]}>
     {
       title && (

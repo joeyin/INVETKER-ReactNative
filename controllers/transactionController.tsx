@@ -20,16 +20,13 @@ class TransactionController {
       const userId = accountController.getUserId();
       const docRef = doc(this.collectionRef, id);
       const docSnap = await getDoc(docRef);
-
       if (!docSnap.exists()) {
         return null;
       }
-
       const transaction = docSnap.data() as Transaction;
       if (transaction.userId !== userId) {
         throw new Error("Unauthorized access to transaction.");
       }
-
       return { id: docSnap.id, ...transaction };
     } catch (error) {
       console.error("Error fetching transaction:", error);
@@ -37,21 +34,23 @@ class TransactionController {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: string, positions: Position[]) {
     try {
       const userId = accountController.getUserId();
       const docRef = doc(this.collectionRef, id);
       const docSnap = await getDoc(docRef);
-
       if (!docSnap.exists()) {
         throw new Error("Transaction not found.");
       }
-
       const transaction = docSnap.data() as Transaction;
       if (transaction.userId !== userId) {
         throw new Error("Unauthorized access to delete transaction.");
       }
-
+      const ticker = positions.find(p => p.ticker === transaction.ticker);
+      const qty = transaction.quantity * (transaction.action === Action.BUY ? -1 : 1);
+      if ((ticker?.position || 0) + qty < 0) {
+        throw new Error("Insufficient quantity to delete");
+      }
       await deleteDoc(docRef);
     } catch (error) {
       console.error("Error deleting transaction:", error);
@@ -85,14 +84,12 @@ class TransactionController {
       const userId = accountController.getUserId();
       const querySnapshot = await getDocs(this.collectionRef);
       const transactions: Transaction[] = [];
-
       querySnapshot.forEach((doc) => {
         const data = doc.data() as Transaction;
         if (data.userId === userId) {
           transactions.push({ id: doc.id, ...data });
         }
       });
-
       return transactions;
     } catch (error) {
       console.error("Error fetching transactions:", error);
