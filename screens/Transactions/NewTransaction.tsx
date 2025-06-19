@@ -16,6 +16,7 @@ import { useApp } from "@/providers/AppProvider";
 import { useToggle } from "@/hooks";
 import Form, { Input, Picker, DatePicker } from "@/components/Form";
 import Card from "@/components/Card";
+import tickerController from "@/controllers/tickerController";
 
 const NewTransaction = () => {
   const { navigate, goBack }: NavigationProp<ParamListBase> = useNavigation();
@@ -32,14 +33,17 @@ const NewTransaction = () => {
 
   const onFinish = async (values) => {
     try {
-      await transactionController.insert({
-        ticker: values.ticker,
-        quantity: parseFloat(values.quantity),
-        action: values.action[0],
-        price: parseFloat(values.price),
-        fee: parseFloat(values.fee),
-        date: new Date(values.date).getTime(),
-      }, positions);
+      await transactionController.insert(
+        {
+          ticker: values.ticker,
+          quantity: parseFloat(values.quantity),
+          action: values.action[0],
+          price: parseFloat(values.price),
+          fee: parseFloat(values.fee),
+          date: new Date(values.date).getTime(),
+        },
+        positions
+      );
       refetchTransaction();
       goBack();
       isLoading.toggle();
@@ -69,7 +73,15 @@ const NewTransaction = () => {
   };
 
   React.useEffect(() => {
-    form.setFieldsValue({ ticker: route?.params?.ticker });
+    const ticker = route?.params?.ticker;
+    if (ticker) {
+      tickerController.quote(ticker).then((r) => {
+        form.setFieldsValue({
+          ticker,
+          price: r.c.toString(),
+        });
+      });
+    }
   }, [route?.params?.ticker]);
 
   return (
