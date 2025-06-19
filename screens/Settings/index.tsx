@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableHighlight,
   Alert,
   ActivityIndicator,
@@ -23,6 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 import accountController from "@/controllers/accountController";
 import { useToggle } from "@/hooks";
 import fileController from "@/controllers/fileController";
+import Image from "@/components/Image";
 
 const SettingsScreen = () => {
   const { signOut, user, reloadAuth } = useApp();
@@ -81,6 +81,8 @@ const SettingsScreen = () => {
             <ActivityIndicator size="large" color={Colors.primary} />
           ) : (
             <Image
+              type="avatar"
+              displayName={user.displayName}
               source={{
                 uri: user.photoURL,
               }}

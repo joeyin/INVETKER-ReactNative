@@ -12,8 +12,8 @@ const EditNameScreen = () => {
 
   const handleOnFinish = React.useCallback((values) => {
     accountController.updateProfile(values).then(() => {
-      goBack()
-      reloadAuth()
+      goBack();
+      reloadAuth();
     });
   }, []);
 
@@ -22,7 +22,7 @@ const EditNameScreen = () => {
       title="Name"
       onFinish={handleOnFinish}
       initialValues={{ displayName: user.displayName }}
-      style={{ margin: 10, backgroundColor: Colors.white, paddingHorizontal: 15, borderRadius: 8 }}
+      style={{ margin: 10 }}
     >
       <Form.Item
         rules={[{ required: true }]}
@@ -30,7 +30,16 @@ const EditNameScreen = () => {
         layout="horizontal"
         wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
       >
-        <Input placeholder="required" />
+        <Input
+          placeholder="required"
+          style={{
+            paddingHorizontal: 10,
+            borderWidth: 1,
+            borderColor: Colors.lightGray200,
+            borderRadius: 6,
+            backgroundColor: Colors.white,
+          }}
+        />
       </Form.Item>
     </FormView>
   );

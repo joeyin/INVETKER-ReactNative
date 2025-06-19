@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   Linking,
 } from "react-native";
 import { formatLocalizedCapitalized } from "@/helpers/formatHelpers";
@@ -13,15 +12,13 @@ import Colors from "@/constants/Colors";
 import marketController from "@/controllers/marketController";
 import moment from "moment";
 import Card from "@/components/Card";
+import Image from "@/components/Image";
 
 const News = () => {
   const [news, setNews] = React.useState([]);
 
   React.useEffect(() => {
-    marketController.fetchNews().then((data) => {
-      console.log("Fetched news:", data);
-      setNews(data);
-    });
+    marketController.fetchNews().then(setNews);
   }, []);
 
   const Category = ({ type }) => {
@@ -66,7 +63,8 @@ const News = () => {
       >
         <Image
           source={{ uri: item.image }}
-          style={{ width: 110, height: 80, borderRadius: 5 }}
+          style={{ width: 120, height: 80 }}
+          resizeMode="center"
         />
         <Flex align="start" direction="column" style={{ flex: 1, gap: 4 }}>
           <Category type={item.category} />
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   footer: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 400,
     color: Colors.secondary,
   },
