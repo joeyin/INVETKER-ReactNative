@@ -28,7 +28,7 @@ const SignUpScreen = () => {
   const onFinish = async (values) => {
     isLoading.on();
     try {
-      await accountController.signUp(values.email, values.password);
+      await accountController.signUp(values.name, values.email, values.password);
       Alert.alert("Success", "You have signed up successfully.");
       navigate("SignIn");
     } catch (error) {
@@ -72,6 +72,19 @@ const SignUpScreen = () => {
           style={styles.form}
           autoComplete="false"
         >
+          <Form.Item
+            required
+            label="Name"
+            name="name"
+            rules={[
+              { required: true },
+            ]}
+            labelStyle={{ fontSize: 15 }}
+            requiredStyle={{ fontSize: 15 }}
+          >
+            <Input placeholder="required" />
+          </Form.Item>
+
           <Form.Item
             required
             label="Email"

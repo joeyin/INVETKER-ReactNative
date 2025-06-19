@@ -1,27 +1,27 @@
 import React from "react";
-import {
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-} from "react-native";
-import { formatDecimal } from "@/helpers/formatHelpers";
+import { Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { Flex } from "@ant-design/react-native";
 import Colors from "@/constants/Colors";
 import Card from "@/components/Card";
-import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  ParamListBase,
+  NavigationProp,
+} from "@react-navigation/native";
+import ValueChangeTag from "@/components/ValueChangeTag";
+import Image from "@/components/Image";
 
 const TopPortfolio = ({ positions }) => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
   return (
     <Card
+      headerStyle={{ paddingHorizontal: 15 }}
       title="Top Portfolio Positions"
       subtitle="Your current top-performing holdings"
-      style={{ paddingRight: 0 }}
+      style={{ paddingHorizontal: 0 }}
     >
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 15, }}>
         {positions
           .filter((p) => p.unrealizedProfit > 0)
           .sort((a, b) => b.unrealizedProfit - a.unrealizedProfit)
@@ -33,7 +33,9 @@ const TopPortfolio = ({ positions }) => {
             >
               <Image
                 source={{ uri: p.logo }}
-                style={{ width: 105, height: 105 }}
+                style={{ width: 105, height: 105, borderRadius: 0 }}
+                displayName={<Text>{p.ticker}</Text>}
+                type="logo"
               />
               <Flex
                 style={styles.detail}
@@ -44,37 +46,37 @@ const TopPortfolio = ({ positions }) => {
                 <Text style={styles.ticker}>{p.ticker}</Text>
                 <Flex>
                   <Text style={styles.text}>Position: </Text>
-                  <Text style={styles.text}>{formatDecimal(p.position)}</Text>
+                  <ValueChangeTag
+                    style={styles.text}
+                    value={p.position}
+                    format="Decimal"
+                    colored={false}
+                  />
                 </Flex>
                 <Flex>
                   <Text style={styles.text}>Price: </Text>
-                  <Text style={styles.text}>{formatDecimal(p.price)}</Text>
+                  <ValueChangeTag
+                    style={styles.text}
+                    value={p.price}
+                    format="Decimal"
+                    colored={false}
+                  />
                 </Flex>
                 <Flex>
                   <Text style={styles.text}>Daily P&L: </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      p.dailyProfit > 0
-                        ? styles.profitPositive
-                        : styles.profitNegative,
-                    ]}
-                  >
-                    {formatDecimal(p.dailyProfit)}
-                  </Text>
+                  <ValueChangeTag
+                    style={styles.text}
+                    value={p.dailyProfit}
+                    format="Decimal"
+                  />
                 </Flex>
                 <Flex>
                   <Text style={styles.text}>Unrlzd P&L: </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      p.unrealizedProfit > 0
-                        ? styles.profitPositive
-                        : styles.profitNegative,
-                    ]}
-                  >
-                    {formatDecimal(p.unrealizedProfit)}
-                  </Text>
+                  <ValueChangeTag
+                    style={styles.text}
+                    value={p.unrealizedProfit}
+                    format="Decimal"
+                  />
                 </Flex>
               </Flex>
             </TouchableOpacity>
@@ -117,12 +119,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 11,
     fontWeight: "light",
-  },
-  profitPositive: {
-    color: Colors.success,
-  },
-  profitNegative: {
-    color: Colors.danger,
   },
 });
 
