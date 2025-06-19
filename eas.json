@@ -1,13 +1,17 @@
 {
   "cli": {
-    "appVersionSource": "local"
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
+      "autoIncrement": true,
       "environment": "development",
       "android": {
         "buildType": "apk"
       }
+    },
+    "production": {
+      "autoIncrement": true
     }
   }
 }
