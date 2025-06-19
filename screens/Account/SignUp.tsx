@@ -128,9 +128,7 @@ const SignUpScreen = () => {
             loading={isLoading.state}
             style={{
               borderRadius: 10,
-              paddingVertical: 15,
               marginBottom: 18,
-              height: "auto",
             }}
           >
             <Text

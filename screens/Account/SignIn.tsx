@@ -129,8 +129,6 @@ const SignInScreen = () => {
             loading={isLoading.state}
             style={{
               borderRadius: 10,
-              height: "auto",
-              paddingVertical: 15,
               marginBottom: 18,
             }}
           >

@@ -9,7 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@ant-design/react-native": "^5.3.2",
+    "@ant-design/react-native": "^5.4.2",
     "@codeherence/react-native-header": "^0.14.0",
     "@gorhom/bottom-sheet": "^5.1.2",
     "@react-native-async-storage/async-storage": "^1.24.0",
