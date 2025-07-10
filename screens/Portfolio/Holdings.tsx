@@ -53,7 +53,7 @@ const Holdings = ({ positions }) => {
                     key={index}
                     data={[
                       <TouchableOpacity
-                        onPress={() => navigate("Detail", { ticker: p.ticker })}
+                        onPress={() => navigate("Profile", { ticker: p.ticker })}
                       >
                         <Text>{p.ticker}</Text>
                       </TouchableOpacity>,
