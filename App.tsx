@@ -25,7 +25,7 @@ import SignInScreen from "@/screens/Account/SignIn";
 import SettingsScreen from "@/screens/Settings";
 import SignUpScreen from "@/screens/Account/SignUp";
 import EditNameScreen from "@/screens/Settings/EditName";
-import DetailScreen from "@/screens/Detail";
+import ProfileScreen from "@/screens/Profile";
 import TickerListScreen from "./screens/TickerList";
 
 const Stack = createNativeStackNavigator();
@@ -36,7 +36,7 @@ configureReanimatedLogger({
   strict: false,
 });
 
-function MainTabNavigator() {
+function MainTabNavigator(props) {
   return (
     <Tab.Navigator
       id={undefined}
@@ -74,13 +74,14 @@ function MainTabNavigator() {
       />
       <Tab.Screen
         name="Favorites"
-        component={FavoritesScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="favorite" color={color} size={size} />
           ),
         }}
-      />
+      >
+        {() => <FavoritesScreen {...props} />}
+      </Tab.Screen>
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}
@@ -133,7 +134,7 @@ function RootNavigator() {
         )}
       </Stack.Screen>
       <Stack.Screen name="EditName" component={EditNameScreen} />
-      <Stack.Screen name="Detail" component={DetailScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
 }

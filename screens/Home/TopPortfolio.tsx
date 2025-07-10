@@ -21,7 +21,7 @@ const TopPortfolio = ({ positions }) => {
       subtitle="Your current top-performing holdings"
       style={{ paddingHorizontal: 0 }}
     >
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 15, }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 15, minHeight: 105 }}>
         {positions
           .filter((p) => p.unrealizedProfit > 0)
           .sort((a, b) => b.unrealizedProfit - a.unrealizedProfit)
@@ -29,7 +29,7 @@ const TopPortfolio = ({ positions }) => {
             <TouchableOpacity
               key={p.ticker}
               style={styles.item}
-              onPress={() => navigate("Detail", { ticker: p.ticker })}
+              onPress={() => navigate("Profile", { ticker: p.ticker })}
             >
               <Image
                 source={{ uri: p.logo }}

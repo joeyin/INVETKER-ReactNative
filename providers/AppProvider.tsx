@@ -1,14 +1,16 @@
 import React from "react";
 import { User, onAuthStateChanged, getAuth } from "firebase/auth";
-import transactionController from "../controllers/transactionController";
-import { Transaction } from "../models/Transaction";
-import positionController from "../controllers/positionController";
-import { Position } from "../models/Position";
-import accountController from "../controllers/accountController";
+import transactionController from "@/controllers/transactionController";
+import { Transaction } from "@/models/Transaction";
+import positionController from "@/controllers/positionController";
+import { Position } from "@/models/Position";
+import accountController from "@/controllers/accountController";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import favoriteController from "@/controllers/favoriteController";
 
 interface AppContextType {
   user: User | null;
+  favorites: string[];
   transactions: Transaction[];
   positions: Position[];
   signIn: (
@@ -19,6 +21,7 @@ interface AppContextType {
   signOut: () => void;
   refetchTransaction: () => Promise<Transaction[]>;
   reloadAuth: () => void;
+  refetchFavorite: () => void;
 }
 
 export const AppContext = React.createContext<AppContextType | undefined>(
@@ -37,6 +40,7 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = React.useState<User | null | undefined>(undefined);
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [positions, setPositions] = React.useState<Position[]>([]);
+  const [favorites, setFavorites] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
@@ -51,6 +55,7 @@ export const AppProvider = ({ children }) => {
     setUser(user);
     if (user) {
       refetchTransaction();
+      refetchFavorite();
     }
   }, []);
 
@@ -63,6 +68,12 @@ export const AppProvider = ({ children }) => {
       .catch((error) => {
         console.error("Failed to reload user:", error);
       });
+  }, []);
+
+  const refetchFavorite = React.useCallback(async () => {
+    const newFavorites = await favoriteController.all();
+    setFavorites(newFavorites);
+    return newFavorites;
   }, []);
 
   const refetchTransaction = React.useCallback(async () => {
@@ -105,12 +116,14 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider
       value={{
         user,
+        favorites,
         transactions,
         positions,
         signIn,
         signOut,
         refetchTransaction,
         reloadAuth,
+        refetchFavorite,
       }}
     >
       {children}
