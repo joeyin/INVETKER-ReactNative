@@ -17,8 +17,10 @@ import { useToggle } from "@/hooks";
 import Form, { Input, Picker, DatePicker } from "@/components/Form";
 import Card from "@/components/Card";
 import tickerController from "@/controllers/tickerController";
+import { useTranslation } from "react-i18next";
 
 const NewTransaction = () => {
+  const { t } = useTranslation();
   const { navigate, goBack }: NavigationProp<ParamListBase> = useNavigation();
   const isLoading = useToggle();
   const { refetchTransaction } = useApp();
@@ -48,7 +50,7 @@ const NewTransaction = () => {
       goBack();
       isLoading.toggle();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      Alert.alert(t("error"), error.message);
       isLoading.toggle();
     }
   };
@@ -58,7 +60,7 @@ const NewTransaction = () => {
       .map((field: any) => field.errors.join("\n"))
       .join("\n");
 
-    Alert.alert("Error", message);
+    Alert.alert(t("error"), message);
     isLoading.toggle();
   };
 
@@ -66,7 +68,7 @@ const NewTransaction = () => {
     if (parseFloat(value) > 0) {
       return Promise.resolve();
     }
-    let message = `${_.field} must be greater than zero.`;
+    let message = t("mustBeGreaterThanZero", { name: _.field })
     return Promise.reject(
       new Error(message.charAt(0).toUpperCase() + message.slice(1))
     );
@@ -86,7 +88,7 @@ const NewTransaction = () => {
 
   return (
     <ScrollView
-      title="New Transaction"
+      title={t("new transaction")}
       left={
         <TouchableOpacity onPress={goBack}>
           <FontAwesome name="angle-left" size={30} color={Colors.black} />
@@ -94,7 +96,9 @@ const NewTransaction = () => {
       }
       right={
         <TouchableOpacity disabled={isLoading.state} onPress={onSubmit}>
-          <Text style={{ fontSize: 17, color: Colors.primary }}>Save</Text>
+          <Text style={{ fontSize: 17, color: Colors.primary }}>
+            {t("save")}
+          </Text>
         </TouchableOpacity>
       }
     >
@@ -125,7 +129,7 @@ const NewTransaction = () => {
             </Form.Item>
 
             <Form.Item
-              label="Ticker"
+              label={t("ticker")}
               layout="horizontal"
               bodyStyle={{ alignItems: "flex-end" }}
               wrapperStyle={{ marginBottom: 0 }}
@@ -141,7 +145,7 @@ const NewTransaction = () => {
                 onPress={() => navigate("TickerList")}
               >
                 <Text style={[{ fontSize: 17, color: Colors.secondary }]}>
-                  {route.params?.ticker ?? "Select Ticker"}
+                  {route.params?.ticker ?? t("select ticker")}
                 </Text>
                 <FontAwesome
                   name="angle-right"
@@ -153,7 +157,7 @@ const NewTransaction = () => {
             </Form.Item>
 
             <Form.Item
-              label="Quantity"
+              label={t("quantity")}
               name="quantity"
               rules={[
                 {
@@ -173,7 +177,7 @@ const NewTransaction = () => {
             </Form.Item>
 
             <Form.Item
-              label="Action"
+              label={t("action")}
               name="action"
               rules={[
                 {
@@ -190,14 +194,14 @@ const NewTransaction = () => {
                   textStyle: { color: Colors.secondary },
                 }}
                 data={[
-                  { label: "BUY", value: Action.BUY },
-                  { label: "SELL", value: Action.SELL },
+                  { label: t("buy"), value: Action.BUY },
+                  { label: t("sell"), value: Action.SELL },
                 ]}
               />
             </Form.Item>
 
             <Form.Item
-              label="Date"
+              label={t("date")}
               name="date"
               rules={[
                 {
@@ -212,7 +216,7 @@ const NewTransaction = () => {
             </Form.Item>
 
             <Form.Item
-              label="Price"
+              label={t("price")}
               name="price"
               rules={[
                 {
@@ -232,7 +236,7 @@ const NewTransaction = () => {
             </Form.Item>
 
             <Form.Item
-              label="Fee"
+              label={t("fee")}
               name="fee"
               rules={[
                 {

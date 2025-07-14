@@ -4,12 +4,14 @@ import ScrollView from "@/components/Layout/ScrollView";
 import Header from "./Header";
 import Holdings from "./Holdings";
 import { useApp } from '@/providers/AppProvider';
+import { useTranslation } from 'react-i18next';
 
 function PortfolioScreen() {
+  const { t } = useTranslation();
   const { positions } = useApp()
 
   return (
-    <ScrollView title="Portfolio" contentContainerStyle={{ flex: 1 }}>
+    <ScrollView title={t("portfolio")} contentContainerStyle={{ flex: 1 }}>
       <View style={styles.header}>
         <Header positions={positions} />
       </View>

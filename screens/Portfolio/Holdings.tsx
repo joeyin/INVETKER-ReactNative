@@ -9,28 +9,30 @@ import {
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { formatDecimal } from "@/helpers/formatHelpers";
-import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
-
-const tableHead = [
-  "Ticker",
-  "Position",
-  "Price",
-  "Chg %",
-  "Cost Basis",
-  "Mkt Val",
-  "Avg Price",
-  "P&L",
-  "Unrlzd P&L",
-];
+import { useNavigation, ParamListBase, NavigationProp } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
 
 const widthArr = [90, 90, 80, 80, 100, 100, 80, 100, 100];
 
 const Holdings = ({ positions }) => {
+  const { t } = useTranslation();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+
+  const tableHead = React.useMemo(() => [
+    t("ticker"),
+    t("position"),
+    t("price"),
+    t("chg %"),
+    t("cost basis"),
+    t("mkt val"),
+    t("avg price"),
+    t("P&L"),
+    t("unrlzd P&L"),
+  ], []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Positions</Text>
+      <Text style={styles.title}>{t("positions")}</Text>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View>
           <Table>
@@ -64,8 +66,8 @@ const Holdings = ({ positions }) => {
                           p.dailyProfit === 0
                             ? ""
                             : p.change > 0
-                            ? styles.success
-                            : styles.danger,
+                              ? styles.success
+                              : styles.danger,
                         ]}
                       >
                         {formatDecimal(p.change)}%
@@ -78,8 +80,8 @@ const Holdings = ({ positions }) => {
                           p.dailyProfit === 0
                             ? ""
                             : p.dailyProfit > 0
-                            ? styles.success
-                            : styles.danger,
+                              ? styles.success
+                              : styles.danger,
                         ]}
                       >
                         {formatDecimal(p.dailyProfit)}
@@ -89,8 +91,8 @@ const Holdings = ({ positions }) => {
                           p.dailyProfit === 0
                             ? ""
                             : p.unrealizedProfit > 0
-                            ? styles.success
-                            : styles.danger,
+                              ? styles.success
+                              : styles.danger,
                         ]}
                       >
                         {formatDecimal(p.unrealizedProfit)}

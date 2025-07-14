@@ -2,8 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import Colors from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const Header = ({ positions }) => {
+  const { t } = useTranslation();
   const [netLiquidation, setNetLiquidation] = React.useState<number>(0);
   const [dailyProfit, setDailyProfit] = React.useState<number>(0);
 
@@ -34,11 +36,11 @@ const Header = ({ positions }) => {
   return (
     <View style={styles.container}>
       <View style={styles.column}>
-        <Text style={styles.name}>Net Liquidation</Text>
+        <Text style={styles.name}>{t("net liquidation")}</Text>
         <Text style={styles.value}>{formatDecimal(netLiquidation)}</Text>
       </View>
       <View style={styles.column}>
-        <Text style={[styles.name, color]}>Daily P&L</Text>
+        <Text style={[styles.name, color]}>{t("daily P&L")}</Text>
         <Text style={[styles.value, color]}>{formatDecimal(dailyProfit)}</Text>
       </View>
     </View>

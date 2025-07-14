@@ -10,15 +10,17 @@ import {
 } from "@react-navigation/native";
 import ValueChangeTag from "@/components/ValueChangeTag";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
 
 const TopPortfolio = ({ positions }) => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+  const { t } = useTranslation();
 
   return (
     <Card
       headerStyle={{ paddingHorizontal: 15 }}
-      title="Top Portfolio Positions"
-      subtitle="Your current top-performing holdings"
+      title={t("top portfolio positions")}
+      subtitle={t("your current top-performing holdings")}
       style={{ paddingHorizontal: 0 }}
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ paddingLeft: 15, minHeight: 105 }}>
@@ -45,7 +47,7 @@ const TopPortfolio = ({ positions }) => {
               >
                 <Text style={styles.ticker}>{p.ticker}</Text>
                 <Flex>
-                  <Text style={styles.text}>Position: </Text>
+                  <Text style={styles.text}>{t("position")}: </Text>
                   <ValueChangeTag
                     style={styles.text}
                     value={p.position}
@@ -54,7 +56,7 @@ const TopPortfolio = ({ positions }) => {
                   />
                 </Flex>
                 <Flex>
-                  <Text style={styles.text}>Price: </Text>
+                  <Text style={styles.text}>{t("price")}: </Text>
                   <ValueChangeTag
                     style={styles.text}
                     value={p.price}
@@ -63,7 +65,7 @@ const TopPortfolio = ({ positions }) => {
                   />
                 </Flex>
                 <Flex>
-                  <Text style={styles.text}>Daily P&L: </Text>
+                  <Text style={styles.text}>{t("daily P&L")}: </Text>
                   <ValueChangeTag
                     style={styles.text}
                     value={p.dailyProfit}
@@ -71,7 +73,7 @@ const TopPortfolio = ({ positions }) => {
                   />
                 </Flex>
                 <Flex>
-                  <Text style={styles.text}>Unrlzd P&L: </Text>
+                  <Text style={styles.text}>{t("unrlzd P&L")}: </Text>
                   <ValueChangeTag
                     style={styles.text}
                     value={p.unrealizedProfit}

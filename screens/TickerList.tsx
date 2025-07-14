@@ -8,10 +8,12 @@ import { Flex } from "@ant-design/react-native";
 import { Ticker } from "@/models/Ticker";
 import Image from "@/components/Image";
 import LOGODEV_API_KEY from "@/configs/logodev";
+import { useTranslation } from "react-i18next";
 
 const ITEM_HEIGHT = 53;
 
 const TickerListScreen = ({ onFinished }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [search, setSearch] = React.useState("");
   const [data, setData] = React.useState<Ticker[]>([]);
@@ -49,7 +51,7 @@ const TickerListScreen = ({ onFinished }) => {
           wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
         >
           <Input
-            placeholder="Search"
+            placeholder={t("search")}
             inputStyle={{
               backgroundColor: Colors.gray800,
               borderRadius: 6,
@@ -97,7 +99,7 @@ const TickerListScreen = ({ onFinished }) => {
 
   return (
     <FormView
-      title="Ticker"
+      title={t("ticker")}
       allowSave={false}
       style={styles.container}
       subTitle={subTitle}

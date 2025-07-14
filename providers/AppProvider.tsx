@@ -13,6 +13,7 @@ interface AppContextType {
   favorites: string[];
   transactions: Transaction[];
   positions: Position[];
+  locale: string;
   signIn: (
     email: string,
     password: string,
@@ -22,6 +23,7 @@ interface AppContextType {
   refetchTransaction: () => Promise<Transaction[]>;
   reloadAuth: () => void;
   refetchFavorite: () => void;
+  changeLocale: (locale: string) => void;
 }
 
 export const AppContext = React.createContext<AppContextType | undefined>(
@@ -41,6 +43,7 @@ export const AppProvider = ({ children }) => {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [positions, setPositions] = React.useState<Position[]>([]);
   const [favorites, setFavorites] = React.useState<string[]>([]);
+  const [locale, setLocale] = React.useState<string>("en");
 
   React.useEffect(() => {
     const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
@@ -112,6 +115,10 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
+  const changeLocale = React.useCallback((locale: string) => {
+    setLocale(locale)
+  }, [])
+
   return (
     <AppContext.Provider
       value={{
@@ -119,11 +126,13 @@ export const AppProvider = ({ children }) => {
         favorites,
         transactions,
         positions,
+        locale,
         signIn,
         signOut,
         refetchTransaction,
         reloadAuth,
         refetchFavorite,
+        changeLocale,
       }}
     >
       {children}

@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 21,
     fontWeight: 700,
+    marginBottom: 3,
   },
   subtitle: {
     fontSize: 15,

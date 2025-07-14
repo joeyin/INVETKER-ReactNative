@@ -38,7 +38,8 @@
         {
           "photosPermission": "Please allow the app to access your photos so you can upload or select images."
         }
-      ]
+      ],
+      "expo-localization"
     ]
   }
 }

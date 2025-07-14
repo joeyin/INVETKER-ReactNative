@@ -5,8 +5,10 @@ import accountController from "@/controllers/accountController";
 import { useNavigation } from "@react-navigation/native";
 import { useApp } from "@/providers/AppProvider";
 import Colors from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const EditNameScreen = () => {
+  const { t } = useTranslation();
   const { goBack } = useNavigation();
   const { user, reloadAuth } = useApp();
 
@@ -19,7 +21,7 @@ const EditNameScreen = () => {
 
   return (
     <FormView
-      title="Name"
+      title={t("name")}
       onFinish={handleOnFinish}
       initialValues={{ displayName: user.displayName }}
       style={{ margin: 10 }}

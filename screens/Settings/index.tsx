@@ -23,9 +23,13 @@ import accountController from "@/controllers/accountController";
 import { useToggle } from "@/hooks";
 import fileController from "@/controllers/fileController";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
+import storageController from "@/controllers/storageController";
+import { Picker } from "@/components/Form";
 
 const SettingsScreen = () => {
   const { signOut, user, reloadAuth } = useApp();
+  const { t, i18n } = useTranslation();
   const isLoading = useToggle();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
@@ -35,8 +39,8 @@ const SettingsScreen = () => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
         return Alert.alert(
-          "Error",
-          "Please allow the app to access your photos so you can upload or select images."
+          t("error"),
+          t("please allow the app to access your photos so you can upload or select images.")
         );
       }
 
@@ -54,12 +58,17 @@ const SettingsScreen = () => {
       }
     } catch (error) {
       isLoading.off();
-      Alert.alert("Error", error.message);
+      Alert.alert(t("error"), error.message);
     }
   };
 
+  const changeLanguage = (locale: string) => {
+    i18n.changeLanguage(locale);
+    storageController.store("locale", locale)
+  };
+
   return (
-    <ScrollView title="Settings">
+    <ScrollView title={t("settings")}>
       <View style={styles.container}>
         <TouchableHighlight
           disabled={isLoading.state}
@@ -92,13 +101,13 @@ const SettingsScreen = () => {
           )}
         </TouchableHighlight>
 
-        <List section="ACCOUNT">
+        <List section={t("account").toUpperCase()}>
           <List.Item>
-            <Text style={styles.name}>Email</Text>
+            <Text style={styles.name}>{t("email")}</Text>
             <Text style={styles.value}>{user.email}</Text>
           </List.Item>
           <List.Item touchable onPress={() => navigate("EditName")}>
-            <Text style={styles.name}>Name</Text>
+            <Text style={styles.name}>{t("name")}</Text>
             <Flex align="center">
               <Text style={styles.value}>{user.displayName ?? "-"}</Text>
               <FontAwesome
@@ -111,21 +120,33 @@ const SettingsScreen = () => {
           </List.Item>
         </List>
 
-        {/* <List section="GENERAL">
+        <List section={t("general").toUpperCase()}>
           <List.Item>
-            <Text style={styles.name}>Language</Text>
-            <Text style={styles.value}>English</Text>
+            <Text style={styles.name}>{t("language")}</Text>
+            <Picker
+              defaultValue={[i18n.language]}
+              styles={{
+                wrapperStyle: { height: 20 },
+                textStyle: { color: Colors.secondary },
+              }}
+              data={[
+                { label: t("en"), value: "en" },
+                { label: t("zh-TW"), value: "zh-TW" },
+                { label: t("hi-IN"), value: "hi-IN" },
+              ]}
+              onOk={(k, i) => changeLanguage(i.items[0].value as string)}
+            />
           </List.Item>
           <List.Item>
-            <Text style={styles.name}>Theme</Text>
-            <Text style={styles.value}>Light</Text>
+            <Text style={styles.name}>{t("theme")}</Text>
+            <Text style={styles.value}>{t("light")}</Text>
           </List.Item>
-        </List> */}
+        </List>
 
         <List>
           <List.Item touchable onPress={signOut}>
             <Text style={[styles.name, { color: Colors.danger }]}>
-              Sign Out
+              {t("sign out")}
             </Text>
           </List.Item>
         </List>

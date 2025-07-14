@@ -7,6 +7,7 @@ import commentController from "@/controllers/commentController";
 import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   ticker: string;
@@ -14,6 +15,7 @@ type Props = {
 };
 
 const Comments = ({ ticker, visible }: Props) => {
+  const { t } = useTranslation();
   const [comments, setComments] = React.useState([]);
 
   useFocusEffect(
@@ -27,7 +29,7 @@ const Comments = ({ ticker, visible }: Props) => {
   return (
     <ScrollView>
       {comments?.length === 0 ? (
-        <Text style={styles.content}>No comments yet.</Text>
+        <Text style={styles.content}>{t("no comments yet.")}</Text>
       ) : (
         <List style={styles.container}>
           {comments.map((c) => (
