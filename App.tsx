@@ -27,6 +27,7 @@ import SignUpScreen from "@/screens/Account/SignUp";
 import EditNameScreen from "@/screens/Settings/EditName";
 import ProfileScreen from "@/screens/Profile";
 import TickerListScreen from "./screens/TickerList";
+import AddCommmentScreen from "@/screens/Profile/Comments/AddComment";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -135,6 +136,7 @@ function RootNavigator() {
       </Stack.Screen>
       <Stack.Screen name="EditName" component={EditNameScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="AddComment" component={AddCommmentScreen} />
     </Stack.Navigator>
   );
 }

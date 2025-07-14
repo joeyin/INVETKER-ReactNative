@@ -27,6 +27,7 @@ import favoriteController from "@/controllers/favoriteController";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useApp } from "@/providers/AppProvider";
 import { formatDecimal } from "@/helpers/formatHelpers";
+import Comments from "./Comments";
 
 function ProfileScreen() {
   const { favorites, refetchFavorite } = useApp();
@@ -167,7 +168,7 @@ function ProfileScreen() {
             <Text>News</Text>
           </RNScrollView>
           <RNScrollView style={styles.tab}>
-            <Text>Comments</Text>
+            <Comments ticker={ticker} visible={currentTab === 2} />
           </RNScrollView>
         </Tabs>
       </View>
