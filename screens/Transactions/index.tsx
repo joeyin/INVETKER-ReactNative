@@ -15,8 +15,10 @@ import {
   ParamListBase,
   NavigationProp,
 } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 function TransactionsScreen() {
+  const { t } = useTranslation();
   const { transactions, refetchTransaction, positions } = useApp();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
@@ -33,7 +35,7 @@ function TransactionsScreen() {
       transactionController
         .delete(id, positions)
         .then(refetchTransaction)
-        .catch((error) => Alert.alert("Error", error.message));
+        .catch((error) => Alert.alert(t("error"), error.message));
     },
     [refetchTransaction, positions]
   );
@@ -44,7 +46,7 @@ function TransactionsScreen() {
         style={styles.deleteBlock}
         onPress={() => handleDelete(item.id)}
       >
-        <Text style={styles.deleteText}>Delete</Text>
+        <Text style={styles.deleteText}>{t("delete")}</Text>
       </TouchableOpacity>
     ),
     [handleDelete]
@@ -52,6 +54,7 @@ function TransactionsScreen() {
 
   const renderItem = React.useCallback(({ item }: { item: Transaction }) => {
     const color = item.action === Action.BUY ? Colors.success : Colors.danger;
+    const actionText = item.action === Action.BUY ? t("buy") : t("sell");
     return (
       <View style={styles.itemContainer}>
         <Flex justify="between" align="center" style={styles.item}>
@@ -62,12 +65,12 @@ function TransactionsScreen() {
         </Flex>
 
         {[
-          { label: "Action", value: item.action, color },
-          { label: "Quantity", value: formatDecimal(item.quantity) },
-          { label: "Price", value: `$${formatDecimal(item.price)}` },
-          { label: "Fee", value: `$${formatDecimal(item.fee)}` },
+          { label: t("action"), value: actionText, color },
+          { label: t("quantity"), value: formatDecimal(item.quantity) },
+          { label: t("price"), value: `$${formatDecimal(item.price)}` },
+          { label: t("fee"), value: `$${formatDecimal(item.fee)}` },
           {
-            label: "Amount",
+            label: t("amount"),
             value: `$${formatDecimal(item.price * item.quantity + item.fee)}`,
             color,
           },
@@ -88,7 +91,7 @@ function TransactionsScreen() {
 
   return (
     <FlatListView
-      title="Transactions"
+      title={t("transactions")}
       right={
         <TouchableOpacity onPress={() => navigate("NewTransaction")}>
           <Feather name="plus" size={24} color="black" />

@@ -6,15 +6,16 @@ import {
   StyleSheet,
   Linking,
 } from "react-native";
-import { formatLocalizedCapitalized } from "@/helpers/formatHelpers";
 import { Flex } from "@ant-design/react-native";
 import Colors from "@/constants/Colors";
 import marketController from "@/controllers/marketController";
 import moment from "moment";
 import Card from "@/components/Card";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
 
 const News = () => {
+  const { t } = useTranslation();
   const [news, setNews] = React.useState([]);
 
   React.useEffect(() => {
@@ -32,13 +33,13 @@ const News = () => {
       <View
         style={{
           backgroundColor: color,
-          paddingVertical: 2,
+          paddingVertical: 3,
           paddingHorizontal: 5,
           borderRadius: 5,
         }}
       >
         <Text style={{ fontSize: 11, color: Colors.white, fontWeight: 400 }}>
-          {formatLocalizedCapitalized(type)}
+          {t(type)}
         </Text>
       </View>
     );
@@ -84,7 +85,7 @@ const News = () => {
   );
 
   return (
-    <Card title="News">
+    <Card title={t("news")}>
       {news.slice(0, 10).map((i, index) => (
         <Item key={index} index={index} item={i} />
       ))}

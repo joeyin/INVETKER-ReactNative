@@ -13,6 +13,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useToggle } from "@/hooks";
 import Form from "@/components/Form";
 import { Flex, FormProps } from "@ant-design/react-native";
+import { useTranslation } from "react-i18next";
 
 interface Props extends Omit<FormProps, "title"> {
   title: string | React.ReactNode;
@@ -30,6 +31,7 @@ const FormView = ({
   allowSave = true,
   ...props
 }: Props) => {
+  const { t } = useTranslation();
   const { goBack } = useNavigation();
   const isLoading = useToggle();
   const [form] = Form.useForm();
@@ -46,7 +48,7 @@ const FormView = ({
       onFinish && onFinish(values);
     } catch (error) {
       isLoading.off();
-      Alert.alert("Error", error.message);
+      Alert.alert(t("error"), error.message);
     }
   };
 
@@ -55,7 +57,7 @@ const FormView = ({
       .map((field: any) => field.errors.join("\n"))
       .join("\n");
 
-    Alert.alert("Error", message);
+    Alert.alert(t("error"), message);
     isLoading.toggle();
   };
 
@@ -79,7 +81,7 @@ const FormView = ({
             {allowSave && (
               <TouchableOpacity onPress={handleOnSubmit}>
                 <Text style={{ fontSize: 17, color: Colors.primary }}>
-                  Save
+                  {t("save")}
                 </Text>
               </TouchableOpacity>
             )}

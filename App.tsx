@@ -9,7 +9,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
@@ -28,6 +27,13 @@ import EditNameScreen from "@/screens/Settings/EditName";
 import ProfileScreen from "@/screens/Profile";
 import TickerListScreen from "./screens/TickerList";
 import AddCommmentScreen from "@/screens/Profile/Comments/AddComment";
+import { useTranslation } from "react-i18next";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+import storageController from "./controllers/storageController";
+import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
+import hiIN from "@/locales/antd/hiIN";
+import zhTW from "@/locales/antd/zhTW";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,6 +44,8 @@ configureReanimatedLogger({
 });
 
 function MainTabNavigator(props) {
+  const { t } = useTranslation();
+
   return (
     <Tab.Navigator
       id={undefined}
@@ -47,7 +55,7 @@ function MainTabNavigator(props) {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name={t("home")}
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -56,7 +64,7 @@ function MainTabNavigator(props) {
         }}
       />
       <Tab.Screen
-        name="Portfolio"
+        name={t("portfolio")}
         component={PortfolioScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -65,7 +73,7 @@ function MainTabNavigator(props) {
         }}
       />
       <Tab.Screen
-        name="Transactions"
+        name={t("transactions")}
         component={TransactionsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -74,7 +82,7 @@ function MainTabNavigator(props) {
         }}
       />
       <Tab.Screen
-        name="Favorites"
+        name={t("favorites")}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="favorite" color={color} size={size} />
@@ -84,7 +92,7 @@ function MainTabNavigator(props) {
         {() => <FavoritesScreen {...props} />}
       </Tab.Screen>
       <Tab.Screen
-        name="Settings"
+        name={t("settings")}
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -98,6 +106,12 @@ function MainTabNavigator(props) {
 
 function RootNavigator() {
   const { user } = useApp();
+
+  React.useEffect(() => {
+    storageController.read("locale").then((locale) => {
+      i18n.changeLanguage(locale);
+    });
+  }, []);
 
   const onSelectTicker = React.useCallback((navigation, ticker) => {
     const { getState, navigate } = navigation;
@@ -155,23 +169,34 @@ const AntdTheme = {
 };
 
 export default function App() {
+  const [locale, setLocale] = React.useState("en");
+
   useFonts({
     antoutline: require("@ant-design/icons-react-native/fonts/antoutline.ttf"),
   });
 
+  React.useEffect(() => {
+    i18n.on("languageChanged", () => setLocale(i18n.language));
+  }, []);
+
   return (
-    <Provider locale={enUS} theme={AntdTheme}>
-      <AppProvider>
-        <NavigationContainer theme={MyTheme}>
-          <GestureHandlerRootView>
-            <StatusBar
-              barStyle="dark-content"
-              backgroundColor={Colors.lightGray}
-            />
-            <RootNavigator />
-          </GestureHandlerRootView>
-        </NavigationContainer>
-      </AppProvider>
+    <Provider
+      locale={locale === "zh-TW" ? zhTW : locale === "hi-IN" ? hiIN : enUS}
+      theme={AntdTheme}
+    >
+      <I18nextProvider i18n={i18n} defaultNS={"translation"}>
+        <AppProvider>
+          <NavigationContainer theme={MyTheme}>
+            <GestureHandlerRootView>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor={Colors.lightGray}
+              />
+              <RootNavigator />
+            </GestureHandlerRootView>
+          </NavigationContainer>
+        </AppProvider>
+      </I18nextProvider>
     </Provider>
   );
 }

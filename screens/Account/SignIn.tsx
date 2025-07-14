@@ -15,8 +15,10 @@ import Colors from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
 import Form, { Input, Switch } from "@/components/Form";
+import { useTranslation } from "react-i18next";
 
 const SignInScreen = () => {
+  const { t } = useTranslation();
   const { signIn } = useApp();
   const isLoading = useToggle();
   const [form] = Form.useForm();
@@ -45,7 +47,7 @@ const SignInScreen = () => {
       await signIn(values.email, values.password, values.rememberMe);
     } catch (error) {
       isLoading.off();
-      Alert.alert("Error", error.message);
+      Alert.alert(t("error"), error.message);
     }
   };
 
@@ -54,7 +56,7 @@ const SignInScreen = () => {
       .map((field: any) => field.errors.join("\n"))
       .join("\n");
 
-    Alert.alert("Error", message);
+    Alert.alert(t("error"), message);
     isLoading.toggle();
   };
 
@@ -86,7 +88,7 @@ const SignInScreen = () => {
         >
           <Form.Item
             required
-            label="Email"
+            label={t("email")}
             name="email"
             rules={[
               { required: true },
@@ -95,22 +97,22 @@ const SignInScreen = () => {
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input textContentType="oneTimeCode" placeholder="required" />
+            <Input textContentType="oneTimeCode" placeholder={t("required")} />
           </Form.Item>
 
           <Form.Item
             required
-            label="Password"
+            label={t("password")}
             name="password"
             rules={[{ required: true }]}
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input.Password placeholder="required" />
+            <Input.Password placeholder={t("required")} />
           </Form.Item>
 
           <Form.Item
-            label="Remember Me"
+            label={t("remember me")}
             name="rememberMe"
             valuePropName="checked"
             layout="horizontal"
@@ -135,7 +137,7 @@ const SignInScreen = () => {
             <Text
               style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
             >
-              Sign In
+              {t("sign in")}
             </Text>
           </Button>
 
@@ -143,11 +145,11 @@ const SignInScreen = () => {
             <Text
               style={{ fontWeight: 300, marginRight: 6, color: Colors.black }}
             >
-              Don't have an account?
+              {t("don't have an account?")}
             </Text>
             <TouchableOpacity onPress={() => navigate("SignUp")}>
               <Text style={{ fontWeight: 500, color: Colors.black }}>
-                Sign Up
+                {t("sign up")}
               </Text>
             </TouchableOpacity>
           </Flex>

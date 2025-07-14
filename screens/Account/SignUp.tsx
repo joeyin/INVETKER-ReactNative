@@ -14,8 +14,10 @@ import Colors from "@/constants/Colors";
 import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
 import accountController from "@/controllers/accountController";
 import Form, { Input } from "@/components/Form";
+import { useTranslation } from "react-i18next";
 
 const SignUpScreen = () => {
+  const { t } = useTranslation();
   const isLoading = useToggle();
   const [form] = Form.useForm();
   const { goBack, navigate }: NavigationProp<ParamListBase> = useNavigation();
@@ -33,7 +35,7 @@ const SignUpScreen = () => {
       navigate("SignIn");
     } catch (error) {
       isLoading.off();
-      Alert.alert("Error", error.message);
+      Alert.alert(t("error"), error.message);
     }
   };
 
@@ -42,7 +44,7 @@ const SignUpScreen = () => {
       .map((field: any) => field.errors.join("\n"))
       .join("\n");
 
-    Alert.alert("Error", message);
+    Alert.alert(t("error"), message);
     isLoading.toggle();
   };
 
@@ -74,7 +76,7 @@ const SignUpScreen = () => {
         >
           <Form.Item
             required
-            label="Name"
+            label={t("name")}
             name="name"
             rules={[
               { required: true },
@@ -82,12 +84,12 @@ const SignUpScreen = () => {
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input placeholder="required" />
+            <Input placeholder={t("required")} />
           </Form.Item>
 
           <Form.Item
             required
-            label="Email"
+            label={t("email")}
             name="email"
             rules={[
               { required: true },
@@ -96,23 +98,23 @@ const SignUpScreen = () => {
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input placeholder="required" />
+            <Input placeholder={t("required")} />
           </Form.Item>
 
           <Form.Item
             required
-            label="Password"
+            label={t("password")}
             name="password"
             rules={[{ required: true }, { min: 6 }]}
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input.Password placeholder="required" />
+            <Input.Password placeholder={t("required")} />
           </Form.Item>
 
           <Form.Item
             required
-            label="Confirm Password"
+            label={t("confirm password")}
             name="confirmPassword"
             dependencies={["password"]}
             rules={[
@@ -130,7 +132,7 @@ const SignUpScreen = () => {
             labelStyle={{ fontSize: 15 }}
             requiredStyle={{ fontSize: 15 }}
           >
-            <Input.Password placeholder="required" />
+            <Input.Password placeholder={t("required")} />
           </Form.Item>
 
           <Button
@@ -147,7 +149,7 @@ const SignUpScreen = () => {
             <Text
               style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
             >
-              Sign Up
+              {t("sign up")}
             </Text>
           </Button>
 
@@ -159,11 +161,11 @@ const SignUpScreen = () => {
                 color: Colors.black,
               }}
             >
-              Already have an account?
+              {t("already have an account?")}
             </Text>
             <TouchableOpacity onPress={goBack}>
               <Text style={{ fontWeight: 500, color: Colors.black }}>
-                Sign In
+                {t("sign in")}
               </Text>
             </TouchableOpacity>
           </Flex>

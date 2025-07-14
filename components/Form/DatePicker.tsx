@@ -16,7 +16,6 @@ interface Props extends DatePickerProps {
 export const DatePicker = ({
   precision = "day",
   format = "YYYY-MM-DD",
-  okText = "OK",
   maxDate = new Date(),
   onOk,
   styles = {},
@@ -37,7 +36,6 @@ export const DatePicker = ({
       precision={precision}
       maxDate={maxDate}
       format={format}
-      okText={okText}
       onOk={handleOnOk}
       styles={Object.assign(
         {

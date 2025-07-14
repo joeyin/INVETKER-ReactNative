@@ -4,12 +4,14 @@ import ScrollView from "@/components/Layout/ScrollView";
 import TopPortfolio from "./TopPortfolio";
 import { useApp } from "@/providers/AppProvider";
 import News from "./News";
+import { useTranslation } from "react-i18next";
 
 function HomeScreen() {
+  const { t } = useTranslation();
   const { positions } = useApp();
 
   return (
-    <ScrollView title="Explore">
+    <ScrollView title={t("explore")}>
       <View style={styles.container}>
         <News />
         {positions.length > 0 && <TopPortfolio positions={positions} />}

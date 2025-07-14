@@ -21,25 +21,27 @@ import tickerController from "@/controllers/tickerController";
 import { Quote } from "@/models/Quote";
 import Feather from "@expo/vector-icons/Feather";
 import favoriteController from "@/controllers/favoriteController";
-
-const tableHead = [
-  "Ticker",
-  "Price",
-  "Change",
-  "Chg %",
-  "High",
-  "Low",
-  "Prior Close",
-];
+import { useTranslation } from "react-i18next";
 
 const widthArr = [90, 90, 80, 80, 90, 90, 90];
 
 const FavoritesScreen = (props) => {
+  const { t } = useTranslation();
   const { favorites, refetchFavorite } = useApp();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const [items, setItems] = React.useState<Array<{ ticker: string } & Quote>>(
     []
   );
+
+  const tableHead = React.useMemo(() => [
+    t("ticker"),
+    t("price"),
+    t("change"),
+    t("chg %"),
+    t("high"),
+    t("low"),
+    t("prior close"),
+  ], []);
 
   React.useEffect(() => {
     const fetchQuotes = async () => {
@@ -63,7 +65,7 @@ const FavoritesScreen = (props) => {
 
   return (
     <ScrollView
-      title="Favorites"
+      title={t("favorites")}
       right={
         <TouchableOpacity onPress={() => navigate("TickerList")}>
           <Feather name="search" size={24} color="black" />

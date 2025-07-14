@@ -6,8 +6,10 @@ import { useApp } from "@/providers/AppProvider";
 import Colors from "@/constants/Colors";
 import { Image, StyleSheet } from "react-native";
 import commentController from "@/controllers/commentController";
+import { useTranslation } from "react-i18next";
 
 const AddCommmentScreen = () => {
+  const { t } = useTranslation();
   const { goBack } = useNavigation();
   const { user } = useApp();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
@@ -23,7 +25,7 @@ const AddCommmentScreen = () => {
 
   return (
     <FormView
-      title="Comment"
+      title={t("comment")}
       onFinish={handleOnFinish}
       style={{
         margin: 10,
@@ -50,7 +52,7 @@ const AddCommmentScreen = () => {
           styles={{
             input: styles.input,
           }}
-          placeholder={`What do you think about ${route.params.ticker}?`}
+          placeholder={t("your thoughts", { ticker: route.params.ticker })}
         />
       </Form.Item>
     </FormView>

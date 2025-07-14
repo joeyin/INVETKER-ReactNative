@@ -28,16 +28,18 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useApp } from "@/providers/AppProvider";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import Comments from "./Comments";
+import { useTranslation } from "react-i18next";
 
 function ProfileScreen() {
+  const { t } = useTranslation();
   const { favorites, refetchFavorite } = useApp();
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
   const tabs = [
-    { title: "Profile" },
-    { title: "News" },
-    { title: "Comments" },
+    { title: t("profile") },
+    { title: t("news") },
+    { title: t("comments") },
   ];
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const ticker = route.params.ticker;

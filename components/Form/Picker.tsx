@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, Text, TextStyle } from "react-native";
+import { TouchableOpacity, View, Text, TextStyle, ViewStyle } from "react-native";
 import {
   Picker as AntPicker,
   PickerProps,
@@ -10,16 +10,15 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { PickerStyle } from "@ant-design/react-native/lib/picker/style";
 
 interface Props extends PickerProps {
-  styles?: Partial<PickerStyle> & { textStyle?: TextStyle }
+  styles?: Partial<PickerStyle> & { textStyle?: TextStyle, wrapperStyle?: ViewStyle }
 }
 
 export const Picker = ({
-  okText = "OK",
   styles = {},
   ...props
 }: Props) => {
   const CustomChildren = (props) => (
-    <View style={{ height: 35, justifyContent: "center" }}>
+    <View style={{ height: 35, justifyContent: "center", ...styles.wrapperStyle }}>
       {props.children}
       <TouchableOpacity onPress={props.onPress}>
         <Flex>
@@ -39,7 +38,6 @@ export const Picker = ({
         },
         styles
       )}
-      okText={okText}
       {...props}
     >
       <CustomChildren />
