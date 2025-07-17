@@ -13,6 +13,8 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useToggle } from "@/hooks";
 import { Flex, Tabs } from "@ant-design/react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import CompanyProfile from "./CompanyProfile";
+import Comments from "./Comments";
 import tickerController from "@/controllers/tickerController";
 import ValueChangeTag from "@/components/ValueChangeTag";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
@@ -27,19 +29,17 @@ import favoriteController from "@/controllers/favoriteController";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useApp } from "@/providers/AppProvider";
 import { formatDecimal } from "@/helpers/formatHelpers";
-import Comments from "./Comments";
-import { useTranslation } from "react-i18next";
+import CompanyNews from "./CompanyNews";
 
 function ProfileScreen() {
-  const { t } = useTranslation();
   const { favorites, refetchFavorite } = useApp();
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
   const tabs = [
-    { title: t("profile") },
-    { title: t("news") },
-    { title: t("comments") },
+    { title: "Profile" },
+    { title: "News" },
+    { title: "Comments" },
   ];
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const ticker = route.params.ticker;
@@ -164,10 +164,10 @@ function ProfileScreen() {
           onTabClick={(_, index) => setCurrentTab(index)}
         >
           <RNScrollView style={styles.tab}>
-            <Text>Profile</Text>
+            <CompanyProfile ticker={ticker} visible={currentTab === 0} />
           </RNScrollView>
           <RNScrollView style={styles.tab}>
-            <Text>News</Text>
+            <CompanyNews ticker={ticker} visible={currentTab === 1} />
           </RNScrollView>
           <RNScrollView style={styles.tab}>
             <Comments ticker={ticker} visible={currentTab === 2} />
