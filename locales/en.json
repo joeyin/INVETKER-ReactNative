@@ -55,7 +55,7 @@
     "comment": "Comment",
     "your thoughts": "What do you think about {{ticker}}",
     "en": "English",
-    "zh-TW": "繁體中文",
+    "zh-TW": "繁體中文 (台灣)",
     "hi-IN": "Hindi (India)",
     "sign in": "Sign In",
     "sign up": "Sign Up",
@@ -65,6 +65,15 @@
     "confirm password": "Confirm Password",
     "already have an account?": "Already have an account?",
     "required": "required",
-    "mustBeGreaterThanZero": "{{name}} must be greater than zero."
+    "mustBeGreaterThanZero": "{{name}} must be greater than zero.",
+    "company": "Company",
+    "country": "Country",
+    "industry": "Industry",
+    "currency": "Currency",
+    "market cap": "Market Cap",
+    "website": "Website",
+    "list date": "List Date",
+    "description": "Description",
+    "date": "Date"
   }
 }

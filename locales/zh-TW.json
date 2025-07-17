@@ -55,7 +55,7 @@
     "comment": "留言",
     "your thoughts": "你對 {{ticker}} 有何看法",
     "en": "English",
-    "zh-TW": "繁體中文",
+    "zh-TW": "繁體中文 (台灣)",
     "hi-IN": "Hindi (India)",
     "sign in": "登入",
     "sign up": "註冊",
@@ -65,6 +65,15 @@
     "confirm password": "確認密碼",
     "already have an account?": "已經有帳號了？",
     "required": "必填",
-    "mustBeGreaterThanZero": "{{name}} 必須大於零。"
+    "mustBeGreaterThanZero": "{{name}} 必須大於零。",
+    "company": "公司",
+    "country": "國家",
+    "industry": "產業",
+    "currency": "貨幣",
+    "market cap": "市值",
+    "website": "網站",
+    "list date": "上市日期",
+    "description": "描述",
+    "date": "日期"
   }
 }

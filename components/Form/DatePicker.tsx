@@ -57,7 +57,7 @@ export const DatePicker = ({
         }}
       >
         <Text style={[{ fontSize: 17 }, styles.textStyle]}>
-          {moment(date).format("YYYY-MM-DD")}
+          {moment(date).locale("en").format("YYYY-MM-DD")}
         </Text>
       </TouchableOpacity>
     </AntDatePicker>

@@ -8,6 +8,9 @@ import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
+import "moment/locale/zh-tw";
+import "moment/locale/hi";
+import { Comment } from "@/models/Comment";
 
 type Props = {
   ticker: string;
@@ -15,8 +18,8 @@ type Props = {
 };
 
 const Comments = ({ ticker, visible }: Props) => {
-  const { t } = useTranslation();
-  const [comments, setComments] = React.useState([]);
+  const { t, i18n } = useTranslation();
+  const [comments, setComments] = React.useState<Comment[]>(undefined);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -32,10 +35,10 @@ const Comments = ({ ticker, visible }: Props) => {
         <Text style={styles.content}>{t("no comments yet.")}</Text>
       ) : (
         <List style={styles.container}>
-          {comments.map((c) => (
+          {comments && comments.map((c) => (
             <List.Item key={c.id} style={{ alignItems: "center" }}>
               <Image
-                source={{ uri: c.avatar }}
+                source={{ uri: c.avatar.toString() }}
                 style={styles.avatar}
                 resizeMode="cover"
                 type="avatar"
@@ -49,7 +52,7 @@ const Comments = ({ ticker, visible }: Props) => {
                 <Text style={styles.name}>{c.displayName}</Text>
                 <Text style={styles.content}>{c.comment}</Text>
                 <Text style={styles.footer}>
-                  {moment(c.datetime).fromNow()}
+                  {moment(c.datetime).locale(i18n.language).fromNow()}
                 </Text>
               </Flex>
             </List.Item>

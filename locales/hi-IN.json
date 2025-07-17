@@ -55,7 +55,7 @@
     "comment": "टिप्पणी",
     "your thoughts": "{{ticker}} के बारे में आप क्या सोचते हैं",
     "en": "English",
-    "zh-TW": "繁體中文",
+    "zh-TW": "繁體中文 (台灣)",
     "hi-IN": "Hindi (India)",
     "sign in": "साइन इन करें",
     "sign up": "साइन अप करें",
@@ -65,6 +65,15 @@
     "confirm password": "पासवर्ड की पुष्टि करें",
     "already have an account?": "पहले से ही खाता है?",
     "required": "आवश्यक",
-    "mustBeGreaterThanZero": "{{name}} शून्य से अधिक होना चाहिए।"
+    "mustBeGreaterThanZero": "{{name}} शून्य से अधिक होना चाहिए।",
+    "company": "कंपनी",
+    "country": "देश",
+    "industry": "उद्योग",
+    "currency": "मुद्रा",
+    "market cap": "बाज़ार पूंजीकरण",
+    "website": "वेबसाइट",
+    "list date": "लिस्टिंग तिथि",
+    "description": "विवरण",
+    "date": "तारीख़"
   }
 }

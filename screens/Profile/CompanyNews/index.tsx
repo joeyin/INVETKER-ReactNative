@@ -13,6 +13,7 @@ import Card from "@/components/Card";
 import tickerController from "@/controllers/tickerController";
 import { News } from "@/models/News";
 import Image from "@/components/Image";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   ticker: string;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const CompanyNews = ({ ticker, visible }: Props) => {
+  const { i18n } = useTranslation();
   const [news, setNews] = React.useState<News[]>(undefined);
 
   React.useEffect(() => {
@@ -58,7 +60,8 @@ const CompanyNews = ({ ticker, visible }: Props) => {
             <Text style={styles.footer}>{item.source}</Text>
             <Text style={styles.footer}> - </Text>
             <Text style={styles.footer}>
-              {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")}
+              {/* {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")} */}
+              {moment(item.datetime * 1000).locale(i18n.language).fromNow()}
             </Text>
           </Flex>
         </Flex>

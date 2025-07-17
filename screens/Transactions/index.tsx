@@ -60,7 +60,7 @@ function TransactionsScreen() {
         <Flex justify="between" align="center" style={styles.item}>
           <Text style={styles.ticker}>{item.ticker}</Text>
           <Text style={styles.date}>
-            {moment(item.date).format("YYYY-MM-DD")}
+            {moment(item.date).locale("en").format("YYYY-MM-DD")}
           </Text>
         </Flex>
 

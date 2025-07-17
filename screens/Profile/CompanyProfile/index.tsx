@@ -12,6 +12,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import List from "@/components/List";
 import tickerController from "@/controllers/tickerController";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   ticker: string;
@@ -20,6 +21,7 @@ type Props = {
 
 const CompanyProfile = ({ ticker }: Props) => {
   const [profile, setProfile] = React.useState(undefined);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     tickerController.profile(ticker).then(setProfile);
@@ -31,7 +33,7 @@ const CompanyProfile = ({ ticker }: Props) => {
       if (supported) {
         await Linking.openURL(url);
       } else {
-        Alert.alert("Unsupported URL", `Cannot open this URL: ${url}`);
+        Alert.alert(t("error"), `Cannot open this URL: ${url}`);
       }
     }, [url]);
 
@@ -50,35 +52,35 @@ const CompanyProfile = ({ ticker }: Props) => {
   return (
     <List style={styles.container}>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Ticker</Text>
+        <Text style={styles.label}>{t("ticker")}</Text>
         <Text style={styles.value}>{profile?.ticker || "-"}</Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Company</Text>
+        <Text style={styles.label}>{t("company")}</Text>
         <Text style={styles.value}>{profile?.name || "-"}</Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Country</Text>
+        <Text style={styles.label}>{t("country")}</Text>
         <Text style={styles.value}>
           {profile?.locale?.toUpperCase() || "-"}
         </Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Industry</Text>
+        <Text style={styles.label}>{t("industry")}</Text>
         <Text style={styles.value}>{profile?.sic_description || "-"}</Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Currency</Text>
+        <Text style={styles.label}>{t("currency")}</Text>
         <Text style={styles.value}>
           {profile?.currency_name?.toUpperCase() || "-"}
         </Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Market Cap</Text>
+        <Text style={styles.label}>{t("market cap")}</Text>
         <Text style={styles.value}>{formatDecimal(profile?.market_cap)}</Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Website</Text>
+        <Text style={styles.label}>{t("website")}</Text>
         {profile?.homepage_url ? (
           <OpenURLButton url={profile.homepage_url} />
         ) : (
@@ -86,11 +88,11 @@ const CompanyProfile = ({ ticker }: Props) => {
         )}
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>List Date</Text>
+        <Text style={styles.label}>{t("list date")}</Text>
         <Text style={styles.value}>{profile?.list_date || "-"}</Text>
       </List.Item>
       <List.Item style={{ flexDirection: "column" }}>
-        <Text style={styles.label}>Description</Text>
+        <Text style={styles.label}>{t("description")}</Text>
         <Text style={styles.value}>{profile?.description || "-"}</Text>
       </List.Item>
     </List>
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingHorizontal: 0,
     paddingVertical: 0,
+    borderRadius: 0,
   },
   formGroup: {
     paddingVertical: 8,

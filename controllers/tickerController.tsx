@@ -21,7 +21,8 @@ class TickerController {
       case Endpoint.NEWS:
         return `https://finnhub.io/api/v1/company-news?symbol=${symbol}&token=${FINNHUB_API_KEY}&from=${moment()
           .day(-7)
-          .format("YYYY-MM-DD")}&to=${moment().format("YYYY-MM-DD")}`;
+          .locale("en")
+          .format("YYYY-MM-DD")}&to=${moment().locale("en").format("YYYY-MM-DD")}`;
     }
   }
 

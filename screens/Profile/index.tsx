@@ -30,16 +30,18 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { useApp } from "@/providers/AppProvider";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import CompanyNews from "./CompanyNews";
+import { useTranslation } from "react-i18next";
 
 function ProfileScreen() {
   const { favorites, refetchFavorite } = useApp();
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
+  const { t } = useTranslation();
   const tabs = [
-    { title: "Profile" },
-    { title: "News" },
-    { title: "Comments" },
+    { title: t("profile") },
+    { title: t("news") },
+    { title: t("comments") },
   ];
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const ticker = route.params.ticker;
@@ -50,12 +52,6 @@ function ProfileScreen() {
 
   React.useEffect(() => {
     tickerController.quote(ticker).then(setQuote);
-
-    const intervalId = setInterval(() => {
-      tickerController.quote(ticker).then(setQuote);
-    }, 60000);
-
-    return () => clearInterval(intervalId)
   }, []);
 
   React.useEffect(() => {

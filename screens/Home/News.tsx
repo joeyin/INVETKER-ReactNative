@@ -13,9 +13,11 @@ import moment from "moment";
 import Card from "@/components/Card";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
+import "moment/locale/zh-tw";
+import "moment/locale/hi";
 
 const News = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [news, setNews] = React.useState([]);
 
   React.useEffect(() => {
@@ -76,7 +78,8 @@ const News = () => {
             <Text style={styles.footer}>{item.source}</Text>
             <Text style={styles.footer}> - </Text>
             <Text style={styles.footer}>
-              {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")}
+              {/* {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")} */}
+              {moment(item.datetime * 1000).locale(i18n.language).fromNow()}
             </Text>
           </Flex>
         </Flex>
