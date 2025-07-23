@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   StyleSheet,
-  Text,
   ViewStyle,
   StyleProp,
   FlatListProps,
@@ -15,6 +14,8 @@ import {
   ScrollLargeHeaderProps,
 } from "@codeherence/react-native-header";
 import { runOnJS, useDerivedValue } from "react-native-reanimated";
+import { Text } from "../Text";
+import { useTheme } from "@react-navigation/native";
 
 interface Props extends Omit<FlatListProps<any>, "title | center"> {
   title: String;
@@ -33,6 +34,8 @@ function FlatListView({
   right,
   ...props
 }: Props) {
+  const { colors } = useTheme();
+
   const HeaderComponent = ({ showNavBar }: ScrollHeaderProps) => {
     const [navBarVisible, setNavBarVisible] = React.useState(showNavBar.value);
 
@@ -47,6 +50,8 @@ function FlatListView({
         headerCenter={<Text style={styles.title}>{title}</Text>}
         headerLeft={left}
         headerRight={right}
+        initialBorderColor={colors.border}
+        borderColor={colors.border}
       />
     );
   };
@@ -68,6 +73,9 @@ function FlatListView({
       windowSize={10}
       initialNumToRender={0}
       maxToRenderPerBatch={100}
+      containerStyle={{
+        backgroundColor: colors.background,
+      }}
       keyExtractor={(_, i) => `text-row-${i}`}
       {...props}
     />

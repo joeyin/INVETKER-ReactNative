@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { Flex } from "@ant-design/react-native";
 import Colors from "@/constants/Colors";
 import Card from "@/components/Card";
@@ -7,14 +7,17 @@ import {
   useNavigation,
   ParamListBase,
   NavigationProp,
+  useTheme,
 } from "@react-navigation/native";
 import ValueChangeTag from "@/components/ValueChangeTag";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 const TopPortfolio = ({ positions }) => {
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const { t } = useTranslation();
+  const { colors } = useTheme();
 
   return (
     <Card
@@ -30,7 +33,11 @@ const TopPortfolio = ({ positions }) => {
           .map((p) => (
             <TouchableOpacity
               key={p.ticker}
-              style={styles.item}
+              style={{
+                backgroundColor: colors.card,
+                borderColor: colors.border,
+                ...styles.item
+              }}
               onPress={() => navigate("Profile", { ticker: p.ticker })}
             >
               <Image
@@ -93,9 +100,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     borderRadius: 10,
-    backgroundColor: Colors.white,
+    // backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: Colors.lightGray200,
+    // borderColor: Colors.lightGray200,
     overflow: "hidden",
     shadowColor: "#919191",
     shadowOffset: {

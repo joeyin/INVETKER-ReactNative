@@ -12,6 +12,7 @@
       "@hooks/*": ["./hooks/*"],
       "@providers/*": ["./providers/*"],
       "@screens/*": ["./screens/*"],
+      "@services/*": ["./services/*"],
     }
   }
 }

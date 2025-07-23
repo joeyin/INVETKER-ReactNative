@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableHighlight,
   Alert,
@@ -24,11 +23,13 @@ import { useToggle } from "@/hooks";
 import fileController from "@/controllers/fileController";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
-import storageController from "@/controllers/storageController";
+import storageService from "@services/storageService";
 import { Picker } from "@/components/Form";
+import themeService from "@services/themeService";
+import { Text } from "@/components/Text";
 
 const SettingsScreen = () => {
-  const { signOut, user, reloadAuth } = useApp();
+  const { signOut, user, reloadAuth, theme } = useApp();
   const { t, i18n } = useTranslation();
   const isLoading = useToggle();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
@@ -64,7 +65,12 @@ const SettingsScreen = () => {
 
   const changeLanguage = (locale: string) => {
     i18n.changeLanguage(locale);
-    storageController.store("locale", locale)
+    storageService.store("locale", locale)
+  };
+
+  const changeTheme = (theme: string) => {
+    themeService.changeTheme(theme);
+    storageService.store("theme", theme)
   };
 
   return (
@@ -132,6 +138,7 @@ const SettingsScreen = () => {
               data={[
                 { label: t("en"), value: "en" },
                 { label: t("zh-TW"), value: "zh-TW" },
+                { label: t("zh-CN"), value: "zh-CN" },
                 { label: t("hi-IN"), value: "hi-IN" },
               ]}
               onOk={(k, i) => changeLanguage(i.items[0].value as string)}
@@ -139,7 +146,18 @@ const SettingsScreen = () => {
           </List.Item>
           <List.Item>
             <Text style={styles.name}>{t("theme")}</Text>
-            <Text style={styles.value}>{t("light")}</Text>
+            <Picker
+              defaultValue={[theme]}
+              styles={{
+                wrapperStyle: { height: 20 },
+                textStyle: { color: Colors.secondary },
+              }}
+              data={[
+                { label: t("light"), value: "light" },
+                { label: t("dark"), value: "dark" },
+              ]}
+              onOk={(k, i) => changeTheme(i.items[0].value as string)}
+            />
           </List.Item>
         </List>
 
@@ -162,7 +180,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    color: Colors.black,
   },
   value: {
     fontSize: 16,

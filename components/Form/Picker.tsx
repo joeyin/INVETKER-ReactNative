@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View, Text, TextStyle, ViewStyle } from "react-native";
+import { TouchableOpacity, View, TextStyle, ViewStyle } from "react-native";
 import {
   Picker as AntPicker,
   PickerProps,
@@ -8,22 +8,33 @@ import {
 import Colors from "@/constants/Colors";
 import Entypo from "@expo/vector-icons/Entypo";
 import { PickerStyle } from "@ant-design/react-native/lib/picker/style";
+import { Text } from "../Text";
+import { useTranslation } from "react-i18next";
 
 interface Props extends PickerProps {
-  styles?: Partial<PickerStyle> & { textStyle?: TextStyle, wrapperStyle?: ViewStyle }
+  styles?: Partial<PickerStyle> & {
+    textStyle?: TextStyle;
+    wrapperStyle?: ViewStyle;
+  };
 }
 
-export const Picker = ({
-  styles = {},
-  ...props
-}: Props) => {
+export const Picker = ({ styles = {}, ...props }: Props) => {
+  const { t } = useTranslation();
+
   const CustomChildren = (props) => (
-    <View style={{ height: 35, justifyContent: "center", ...styles.wrapperStyle }}>
+    <View
+      style={{ height: 35, justifyContent: "center", ...styles.wrapperStyle }}
+    >
       {props.children}
       <TouchableOpacity onPress={props.onPress}>
         <Flex>
-          <Text style={[{ fontSize: 17 }, styles.textStyle]}>{props.extra}</Text>
-          <Entypo name="select-arrows" style={[{ fontSize: 15 }, styles.textStyle]} />
+          <Text style={[{ fontSize: 17 }, styles.textStyle]}>
+            {props.extra}
+          </Text>
+          <Entypo
+            name="select-arrows"
+            style={[{ fontSize: 15 }, styles.textStyle]}
+          />
         </Flex>
       </TouchableOpacity>
     </View>
@@ -31,6 +42,8 @@ export const Picker = ({
 
   return (
     <AntPicker
+      dismissText={t("cancel")}
+      okText={t("ok")}
       styles={Object.assign(
         {
           okText: { color: Colors.primary },

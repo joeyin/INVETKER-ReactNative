@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   StyleSheet,
   TouchableOpacity,
   Linking,
@@ -13,6 +12,7 @@ import { formatDecimal } from "@/helpers/formatHelpers";
 import List from "@/components/List";
 import tickerController from "@/controllers/tickerController";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 type Props = {
   ticker: string;
@@ -106,11 +106,6 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     borderRadius: 0,
   },
-  formGroup: {
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
-  },
   label: {
     fontSize: 12,
     color: Colors.secondary,
@@ -118,7 +113,6 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 15,
-    color: Colors.black,
   },
 });
 

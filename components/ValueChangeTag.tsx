@@ -1,9 +1,10 @@
 import Colors from "@/constants/Colors";
 import { Flex } from "@ant-design/react-native";
 import React from "react";
-import { Text, StyleSheet, StyleProp, TextStyle } from "react-native";
+import { StyleSheet, StyleProp, TextStyle } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { formatDecimal } from "@/helpers/formatHelpers";
+import { Text } from "./Text";
 
 type Props = {
   value: string | number;
@@ -42,16 +43,16 @@ const ValueChangeTag = ({
         ))}
       <Text style={[color, style]}>
         {prefix &&
-          (typeof prefix === "function" ? prefix : <Text>{prefix}</Text>)}
+          (typeof prefix === "function" ? prefix : <Text style={color}>{prefix}</Text>)}
         {signed && (number > 0 ? "+" : "")}
         {!format
           ? value
           : format === "Decimal"
             ? formatDecimal(number)
             : formatDecimal(number)}
-        {unit && (typeof unit === "function" ? unit : <Text>{unit}</Text>)}
+        {unit && (typeof unit === "function" ? unit : <Text style={color}>{unit}</Text>)}
         {suffix &&
-          (typeof suffix === "function" ? suffix : <Text>{suffix}</Text>)}
+          (typeof suffix === "function" ? suffix : <Text style={color}>{suffix}</Text>)}
       </Text>
     </Flex>
   );

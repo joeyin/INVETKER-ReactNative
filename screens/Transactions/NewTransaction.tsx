@@ -10,6 +10,7 @@ import {
   ParamListBase,
   NavigationProp,
   RouteProp,
+  useTheme,
 } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useApp } from "@/providers/AppProvider";
@@ -24,6 +25,7 @@ const NewTransaction = () => {
   const { navigate, goBack }: NavigationProp<ParamListBase> = useNavigation();
   const isLoading = useToggle();
   const { refetchTransaction } = useApp();
+  const { colors } = useTheme();
   const [form] = Form.useForm();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
   const { positions } = useApp();
@@ -91,7 +93,7 @@ const NewTransaction = () => {
       title={t("new transaction")}
       left={
         <TouchableOpacity onPress={goBack}>
-          <FontAwesome name="angle-left" size={30} color={Colors.black} />
+          <FontAwesome name="angle-left" size={30} color={colors.text} />
         </TouchableOpacity>
       }
       right={
@@ -115,10 +117,8 @@ const NewTransaction = () => {
               fee: "0",
               date: new Date(),
             }}
-            styles={{
-              Body: {
-                backgroundColor: Colors.white,
-              },
+            style={{
+              backgroundColor: "transparent",
             }}
           >
             <Form.Item name="ticker" wrapperStyle={{ display: "none" }}>
@@ -132,7 +132,7 @@ const NewTransaction = () => {
               label={t("ticker")}
               layout="horizontal"
               bodyStyle={{ alignItems: "flex-end" }}
-              wrapperStyle={{ marginBottom: 0 }}
+              wrapperStyle={{ marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <TouchableOpacity
@@ -166,7 +166,7 @@ const NewTransaction = () => {
                 },
               ]}
               layout="horizontal"
-              wrapperStyle={{ marginBottom: 0 }}
+              wrapperStyle={{ marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <Input
@@ -186,7 +186,7 @@ const NewTransaction = () => {
               ]}
               layout="horizontal"
               bodyStyle={{ alignItems: "flex-end" }}
-              wrapperStyle={{ marginBottom: 0 }}
+              wrapperStyle={{ marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <Picker
@@ -209,7 +209,7 @@ const NewTransaction = () => {
                 },
               ]}
               layout="horizontal"
-              wrapperStyle={{ marginBottom: 0 }}
+              wrapperStyle={{ marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <DatePicker />
@@ -225,7 +225,7 @@ const NewTransaction = () => {
                 },
               ]}
               layout="horizontal"
-              wrapperStyle={{ marginBottom: 0 }}
+              wrapperStyle={{ marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <Input
@@ -245,7 +245,7 @@ const NewTransaction = () => {
                 },
               ]}
               layout="horizontal"
-              wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0 }}
+              wrapperStyle={{ borderBottomWidth: 0, marginBottom: 0, backgroundColor: colors.card }}
               labelStyle={{ fontWeight: "normal" }}
             >
               <Input

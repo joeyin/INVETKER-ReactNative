@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 const Header = ({ positions }) => {
   const { t } = useTranslation();

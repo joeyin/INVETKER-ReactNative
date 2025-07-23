@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import Colors from "@/constants/Colors";
 import List from "@/components/List";
 import { Flex } from "@ant-design/react-native";
@@ -8,9 +8,8 @@ import moment from "moment";
 import { useFocusEffect } from "@react-navigation/native";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
-import "moment/locale/zh-tw";
-import "moment/locale/hi";
 import { Comment } from "@/models/Comment";
+import { Text } from "@/components/Text";
 
 type Props = {
   ticker: string;
@@ -72,12 +71,10 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 15,
     fontWeight: 600,
-    color: Colors.black,
   },
   content: {
     fontSize: 14,
     fontWeight: 300,
-    color: Colors.black,
   },
   footer: {
     fontSize: 12,

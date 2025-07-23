@@ -1,5 +1,9 @@
 import React from "react";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -30,10 +34,16 @@ import AddCommmentScreen from "@/screens/Profile/Comments/AddComment";
 import { useTranslation } from "react-i18next";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import storageController from "./controllers/storageController";
+import storageService from "@services/storageService";
 import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
+import zhCN from "@ant-design/react-native/lib/locale-provider/zh_CN";
 import hiIN from "@/locales/antd/hiIN";
 import zhTW from "@/locales/antd/zhTW";
+import themeService from "@services/themeService";
+import moment from "moment";
+import "moment/locale/zh-tw";
+import "moment/locale/zh-cn";
+import "moment/locale/hi";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -108,9 +118,7 @@ function RootNavigator() {
   const { user } = useApp();
 
   React.useEffect(() => {
-    storageController.read("locale").then((locale) => {
-      i18n.changeLanguage(locale);
-    });
+    storageService.read("locale").then(i18n.changeLanguage);
   }, []);
 
   const onSelectTicker = React.useCallback((navigation, ticker) => {
@@ -155,43 +163,73 @@ function RootNavigator() {
   );
 }
 
-const MyTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: Colors.primary,
-  },
-};
-
 const AntdTheme = {
   primary_button_fill: Colors.primary,
   primary_button_fill_tap: Colors.yellow300,
 };
 
+const MyDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    border: "rgb(39, 39, 41)",
+    primary: Colors.primary,
+  },
+};
+
+const MyLightTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    border: Colors.lightGray200,
+    primary: Colors.primary,
+  },
+};
+
 export default function App() {
   const [locale, setLocale] = React.useState("en");
+  const [theme, setTheme] = React.useState(null);
 
   useFonts({
     antoutline: require("@ant-design/icons-react-native/fonts/antoutline.ttf"),
   });
 
   React.useEffect(() => {
-    i18n.on("languageChanged", () => setLocale(i18n.language));
+    i18n.on("languageChanged", () => {
+      setLocale(i18n.language);
+      moment().locale(i18n.language);
+    });
+    storageService.read("theme").then(setTheme);
+    themeService.on("themeChanged", setTheme);
   }, []);
+
+  const myTheme = React.useMemo(
+    () => (theme === "dark" ? MyDarkTheme : MyLightTheme),
+    [theme]
+  );
+
+  const currentLocale = React.useMemo(() => {
+    switch (locale) {
+      case "zh-TW":
+        return zhTW;
+      case "zh-CN":
+        return zhCN;
+      case "hi-IN":
+        return hiIN;
+      default:
+        return enUS;
+    }
+  }, [locale]);
 
   return (
     <Provider
-      locale={locale === "zh-TW" ? zhTW : locale === "hi-IN" ? hiIN : enUS}
+      locale={currentLocale}
       theme={AntdTheme}
     >
       <I18nextProvider i18n={i18n} defaultNS={"translation"}>
         <AppProvider>
-          <NavigationContainer theme={MyTheme}>
+          <NavigationContainer theme={myTheme}>
             <GestureHandlerRootView>
-              <StatusBar
-                barStyle="dark-content"
-                backgroundColor={Colors.lightGray}
-              />
               <RootNavigator />
             </GestureHandlerRootView>
           </NavigationContainer>

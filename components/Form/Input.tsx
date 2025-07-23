@@ -4,14 +4,19 @@ import { Input as AntInput, InputProps, TextAreaProps } from "@ant-design/react-
 import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
 import { useToggle } from "@/hooks";
+import { useTheme } from "@react-navigation/native";
 
-export const Input = ({ ...props }: InputProps) => (
-  <AntInput
-    placeholderTextColor={Colors.gray600}
-    {...props}
-    inputStyle={[styles.input, props.inputStyle]}
-  />
-);
+export const Input = ({ ...props }: InputProps) => {
+  const { colors } = useTheme();
+
+  return (
+    <AntInput
+      placeholderTextColor={Colors.gray600}
+      {...props}
+      inputStyle={[{ color: colors.text }, styles.input, props.inputStyle]}
+    />
+  )
+};
 
 export const InputPassword = (props: InputProps) => {
   const passwordVisible = useToggle();
@@ -35,9 +40,13 @@ export const InputPassword = (props: InputProps) => {
 };
 
 export const InputTextArea = (props: TextAreaProps) => {
+  const { colors } = useTheme();
 
   return (
     <AntInput.TextArea
+      inputStyle={{
+        color: colors.text,
+      }}
       {...props}
     />
   );
@@ -46,10 +55,8 @@ export const InputTextArea = (props: TextAreaProps) => {
 const styles = StyleSheet.create({
   input: {
     fontSize: 17,
-    color: Colors.black,
     paddingHorizontal: 0,
     paddingVertical: 0,
-    borderBottomWidth: 0,
     height: 35,
   },
 });

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
@@ -13,11 +12,12 @@ import moment from "moment";
 import Card from "@/components/Card";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
-import "moment/locale/zh-tw";
-import "moment/locale/hi";
+import { Text } from "@/components/Text";
+import { useTheme } from "@react-navigation/native";
 
 const News = () => {
   const { t, i18n } = useTranslation();
+  const { colors } = useTheme();
   const [news, setNews] = React.useState([]);
 
   React.useEffect(() => {
@@ -57,6 +57,7 @@ const News = () => {
         direction="row"
         style={[
           styles.news,
+          { borderBottomColor: colors.border },
           index === 9 && {
             marginBottom: 0,
             borderBottomWidth: 0,
@@ -78,7 +79,6 @@ const News = () => {
             <Text style={styles.footer}>{item.source}</Text>
             <Text style={styles.footer}> - </Text>
             <Text style={styles.footer}>
-              {/* {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")} */}
               {moment(item.datetime * 1000).locale(i18n.language).fromNow()}
             </Text>
           </Flex>
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
   news: {
     marginBottom: 12,
     gap: 12,
-    borderBottomColor: Colors.lightGray200,
     borderBottomWidth: 1,
     paddingBottom: 12,
   },

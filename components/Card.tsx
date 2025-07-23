@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
+import { Text } from "./Text";
 
 type Props = {
   style?: StyleProp<ViewStyle> | undefined;
@@ -10,36 +12,39 @@ type Props = {
   subtitle?: string | React.ReactNode;
 };
 
-const Card = ({ children, style = {}, headerStyle, title, subtitle }: Props) => (
-  <View style={[styles.container, style]}>
-    {
-      title && (
-        <View style={[styles.header, headerStyle]}>
-          {title &&
-            (typeof title === "function" ? (
-              title
-            ) : (
-              <Text style={styles.title}>{title}</Text>
-            ))}
-          {subtitle &&
-            (typeof subtitle === "function" ? (
-              subtitle
-            ) : (
-              <Text style={styles.subtitle}>{subtitle}</Text>
-            ))}
-        </View>
-      )
-    }
-    {children}
-  </View>
-);
+const Card = ({ children, style = {}, headerStyle, title, subtitle }: Props) => {
+  const { colors } = useTheme();
+
+  return (
+    <View style={[{ backgroundColor: colors.card }, styles.container, style]}>
+      {
+        title && (
+          <View style={[styles.header, headerStyle]}>
+            {title &&
+              (typeof title === "function" ? (
+                title
+              ) : (
+                <Text style={styles.title}>{title}</Text>
+              ))}
+            {subtitle &&
+              (typeof subtitle === "function" ? (
+                subtitle
+              ) : (
+                <Text style={styles.subtitle}>{subtitle}</Text>
+              ))}
+          </View>
+        )
+      }
+      {children}
+    </View>
+  )
+};
 
 const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
     borderRadius: 8,
-    backgroundColor: Colors.white,
     overflow: "hidden",
     shadowColor: "#919191",
     shadowOffset: {

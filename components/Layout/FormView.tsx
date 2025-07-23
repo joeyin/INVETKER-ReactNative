@@ -1,19 +1,19 @@
 import React from "react";
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Alert,
 } from "react-native";
 import Colors from "@/constants/Colors";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useToggle } from "@/hooks";
 import Form from "@/components/Form";
 import { Flex, FormProps } from "@ant-design/react-native";
 import { useTranslation } from "react-i18next";
+import { Text } from "../Text";
 
 interface Props extends Omit<FormProps, "title"> {
   title: string | React.ReactNode;
@@ -36,6 +36,7 @@ const FormView = ({
   const isLoading = useToggle();
   const [form] = Form.useForm();
   const { top } = useSafeAreaInsets();
+  const { colors } = useTheme();
 
   const handleOnSubmit = () => {
     isLoading.on();
@@ -63,11 +64,11 @@ const FormView = ({
 
   return (
     <View style={{ paddingTop: top }}>
-      <View style={headerStyles.container}>
+      <View style={[{ borderColor: colors.border }, headerStyles.container]}>
         <Flex>
           <View style={headerStyles.leftContainer}>
             <TouchableOpacity onPress={goBack}>
-              <FontAwesome name="angle-left" size={30} color={Colors.black} />
+              <FontAwesome name="angle-left" size={30} color={colors.text} />
             </TouchableOpacity>
           </View>
           <View style={headerStyles.centerContainer}>
@@ -107,7 +108,7 @@ const headerStyles = StyleSheet.create({
   container: {
     width: "100%",
     borderBottomWidth: 1,
-    borderBottomColor: Colors.gray800,
+    // borderBottomColor: Colors.gray800,
   },
   leftContainer: {
     flexDirection: "row",

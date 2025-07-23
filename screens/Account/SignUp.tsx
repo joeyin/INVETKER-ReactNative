@@ -10,8 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Flex } from "@ant-design/react-native";
 import { useToggle } from "@/hooks";
-import Colors from "@/constants/Colors";
-import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, useTheme } from '@react-navigation/native';
 import accountController from "@/controllers/accountController";
 import Form, { Input } from "@/components/Form";
 import { useTranslation } from "react-i18next";
@@ -21,6 +20,7 @@ const SignUpScreen = () => {
   const isLoading = useToggle();
   const [form] = Form.useForm();
   const { goBack, navigate }: NavigationProp<ParamListBase> = useNavigation();
+  const { colors } = useTheme();
 
   const onSubmit = () => {
     isLoading.on();
@@ -62,7 +62,10 @@ const SignUpScreen = () => {
             source={require("@/assets/brand.png")}
             style={styles.brand}
           />
-          <Text style={styles.brandText}>
+          <Text style={{
+            color: colors.text,
+            ...styles.brandText
+          }}>
             The Best Way to Track Your Stock Portfolio
           </Text>
         </Flex>
@@ -147,7 +150,7 @@ const SignUpScreen = () => {
             }}
           >
             <Text
-              style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
+              style={{ fontWeight: 600, fontSize: 18, color: colors.text }}
             >
               {t("sign up")}
             </Text>
@@ -158,13 +161,13 @@ const SignUpScreen = () => {
               style={{
                 fontWeight: 300,
                 marginRight: 6,
-                color: Colors.black,
+                color: colors.text,
               }}
             >
               {t("already have an account?")}
             </Text>
             <TouchableOpacity onPress={goBack}>
-              <Text style={{ fontWeight: 500, color: Colors.black }}>
+              <Text style={{ fontWeight: 500, color: colors.text }}>
                 {t("sign in")}
               </Text>
             </TouchableOpacity>
@@ -197,13 +200,12 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 14,
     letterSpacing: 0.1,
-    color: Colors.black,
     opacity: 0.6,
   },
   form: {
-    backgroundColor: Colors.lightGray,
     marginHorizontal: 15,
     paddingHorizontal: 15,
+    backgroundColor: "transparent"
   },
 });
 

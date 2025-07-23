@@ -11,9 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Flex } from "@ant-design/react-native";
 import { useToggle } from "@/hooks";
 import { useApp } from "@/providers/AppProvider";
-import Colors from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, ParamListBase,  NavigationProp } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, useTheme } from '@react-navigation/native';
 import Form, { Input, Switch } from "@/components/Form";
 import { useTranslation } from "react-i18next";
 
@@ -23,6 +22,7 @@ const SignInScreen = () => {
   const isLoading = useToggle();
   const [form] = Form.useForm();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+  const { colors } = useTheme();
 
   React.useEffect(() => {
     (async () => {
@@ -74,7 +74,10 @@ const SignInScreen = () => {
             source={require("@/assets/brand.png")}
             style={styles.brand}
           />
-          <Text style={styles.brandText}>
+          <Text style={{
+            color: colors.text,
+            ...styles.brandText
+          }}>
             The Best Way to Track Your Stock Portfolio
           </Text>
         </Flex>
@@ -135,7 +138,7 @@ const SignInScreen = () => {
             }}
           >
             <Text
-              style={{ fontWeight: 600, fontSize: 18, color: Colors.white }}
+              style={{ fontWeight: 500, fontSize: 17, color: colors.text }}
             >
               {t("sign in")}
             </Text>
@@ -143,12 +146,12 @@ const SignInScreen = () => {
 
           <Flex justify="center">
             <Text
-              style={{ fontWeight: 300, marginRight: 6, color: Colors.black }}
+              style={{ fontWeight: 300, marginRight: 6, color: colors.text }}
             >
               {t("don't have an account?")}
             </Text>
             <TouchableOpacity onPress={() => navigate("SignUp")}>
-              <Text style={{ fontWeight: 500, color: Colors.black }}>
+              <Text style={{ fontWeight: 500, color: colors.text }}>
                 {t("sign up")}
               </Text>
             </TouchableOpacity>
@@ -181,12 +184,12 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 14,
     letterSpacing: 0.1,
-    color: Colors.black,
     opacity: 0.6,
   },
   form: {
     marginHorizontal: 15,
     paddingHorizontal: 15,
+    backgroundColor: "transparent"
   },
 });
 

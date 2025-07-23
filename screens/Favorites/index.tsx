@@ -2,7 +2,6 @@ import React from "react";
 import { Table, Row } from "react-native-table-component";
 import {
   View,
-  Text,
   ScrollView as RNScrollView,
   TouchableOpacity,
   StyleSheet,
@@ -14,6 +13,7 @@ import {
   useNavigation,
   ParamListBase,
   NavigationProp,
+  useTheme,
 } from "@react-navigation/native";
 import ScrollView from "@/components/Layout/ScrollView";
 import { useApp } from "@/providers/AppProvider";
@@ -22,12 +22,14 @@ import { Quote } from "@/models/Quote";
 import Feather from "@expo/vector-icons/Feather";
 import favoriteController from "@/controllers/favoriteController";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 const widthArr = [90, 90, 80, 80, 90, 90, 90];
 
 const FavoritesScreen = (props) => {
   const { t } = useTranslation();
   const { favorites, refetchFavorite } = useApp();
+  const { colors } = useTheme();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
   const [items, setItems] = React.useState<Array<{ ticker: string } & Quote>>(
     []
@@ -68,7 +70,7 @@ const FavoritesScreen = (props) => {
       title={t("favorites")}
       right={
         <TouchableOpacity onPress={() => navigate("TickerList")}>
-          <Feather name="search" size={24} color="black" />
+          <Feather name="search" size={24} color={colors.text} />
         </TouchableOpacity>
       }
     >
@@ -76,7 +78,7 @@ const FavoritesScreen = (props) => {
         <View>
           <Table>
             <Row
-              style={styles.thead}
+              style={[{ borderColor: colors.border }, styles.thead]}
               textStyle={styles.theadText}
               data={tableHead}
               widthArr={widthArr}
@@ -115,10 +117,11 @@ const FavoritesScreen = (props) => {
                       colored={false}
                     />,
                   ]}
-                  style={{
-                    ...styles.tbody,
-                    borderBottomWidth: index === favorites.length - 1 ? 0 : 1,
-                  }}
+                  style={[
+                    styles.tbody,
+                    { borderColor: colors.border },
+                    { borderBottomWidth: index === favorites.length - 1 ? 0 : 1 },
+                  ]}
                   widthArr={widthArr}
                 />
               ))}
@@ -142,7 +145,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
   },
   theadText: {
     fontSize: 11,
@@ -153,7 +155,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
   },
   tbodyText: {
     fontSize: 14,

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-class StorageController {
+class StorageService {
   async store(key: string, value: any) {
     try {
       const jsonValue = JSON.stringify(value);
@@ -22,4 +22,4 @@ class StorageController {
   }
 }
 
-export default new StorageController();
+export default new StorageService();

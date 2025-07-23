@@ -7,13 +7,15 @@ import { Position } from "@/models/Position";
 import accountController from "@/controllers/accountController";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import favoriteController from "@/controllers/favoriteController";
+import themeService from "@services/themeService";
+import storageService from "@services/storageService";
 
 interface AppContextType {
   user: User | null;
   favorites: string[];
   transactions: Transaction[];
   positions: Position[];
-  locale: string;
+  theme: string;
   signIn: (
     email: string,
     password: string,
@@ -23,7 +25,6 @@ interface AppContextType {
   refetchTransaction: () => Promise<Transaction[]>;
   reloadAuth: () => void;
   refetchFavorite: () => void;
-  changeLocale: (locale: string) => void;
 }
 
 export const AppContext = React.createContext<AppContextType | undefined>(
@@ -43,11 +44,16 @@ export const AppProvider = ({ children }) => {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [positions, setPositions] = React.useState<Position[]>([]);
   const [favorites, setFavorites] = React.useState<string[]>([]);
-  const [locale, setLocale] = React.useState<string>("en");
+  const [theme, setTheme] = React.useState("light");
 
   React.useEffect(() => {
     const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
     return subscriber; // unsubscribe on unmount
+  }, []);
+
+  React.useEffect(() => {
+    storageService.read("theme").then(setTheme);
+    themeService.on("themeChanged", setTheme);
   }, []);
 
   React.useEffect(() => {
@@ -115,10 +121,6 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
-  const changeLocale = React.useCallback((locale: string) => {
-    setLocale(locale)
-  }, [])
-
   return (
     <AppContext.Provider
       value={{
@@ -126,13 +128,12 @@ export const AppProvider = ({ children }) => {
         favorites,
         transactions,
         positions,
-        locale,
+        theme,
         signIn,
         signOut,
         refetchTransaction,
         reloadAuth,
         refetchFavorite,
-        changeLocale,
       }}
     >
       {children}

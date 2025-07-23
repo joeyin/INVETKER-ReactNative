@@ -2,7 +2,7 @@ import React from "react";
 import FormView from "@/components/Layout/FormView";
 import Form, { Input } from "@/components/Form";
 import accountController from "@/controllers/accountController";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { useApp } from "@/providers/AppProvider";
 import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ const EditNameScreen = () => {
   const { t } = useTranslation();
   const { goBack } = useNavigation();
   const { user, reloadAuth } = useApp();
+  const { colors } = useTheme();
 
   const handleOnFinish = React.useCallback((values) => {
     accountController.updateProfile(values).then(() => {
@@ -37,9 +38,9 @@ const EditNameScreen = () => {
           style={{
             paddingHorizontal: 10,
             borderWidth: 1,
-            borderColor: Colors.lightGray200,
+            borderColor: colors.border,
             borderRadius: 6,
-            backgroundColor: Colors.white,
+            backgroundColor: colors.card,
           }}
         />
       </Form.Item>

@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   StyleSheet,
-  Text,
   ViewStyle,
   StyleProp,
   ScrollViewProps,
@@ -15,6 +14,8 @@ import {
   ScrollLargeHeaderProps,
 } from "@codeherence/react-native-header";
 import { runOnJS, useDerivedValue } from "react-native-reanimated";
+import { useTheme } from "@react-navigation/native";
+import { Text } from "../Text";
 
 interface Props extends Omit<ScrollViewProps, "title | center"> {
   title: String;
@@ -36,6 +37,8 @@ function ScrollView({
   style,
   ...props
 }: Props) {
+  const { colors } = useTheme();
+
   const HeaderComponent = ({ showNavBar }: ScrollHeaderProps) => {
     const [navBarVisible, setNavBarVisible] = React.useState(showNavBar.value);
 
@@ -50,6 +53,8 @@ function ScrollView({
         headerCenter={<Text style={styles.title}>{center ?? title}</Text>}
         headerLeft={left}
         headerRight={right}
+        initialBorderColor={colors.border}
+        borderColor={colors.border}
       />
     );
   };
@@ -68,7 +73,14 @@ function ScrollView({
       showsVerticalScrollIndicator={false}
       HeaderComponent={HeaderComponent}
       LargeHeaderComponent={LargeHeaderComponent}
-      contentContainerStyle={Object.assign({}, contentContainerStyle)}
+      containerStyle={{
+        backgroundColor: colors.background,
+      }}
+      contentContainerStyle={[contentContainerStyle]}
+      largeHeaderContainerStyle={{
+        borderBlockColor: "red",
+        borderColor: "red"
+      }}
       style={style}
       {...props}
     >

@@ -6,8 +6,8 @@ import {
   StyleSheet,
   Image as RNImage,
   ImageProps,
-  Text,
 } from "react-native";
+import { Text } from "./Text";
 
 interface Props extends ImageProps {
   type?: "normal" | "avatar" | "logo";

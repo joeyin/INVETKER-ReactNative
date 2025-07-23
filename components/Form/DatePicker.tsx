@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, Text, TextStyle } from "react-native";
+import { TouchableOpacity, TextStyle } from "react-native";
 import {
   DatePicker as AntDatePicker,
   DatePickerProps,
@@ -8,9 +8,12 @@ import {
 import Colors from "@/constants/Colors";
 import moment from "moment";
 import { PickerStyle } from "@ant-design/react-native/lib/picker/style";
+import { Text } from "../Text";
+import { useTheme } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 interface Props extends DatePickerProps {
-  styles?: Partial<PickerStyle> & { textStyle?: TextStyle }
+  styles?: Partial<PickerStyle> & { textStyle?: TextStyle };
 }
 
 export const DatePicker = ({
@@ -21,7 +24,9 @@ export const DatePicker = ({
   styles = {},
   ...props
 }: Props) => {
+  const { colors } = useTheme();
   const [date, setDate] = React.useState(new Date());
+  const { t } = useTranslation();
 
   const handleOnOk = React.useCallback(
     (value: Date, extend: PickerValueExtend) => {
@@ -37,6 +42,8 @@ export const DatePicker = ({
       maxDate={maxDate}
       format={format}
       onOk={handleOnOk}
+      dismissText={t("cancel")}
+      okText={t("ok")}
       styles={Object.assign(
         {
           okText: { color: Colors.primary },
@@ -48,7 +55,7 @@ export const DatePicker = ({
     >
       <TouchableOpacity
         style={{
-          backgroundColor: Colors.lightGray200,
+          backgroundColor: colors.background,
           alignSelf: "flex-end",
           borderRadius: 6,
           height: 35,

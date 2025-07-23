@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import FlatListView from "@/components/Layout/FlatListView";
 import Feather from "@expo/vector-icons/Feather";
 import Colors from "@/constants/Colors";
@@ -14,13 +14,16 @@ import {
   useNavigation,
   ParamListBase,
   NavigationProp,
+  useTheme,
 } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 function TransactionsScreen() {
   const { t } = useTranslation();
   const { transactions, refetchTransaction, positions } = useApp();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+  const { colors } = useTheme();
 
   const sortedTransactions = React.useMemo(
     () =>
@@ -32,10 +35,23 @@ function TransactionsScreen() {
 
   const handleDelete = React.useCallback(
     (id: string) => {
-      transactionController
-        .delete(id, positions)
-        .then(refetchTransaction)
-        .catch((error) => Alert.alert(t("error"), error.message));
+      Alert.alert(
+        t("confirm deletion"),
+        t("are you sure you want to delete this transaction?"),
+        [
+          {
+            text: t('cancel'),
+          },
+          {
+            text: t('delete'), onPress: () => {
+              transactionController
+                .delete(id, positions)
+                .then(refetchTransaction)
+                .catch((error) => Alert.alert(t("error"), error.message));
+            }
+          },
+        ]
+      );
     },
     [refetchTransaction, positions]
   );
@@ -56,7 +72,7 @@ function TransactionsScreen() {
     const color = item.action === Action.BUY ? Colors.success : Colors.danger;
     const actionText = item.action === Action.BUY ? t("buy") : t("sell");
     return (
-      <View style={styles.itemContainer}>
+      <View style={[{ borderColor: colors.border }, styles.itemContainer]}>
         <Flex justify="between" align="center" style={styles.item}>
           <Text style={styles.ticker}>{item.ticker}</Text>
           <Text style={styles.date}>
@@ -74,7 +90,7 @@ function TransactionsScreen() {
             value: `$${formatDecimal(item.price * item.quantity + item.fee)}`,
             color,
           },
-        ].map(({ label, value, color = "black" }, index) => (
+        ].map(({ label, value, color = colors.text }, index) => (
           <Flex
             key={label}
             justify="between"
@@ -87,14 +103,14 @@ function TransactionsScreen() {
         ))}
       </View>
     );
-  }, []);
+  }, [colors]);
 
   return (
     <FlatListView
       title={t("transactions")}
       right={
         <TouchableOpacity onPress={() => navigate("NewTransaction")}>
-          <Feather name="plus" size={24} color="black" />
+          <Feather name="plus" size={24} color={colors.text} />
         </TouchableOpacity>
       }
       data={sortedTransactions}
@@ -125,7 +141,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
   },
   item: {
     marginBottom: 2,

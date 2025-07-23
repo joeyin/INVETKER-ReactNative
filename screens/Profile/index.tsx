@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView as RNScrollView,
-  Text,
 } from "react-native";
 import ScrollView from "@/components/Layout/ScrollView";
 import Colors from "@/constants/Colors";
@@ -24,6 +23,7 @@ import {
   useNavigation,
   ParamListBase,
   NavigationProp,
+  useTheme,
 } from "@react-navigation/native";
 import favoriteController from "@/controllers/favoriteController";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -31,9 +31,11 @@ import { useApp } from "@/providers/AppProvider";
 import { formatDecimal } from "@/helpers/formatHelpers";
 import CompanyNews from "./CompanyNews";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 function ProfileScreen() {
   const { favorites, refetchFavorite } = useApp();
+  const { colors } = useTheme();
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
@@ -86,7 +88,7 @@ function ProfileScreen() {
       title={ticker}
       left={
         <TouchableOpacity onPress={goBack}>
-          <FontAwesome name="angle-left" size={30} color={Colors.black} />
+          <FontAwesome name="angle-left" size={30} color={colors.text} />
         </TouchableOpacity>
       }
       right={
@@ -97,7 +99,7 @@ function ProfileScreen() {
             <MaterialIcons
               name="favorite-outline"
               size={24}
-              color={Colors.black}
+              color={colors.text}
             />
           )}
         </TouchableOpacity>
@@ -154,9 +156,16 @@ function ProfileScreen() {
           tabs={tabs}
           tabBarBackgroundColor="transparent"
           tabBarTextStyle={{ fontSize: 15, fontWeight: 500 }}
-          tabBarActiveTextColor={Colors.primary}
+          tabBarActiveTextColor={colors.primary}
           tabBarInactiveTextColor={Colors.secondary}
-          tabBarUnderlineStyle={{ backgroundColor: Colors.primary }}
+          tabBarUnderlineStyle={{
+            backgroundColor: colors.primary,
+          }}
+          styles={{
+            topTabBarSplitLine: {
+              borderBottomColor: colors.border
+            }
+          }}
           onTabClick={(_, index) => setCurrentTab(index)}
         >
           <RNScrollView style={styles.tab}>

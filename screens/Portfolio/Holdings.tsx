@@ -2,21 +2,22 @@ import React from "react";
 import { Table, Row } from "react-native-table-component";
 import {
   View,
-  Text,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import Colors from "@/constants/Colors";
 import { formatDecimal } from "@/helpers/formatHelpers";
-import { useNavigation, ParamListBase, NavigationProp } from '@react-navigation/native';
+import { useNavigation, ParamListBase, NavigationProp, useTheme } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
 
 const widthArr = [90, 90, 80, 80, 100, 100, 80, 100, 100];
 
 const Holdings = ({ positions }) => {
   const { t } = useTranslation();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+  const { colors } = useTheme();
 
   const tableHead = React.useMemo(() => [
     t("ticker"),
@@ -37,7 +38,7 @@ const Holdings = ({ positions }) => {
         <View>
           <Table>
             <Row
-              style={styles.thead}
+              style={[{ borderColor: colors.border }, styles.thead]}
               textStyle={styles.theadText}
               data={tableHead}
               widthArr={widthArr}
@@ -98,10 +99,11 @@ const Holdings = ({ positions }) => {
                         {formatDecimal(p.unrealizedProfit)}
                       </Text>,
                     ]}
-                    style={{
-                      ...styles.tbody,
-                      borderBottomWidth: index === positions.length - 1 ? 0 : 1,
-                    }}
+                    style={[
+                      styles.tbody,
+                      { borderColor: colors.border },
+                      { borderBottomWidth: index === positions.length - 1 ? 0 : 1 },
+                    ]}
                     widthArr={widthArr}
                   />
                 ))}
@@ -125,7 +127,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
   },
   theadText: {
     fontSize: 11,
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
-    borderColor: Colors.lightGray200,
   },
   tbodyText: {
     fontSize: 14,

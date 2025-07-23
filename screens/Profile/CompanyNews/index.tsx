@@ -1,7 +1,5 @@
 import React from "react";
 import {
-  View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Linking,
@@ -14,6 +12,8 @@ import tickerController from "@/controllers/tickerController";
 import { News } from "@/models/News";
 import Image from "@/components/Image";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
+import { useTheme } from "@react-navigation/native";
 
 type Props = {
   ticker: string;
@@ -22,6 +22,7 @@ type Props = {
 
 const CompanyNews = ({ ticker, visible }: Props) => {
   const { i18n } = useTranslation();
+  const { colors } = useTheme();
   const [news, setNews] = React.useState<News[]>(undefined);
 
   React.useEffect(() => {
@@ -40,6 +41,7 @@ const CompanyNews = ({ ticker, visible }: Props) => {
         direction="row"
         style={[
           styles.news,
+          { borderColor: colors.border },
           index === (news.length - 1) && {
             marginBottom: 0,
             borderBottomWidth: 0,
@@ -60,7 +62,6 @@ const CompanyNews = ({ ticker, visible }: Props) => {
             <Text style={styles.footer}>{item.source}</Text>
             <Text style={styles.footer}> - </Text>
             <Text style={styles.footer}>
-              {/* {moment(item.datetime * 1000).format("MMM DD, YYYY HH:mm")} */}
               {moment(item.datetime * 1000).locale(i18n.language).fromNow()}
             </Text>
           </Flex>
@@ -82,7 +83,6 @@ const styles = StyleSheet.create({
   news: {
     marginBottom: 12,
     gap: 12,
-    borderBottomColor: Colors.lightGray200,
     borderBottomWidth: 1,
     paddingBottom: 12,
   },

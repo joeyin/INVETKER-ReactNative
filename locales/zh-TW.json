@@ -54,9 +54,10 @@
     "no comments yet.": "尚無留言。",
     "comment": "留言",
     "your thoughts": "你對 {{ticker}} 有何看法",
-    "en": "English",
-    "zh-TW": "繁體中文 (台灣)",
-    "hi-IN": "Hindi (India)",
+    "en": "English (English)",
+    "zh-TW": "Chinese (Traditional) 繁體中文",
+    "zh-CN": "Chinese (Simplified) 简体中文",
+    "hi-IN": "Hindi (हिन्दी)",
     "sign in": "登入",
     "sign up": "註冊",
     "don't have an account?": "還沒有帳號？",
@@ -74,6 +75,11 @@
     "website": "網站",
     "list date": "上市日期",
     "description": "描述",
-    "date": "日期"
+    "date": "日期",
+    "dark": "深色",
+    "confirm deletion": "確認刪除",
+    "are you sure you want to delete this transaction?": "您確定要刪除此筆交易嗎？",
+    "cancel": "取消",
+    "ok": "確定"
   }
 }

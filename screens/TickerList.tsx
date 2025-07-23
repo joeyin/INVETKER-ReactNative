@@ -2,18 +2,21 @@ import React from "react";
 import FormView from "@/components/Layout/FormView";
 import Form, { Input } from "@/components/Form";
 import Colors from "@/constants/Colors";
-import { StyleSheet, FlatList, Text } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import List from "@/components/List";
 import { Flex } from "@ant-design/react-native";
 import { Ticker } from "@/models/Ticker";
 import Image from "@/components/Image";
 import LOGODEV_API_KEY from "@/configs/logodev";
 import { useTranslation } from "react-i18next";
+import { Text } from "@/components/Text";
+import { useTheme } from "@react-navigation/native";
 
 const ITEM_HEIGHT = 53;
 
 const TickerListScreen = ({ onFinished }) => {
   const { t } = useTranslation();
+  const { colors } = useTheme();
   const [form] = Form.useForm();
   const [search, setSearch] = React.useState("");
   const [data, setData] = React.useState<Ticker[]>([]);
@@ -53,10 +56,11 @@ const TickerListScreen = ({ onFinished }) => {
           <Input
             placeholder={t("search")}
             inputStyle={{
-              backgroundColor: Colors.gray800,
-              borderRadius: 6,
-              height: 36,
               paddingHorizontal: 13,
+              borderWidth: 1,
+              borderColor: colors.border,
+              borderRadius: 6,
+              backgroundColor: colors.card,
               marginBottom: 5,
             }}
             onChangeText={setSearch}
@@ -86,11 +90,6 @@ const TickerListScreen = ({ onFinished }) => {
         <Flex style={{ flex: 1 }} direction="column" align="start">
           <Text style={styles.value}>{item.ticker}</Text>
           <Text style={styles.name}>{item.title}</Text>
-          {/* <HTMLView
-            stylesheet={styles}
-            value={`<value>${item.ticker}</value>`}
-          />
-          <HTMLView stylesheet={styles} value={`<name>${item.name}</name>`} /> */}
         </Flex>
       </List.Item>
     ),
@@ -101,7 +100,7 @@ const TickerListScreen = ({ onFinished }) => {
     <FormView
       title={t("ticker")}
       allowSave={false}
-      style={styles.container}
+      style={[{ backgroundColor: colors.background }, styles.container]}
       subTitle={subTitle}
     >
       <FlatList
@@ -124,7 +123,6 @@ const TickerListScreen = ({ onFinished }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
     height: "100%",
   },
   item: {
@@ -136,7 +134,6 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 15,
-    color: Colors.black,
     fontWeight: 600,
   },
   logo: {
