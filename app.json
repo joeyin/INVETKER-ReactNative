@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/icon.png",
@@ -39,7 +39,15 @@
           "photosPermission": "Please allow the app to access your photos so you can upload or select images."
         }
       ],
-      "expo-localization"
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "zh-Hans", "zh-Hant", "hi"],
+            "android": ["en", "zh-Hans", "zh-Hant", "hi"]
+          }
+        }
+      ]
     ]
   }
 }

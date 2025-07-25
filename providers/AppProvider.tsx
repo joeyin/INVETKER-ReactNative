@@ -9,6 +9,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import favoriteController from "@/controllers/favoriteController";
 import themeService from "@services/themeService";
 import storageService from "@services/storageService";
+import i18n from "@/i18n";
+import moment from "moment";
 
 interface AppContextType {
   user: User | null;
@@ -16,6 +18,8 @@ interface AppContextType {
   transactions: Transaction[];
   positions: Position[];
   theme: string;
+  locale: string;
+  lastUpdated: moment.Moment;
   signIn: (
     email: string,
     password: string,
@@ -42,9 +46,11 @@ export const useApp = () => {
 export const AppProvider = ({ children }) => {
   const [user, setUser] = React.useState<User | null | undefined>(undefined);
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [lastUpdated, setLastUpdated] = React.useState<moment.Moment>();
   const [positions, setPositions] = React.useState<Position[]>([]);
   const [favorites, setFavorites] = React.useState<string[]>([]);
-  const [theme, setTheme] = React.useState("light");
+  const [theme, setTheme] = React.useState(null);
+  const [locale, setLocale] = React.useState(null);
 
   React.useEffect(() => {
     const subscriber = onAuthStateChanged(getAuth(), handleAuthStateChanged);
@@ -52,17 +58,22 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   React.useEffect(() => {
-    storageService.read("theme").then(setTheme);
+    i18n.on("languageChanged", setLocale);
     themeService.on("themeChanged", setTheme);
   }, []);
 
   React.useEffect(() => {
-    positionController.all(transactions).then(setPositions);
+    positionController.all(transactions).then((r) => {
+      setPositions(r);
+      setLastUpdated(moment());
+    });
   }, [JSON.stringify(transactions)]);
 
   const handleAuthStateChanged = React.useCallback((user) => {
     setUser(user);
     if (user) {
+      refetchTheme();
+      refetchLocale();
       refetchTransaction();
       refetchFavorite();
     }
@@ -89,6 +100,14 @@ export const AppProvider = ({ children }) => {
     const newTransactions = await transactionController.all();
     setTransactions(newTransactions);
     return newTransactions;
+  }, []);
+
+  const refetchTheme = React.useCallback(() => {
+    storageService.read("theme").then(setTheme);
+  }, []);
+
+  const refetchLocale = React.useCallback(() => {
+    storageService.read("locale").then(setLocale);
   }, []);
 
   const signIn = React.useCallback(
@@ -129,6 +148,8 @@ export const AppProvider = ({ children }) => {
         transactions,
         positions,
         theme,
+        locale,
+        lastUpdated,
         signIn,
         signOut,
         refetchTransaction,

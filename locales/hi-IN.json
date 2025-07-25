@@ -53,7 +53,7 @@
     "comments": "टिप्पणियाँ",
     "no comments yet.": "अभी तक कोई टिप्पणी नहीं।",
     "comment": "टिप्पणी",
-    "your thoughts": "{{ticker}} के बारे में आप क्या सोचते हैं",
+    "your thoughts": "{{ticker}} के बारे में आप क्या सोचते हैं?",
     "en": "English (English)",
     "zh-TW": "Chinese (Traditional) 繁體中文",
     "zh-CN": "Chinese (Simplified) 简体中文",
@@ -80,6 +80,8 @@
     "confirm deletion": "हटाने की पुष्टि करें",
     "are you sure you want to delete this transaction?": "क्या आप वाकई इस लेन-देन को हटाना चाहते हैं?",
     "cancel": "रद्द करें",
-    "ok": "ठीक है"
+    "ok": "ठीक है",
+    "system": "सिस्टम डिफ़ॉल्ट",
+    "last updated": "{{time}} को अंतिम बार अपडेट किया गया"
   }
 }

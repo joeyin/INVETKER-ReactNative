@@ -36,7 +36,8 @@
     "react-native-sha256": "^1.4.10",
     "react-native-table-component": "https://github.com/slice312/react-native-table-component.git",
     "react-native-uuid": "^2.0.3",
-    "rn-gesture-swipeable-flatlist": "^2.3.1"
+    "rn-gesture-swipeable-flatlist": "^2.3.1",
+    "expo-system-ui": "~5.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

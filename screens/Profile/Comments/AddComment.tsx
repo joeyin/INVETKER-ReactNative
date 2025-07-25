@@ -1,7 +1,7 @@
 import React from "react";
 import FormView from "@/components/Layout/FormView";
 import Form, { Input } from "@/components/Form";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { useApp } from "@/providers/AppProvider";
 import Colors from "@/constants/Colors";
 import { Image, StyleSheet } from "react-native";
@@ -12,6 +12,7 @@ const AddCommmentScreen = () => {
   const { t } = useTranslation();
   const { goBack } = useNavigation();
   const { user } = useApp();
+  const { colors } = useTheme();
   const route: RouteProp<{ [x: string]: any }> = useRoute();
 
   const handleOnFinish = React.useCallback((values) => {
@@ -50,7 +51,13 @@ const AddCommmentScreen = () => {
         <Input.TextArea
           rows={8}
           styles={{
-            input: styles.input,
+            input: {
+              ...styles.input,
+              borderWidth: 1,
+              borderColor: colors.border,
+              borderRadius: 6,
+              backgroundColor: colors.card,
+            },
           }}
           placeholder={t("your thoughts", { ticker: route.params.ticker })}
         />
@@ -70,10 +77,6 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 10,
-    borderWidth: 1,
-    borderColor: Colors.lightGray200,
-    borderRadius: 6,
-    backgroundColor: Colors.white,
   },
 });
 

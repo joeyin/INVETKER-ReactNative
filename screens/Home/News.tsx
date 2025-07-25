@@ -15,13 +15,15 @@ import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
 import { useTheme } from "@react-navigation/native";
 
+const LIMIT = 10;
+
 const News = () => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const [news, setNews] = React.useState([]);
 
   React.useEffect(() => {
-    marketController.fetchNews().then(setNews);
+    marketController.fetchNews().then(i => setNews(i.slice(0, LIMIT)));
   }, []);
 
   const Category = ({ type }) => {
@@ -58,7 +60,7 @@ const News = () => {
         style={[
           styles.news,
           { borderBottomColor: colors.border },
-          index === 9 && {
+          index === LIMIT - 1 && {
             marginBottom: 0,
             borderBottomWidth: 0,
             paddingBottom: 0,
@@ -89,7 +91,7 @@ const News = () => {
 
   return (
     <Card title={t("news")}>
-      {news.slice(0, 10).map((i, index) => (
+      {news.map((i, index) => (
         <Item key={index} index={index} item={i} />
       ))}
     </Card>

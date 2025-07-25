@@ -15,6 +15,7 @@ import {
   NavigationProp,
 } from "@react-navigation/native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Entypo from "@expo/vector-icons/Entypo";
 import ScrollView from "@/components/Layout/ScrollView";
 import List from "@/components/List";
 import * as ImagePicker from "expo-image-picker";
@@ -27,9 +28,10 @@ import storageService from "@services/storageService";
 import { Picker } from "@/components/Form";
 import themeService from "@services/themeService";
 import { Text } from "@/components/Text";
+import { reloadAppAsync } from "expo";
 
 const SettingsScreen = () => {
-  const { signOut, user, reloadAuth, theme } = useApp();
+  const { signOut, user, reloadAuth, theme, locale } = useApp();
   const { t, i18n } = useTranslation();
   const isLoading = useToggle();
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
@@ -41,7 +43,9 @@ const SettingsScreen = () => {
       if (!permissionResult.granted) {
         return Alert.alert(
           t("error"),
-          t("please allow the app to access your photos so you can upload or select images.")
+          t(
+            "please allow the app to access your photos so you can upload or select images."
+          )
         );
       }
 
@@ -64,13 +68,19 @@ const SettingsScreen = () => {
   };
 
   const changeLanguage = (locale: string) => {
+    if (!locale) {
+      reloadAppAsync();
+    }
     i18n.changeLanguage(locale);
-    storageService.store("locale", locale)
+    storageService.store("locale", locale);
   };
 
   const changeTheme = (theme: string) => {
+    if (!locale) {
+      reloadAppAsync();
+    }
     themeService.changeTheme(theme);
-    storageService.store("theme", theme)
+    storageService.store("theme", theme);
   };
 
   return (
@@ -116,11 +126,11 @@ const SettingsScreen = () => {
             <Text style={styles.name}>{t("name")}</Text>
             <Flex align="center">
               <Text style={styles.value}>{user.displayName ?? "-"}</Text>
-              <FontAwesome
-                name="angle-right"
-                size={25}
+              <Entypo
+                name="chevron-thin-right"
+                size={16}
                 color={Colors.secondary}
-                style={{ marginLeft: 10 }}
+                style={{ marginLeft: 2 }}
               />
             </Flex>
           </List.Item>
@@ -130,12 +140,13 @@ const SettingsScreen = () => {
           <List.Item>
             <Text style={styles.name}>{t("language")}</Text>
             <Picker
-              defaultValue={[i18n.language]}
+              defaultValue={[locale]}
               styles={{
                 wrapperStyle: { height: 20 },
                 textStyle: { color: Colors.secondary },
               }}
               data={[
+                { label: t("system"), value: null },
                 { label: t("en"), value: "en" },
                 { label: t("zh-TW"), value: "zh-TW" },
                 { label: t("zh-CN"), value: "zh-CN" },
@@ -153,6 +164,7 @@ const SettingsScreen = () => {
                 textStyle: { color: Colors.secondary },
               }}
               data={[
+                { label: t("system"), value: null },
                 { label: t("light"), value: "light" },
                 { label: t("dark"), value: "dark" },
               ]}

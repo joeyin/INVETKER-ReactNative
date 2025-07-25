@@ -51,7 +51,9 @@ const Header = ({ positions }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: 15,
+    paddingTop: 15,
+    paddingBottom: 5,
+    paddingHorizontal: 15,
     justifyContent: "space-between",
   },
   column: {

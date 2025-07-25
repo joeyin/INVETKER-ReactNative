@@ -32,6 +32,8 @@ import { formatDecimal } from "@/helpers/formatHelpers";
 import CompanyNews from "./CompanyNews";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
+import moment from "moment";
+import { Clock } from "@/components/Clock";
 
 function ProfileScreen() {
   const { favorites, refetchFavorite } = useApp();
@@ -51,9 +53,13 @@ function ProfileScreen() {
 
   const [currentTab, setCurrentTab] = React.useState(0);
   const [quote, setQuote] = React.useState(undefined);
+  const [lastUpdated, setLastUpdated] = React.useState<moment.Moment>();
 
   React.useEffect(() => {
-    tickerController.quote(ticker).then(setQuote);
+    tickerController.quote(ticker).then((r) => {
+      setQuote(r);
+      setLastUpdated(moment());
+    });
   }, []);
 
   React.useEffect(() => {
@@ -73,8 +79,8 @@ function ProfileScreen() {
       quote?.d == 0
         ? {}
         : quote?.d > 0
-          ? { color: Colors.success }
-          : { color: Colors.danger },
+        ? { color: Colors.success }
+        : { color: Colors.danger },
     [quote?.d]
   );
 
@@ -111,38 +117,47 @@ function ProfileScreen() {
           paddingBottom: bottom * 1.6,
         }}
       >
-        <Flex style={{ gap: 10, paddingHorizontal: 15 }}>
-          <Flex style={{ gap: 3, height: "100%" }}>
-            {quote?.d == 0 ? (
-              ""
-            ) : quote?.d > 0 ? (
-              <AntDesign name="caretup" size={13} style={[color, styles.caret]} />
-            ) : (
-              <AntDesign
-                name="caretdown"
-                size={13}
-                style={[color, styles.caret]}
+        <View style={{ paddingHorizontal: 15 }}>
+          <Flex style={{ gap: 10, marginBottom: 2, }}>
+            <Flex style={{ gap: 3, height: "100%" }}>
+              {quote?.d == 0 ? (
+                ""
+              ) : quote?.d > 0 ? (
+                <AntDesign
+                  name="caretup"
+                  size={13}
+                  style={[color, styles.caret]}
+                />
+              ) : (
+                <AntDesign
+                  name="caretdown"
+                  size={13}
+                  style={[color, styles.caret]}
+                />
+              )}
+              <Text style={[color, styles.price]}>
+                {formatDecimal(quote?.c)}
+              </Text>
+            </Flex>
+            <Flex style={{ height: "100%" }}>
+              <ValueChangeTag
+                value={quote?.d}
+                style={styles.text}
+                format="Decimal"
+                signed
               />
-            )}
-            <Text style={[color, styles.price]}>{formatDecimal(quote?.c)}</Text>
+              <ValueChangeTag
+                prefix="("
+                suffix=")"
+                value={quote?.dp}
+                style={styles.text}
+                unit="%"
+                format="Decimal"
+              />
+            </Flex>
           </Flex>
-          <Flex style={{ height: "100%" }}>
-            <ValueChangeTag
-              value={quote?.d}
-              style={styles.text}
-              format="Decimal"
-              signed
-            />
-            <ValueChangeTag
-              prefix="("
-              suffix=")"
-              value={quote?.dp}
-              style={styles.text}
-              unit="%"
-              format="Decimal"
-            />
-          </Flex>
-        </Flex>
+          <Clock time={lastUpdated} />
+        </View>
         <TouchableOpacity
           onPress={() =>
             navigate("AddComment", { ticker: route.params.ticker })
@@ -163,8 +178,8 @@ function ProfileScreen() {
           }}
           styles={{
             topTabBarSplitLine: {
-              borderBottomColor: colors.border
-            }
+              borderBottomColor: colors.border,
+            },
           }}
           onTabClick={(_, index) => setCurrentTab(index)}
         >

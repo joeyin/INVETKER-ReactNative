@@ -23,6 +23,8 @@ import Feather from "@expo/vector-icons/Feather";
 import favoriteController from "@/controllers/favoriteController";
 import { useTranslation } from "react-i18next";
 import { Text } from "@/components/Text";
+import { Clock } from "@/components/Clock";
+import moment from "moment";
 
 const widthArr = [90, 90, 80, 80, 90, 90, 90];
 
@@ -34,6 +36,7 @@ const FavoritesScreen = (props) => {
   const [items, setItems] = React.useState<Array<{ ticker: string } & Quote>>(
     []
   );
+  const [lastUpdated, setLastUpdated] = React.useState<moment.Moment>();
 
   const tableHead = React.useMemo(() => [
     t("ticker"),
@@ -53,6 +56,7 @@ const FavoritesScreen = (props) => {
         result.push({ ticker, ...quote });
       }
       setItems(result);
+      setLastUpdated(moment())
     };
     fetchQuotes();
   }, [favorites]);
@@ -76,6 +80,7 @@ const FavoritesScreen = (props) => {
     >
       <RNScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View>
+          <Clock time={lastUpdated} style={styles.lastUpdated} />
           <Table>
             <Row
               style={[{ borderColor: colors.border }, styles.thead]}
@@ -160,6 +165,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   dataWrapper: { marginTop: -1 },
+  lastUpdated: {
+    marginLeft: 15,
+    marginBottom: 10,
+  }
 });
 
 export default FavoritesScreen;

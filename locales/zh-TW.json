@@ -53,7 +53,7 @@
     "comments": "留言",
     "no comments yet.": "尚無留言。",
     "comment": "留言",
-    "your thoughts": "你對 {{ticker}} 有何看法",
+    "your thoughts": "你對 {{ticker}} 有何看法？",
     "en": "English (English)",
     "zh-TW": "Chinese (Traditional) 繁體中文",
     "zh-CN": "Chinese (Simplified) 简体中文",
@@ -80,6 +80,8 @@
     "confirm deletion": "確認刪除",
     "are you sure you want to delete this transaction?": "您確定要刪除此筆交易嗎？",
     "cancel": "取消",
-    "ok": "確定"
+    "ok": "確定",
+    "system": "系統預設",
+    "last updated": "最後更新於 {{time}}"
   }
 }

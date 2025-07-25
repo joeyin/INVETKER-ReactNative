@@ -4,7 +4,6 @@ import Form, { Input } from "@/components/Form";
 import accountController from "@/controllers/accountController";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { useApp } from "@/providers/AppProvider";
-import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 
 const EditNameScreen = () => {

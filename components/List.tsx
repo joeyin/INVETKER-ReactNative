@@ -11,8 +11,6 @@ import { useTheme } from "@react-navigation/native";
 import { Text } from "./Text";
 
 const List = ({ section = undefined, children, style = {}, ...props }) => {
-  const { colors } = useTheme();
-
   return (
     <View>
       {section && <Text style={styles.section}>{section}</Text>}

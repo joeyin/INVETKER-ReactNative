@@ -17,7 +17,6 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from "react-native-reanimated";
-import { StatusBar } from "react-native";
 import PortfolioScreen from "@/screens/Portfolio";
 import FavoritesScreen from "@/screens/Favorites";
 import Colors from "@/constants/Colors";
@@ -31,8 +30,7 @@ import EditNameScreen from "@/screens/Settings/EditName";
 import ProfileScreen from "@/screens/Profile";
 import TickerListScreen from "./screens/TickerList";
 import AddCommmentScreen from "@/screens/Profile/Comments/AddComment";
-import { useTranslation } from "react-i18next";
-import { I18nextProvider } from "react-i18next";
+import { useTranslation, I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
 import storageService from "@services/storageService";
 import enUS from "@ant-design/react-native/lib/locale-provider/en_US";
@@ -44,6 +42,8 @@ import moment from "moment";
 import "moment/locale/zh-tw";
 import "moment/locale/zh-cn";
 import "moment/locale/hi";
+import { useColorScheme, StatusBar } from "react-native";
+import { getLocales } from "expo-localization";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,10 +117,6 @@ function MainTabNavigator(props) {
 function RootNavigator() {
   const { user } = useApp();
 
-  React.useEffect(() => {
-    storageService.read("locale").then(i18n.changeLanguage);
-  }, []);
-
   const onSelectTicker = React.useCallback((navigation, ticker) => {
     const { getState, navigate } = navigation;
     const state = getState();
@@ -186,21 +182,69 @@ const MyLightTheme = {
   },
 };
 
+const SUPPORTED_LANGUAGES = {
+  "zh-hant": "zh-TW",
+  "zh-hans": "zh-CN",
+  "hi-in": "hi-IN",
+  hi: "hi-IN",
+  en: "en",
+};
+
 export default function App() {
   const [locale, setLocale] = React.useState("en");
   const [theme, setTheme] = React.useState(null);
+  const colorScheme = useColorScheme();
 
   useFonts({
     antoutline: require("@ant-design/icons-react-native/fonts/antoutline.ttf"),
   });
 
+  const refetchLocale = React.useCallback(async () => {
+    const stored = await storageService.read("locale");
+    if (stored) {
+      i18n.changeLanguage(stored);
+      setLocale(stored);
+      return;
+    }
+
+    const getTag = ({ languageCode, languageScriptCode }) =>
+      (languageScriptCode
+        ? `${languageCode}-${languageScriptCode}`
+        : languageCode
+      ).toLowerCase();
+
+    const locales = getLocales();
+    const match = locales.find((locale) => SUPPORTED_LANGUAGES[getTag(locale)]);
+    const lang = match ? SUPPORTED_LANGUAGES[getTag(match)] : "en";
+
+    i18n.changeLanguage(lang);
+    setLocale(lang);
+  }, []);
+
+  const refetchTheme = React.useCallback(async () => {
+    setTheme((await storageService.read("theme")) || colorScheme);
+  }, [colorScheme]);
+
   React.useEffect(() => {
-    i18n.on("languageChanged", () => {
-      setLocale(i18n.language);
-      moment().locale(i18n.language);
-    });
-    storageService.read("theme").then(setTheme);
-    themeService.on("themeChanged", setTheme);
+    refetchTheme();
+  }, [colorScheme]);
+
+  React.useEffect(() => {
+    const onLangChanged = (lng) =>
+      lng ? (setLocale(lng), moment().locale(lng)) : refetchLocale();
+    const onThemeChanged = (theme) =>
+      theme ? setTheme(theme) : refetchTheme();
+
+    i18n.on("languageChanged", onLangChanged);
+    themeService.on("themeChanged", onThemeChanged);
+
+    refetchLocale();
+    refetchTheme();
+
+    return () => {
+      i18n.off("languageChanged", onLangChanged);
+      themeService.off("themeChanged", onThemeChanged);
+    };
   }, []);
 
   const myTheme = React.useMemo(
@@ -221,15 +265,18 @@ export default function App() {
     }
   }, [locale]);
 
+  const barStyle = React.useMemo(
+    () => (theme === "dark" ? "light-content" : "dark-content"),
+    [theme]
+  );
+
   return (
-    <Provider
-      locale={currentLocale}
-      theme={AntdTheme}
-    >
+    <Provider locale={currentLocale} theme={AntdTheme}>
       <I18nextProvider i18n={i18n} defaultNS={"translation"}>
         <AppProvider>
           <NavigationContainer theme={myTheme}>
             <GestureHandlerRootView>
+              <StatusBar barStyle={barStyle} />
               <RootNavigator />
             </GestureHandlerRootView>
           </NavigationContainer>
