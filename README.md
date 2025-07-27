@@ -1,4 +1,14 @@
+<p align="center">
+  <img src="./assets/brand.png" width="280" alt="INVETKER" />
+</p>
+
 # INVETKER
+
+![React Native](https://img.shields.io/badge/React_Native-%2320232a.svg?logo=react&logoColor=%2361DAFB)
+![Expo](https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=fff)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)
+![Firebase](https://img.shields.io/badge/Firebase-039BE5?logo=Firebase&logoColor=white)
+![Ant Design](https://img.shields.io/badge/-Ant%20Design-333333?style=flat&logo=ant-design&logoColor=0170FE)
 
 INVETKER is a beginner-friendly application designed to make stock tracking simple and accessible through an intuitive, user-friendly interface. It enables users to manually add, update, and delete transactions, monitor real-time portfolio performance, and track favorite tickers with ease. Users can also access essential market data and financial news—all in one place—while interacting with other users by sharing comments and insights.
 
@@ -89,47 +99,47 @@ INVETKER is a beginner-friendly application designed to make stock tracking simp
 
 ## Screenshots
 
-![Invetker - Home](./screenshots/home.png)
+![INVETKER - Home](./screenshots/home.png)
 ### Home Screen
 The screen includes market news and the user's top portfolio positions, which help users better understand market trends and their own investments.
 
-![Invetker - Portfolio](./screenshots/portfolio.png)
+![INVETKER - Portfolio](./screenshots/portfolio.png)
 ### Portfolio Screen
 The screen displays detailed information about the user's current holdings, including current price, today's high and low, cost basis, prior close, daily change and percentage, market value, as well as today's and unrealized profit or loss.
 
-![Invetker - Transactions](./screenshots/transactions.png)
+![INVETKER - Transactions](./screenshots/transactions.png)
 ### Transaction Screen
 The screen shows all transactions for the current user, including transaction details such as action, quantity, price, fee, amount, and date.
 
-![Invetker - Add Transaction](./screenshots/new-transaction.png)
+![INVETKER - Add Transaction](./screenshots/new-transaction.png)
 ### Add Transaction Screen
 The screen allows users to manually add transactions through our intuitive UI.
 
-![Invetker - Ticker list](./screenshots/ticker.png)
+![INVETKER - Ticker list](./screenshots/ticker.png)
 ### Ticker List Screen
 The screen displays all supported tickers with their logos and includes a search bar at the top to help users find tickers quickly.
 
-![Invetker - Favorites](./screenshots/favorites.png)
+![INVETKER - Favorites](./screenshots/favorites.png)
 ### Favorites Screen
 The screen provides quick access to stocks that the user has marked as favorites for easier monitoring, including current price, change, today’s high and low, and prior price.
 
-![Invetker - Settings](./screenshots/settings.png)
+![INVETKER - Settings](./screenshots/settings.png)
 ### Settings Screen
 The screen displays user information including email, allows the user to update their display name and avatar, choose language preference (e.g., English, Traditional Chinese, Simplified Chinese, Hindi) and theme settings (e.g., light/dark), and provides a log out button.
 
-![Invetker - Ticker Profile](./screenshots/ticker-profile.png)
+![INVETKER - Ticker Profile](./screenshots/ticker-profile.png)
 ### Ticker Profile Screen
 The screen displays information about the ticker, such as company name, country, industry, currency, market capitalization, website, listing date, and description.
 
-![Invetker - Ticker News](./screenshots/ticker-news.png)
+![INVETKER - Ticker News](./screenshots/ticker-news.png)
 ### Ticker News Screen
 The screen displays news about the ticker, allowing users to quickly analyze its trend.
 
-![Invetker - Ticker Comments](./screenshots/ticker-comments.png)
+![INVETKER - Ticker Comments](./screenshots/ticker-comments.png)
 ### Ticker Comments Screen
 The screen showcases all comments related to the ticker, allowing users to gain new insights and helping them to better understand market sentiment.
 
-![Invetker - Add Ticker Comment](./screenshots/ticker-add-comment.png)
+![INVETKER - Add Ticker Comment](./screenshots/ticker-add-comment.png)
 ### Add Ticker Comment Screen
 The screen allows users to share their thoughts on the ticker, such as its trend and performance, which can be helpful for others.
 
