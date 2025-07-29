@@ -37,7 +37,7 @@ const Comments = ({ ticker, visible }: Props) => {
           {comments && comments.map((c) => (
             <List.Item key={c.id} style={{ alignItems: "center" }}>
               <Image
-                source={{ uri: c.avatar.toString() }}
+                source={{ uri: c.avatar?.toString() }}
                 style={styles.avatar}
                 resizeMode="cover"
                 type="avatar"
