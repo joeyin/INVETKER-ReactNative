@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "INVETKER",
+    "slug": "INVETKER",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.INVETKER"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.anonymous.INVETKER"
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "75ada6c5-b7da-42b4-bc33-7245f1e60ee5"
+      }
+    },
+    "owner": "joeyin",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Please allow the app to access your photos so you can upload or select images."
+        }
+      ],
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "zh-Hans", "zh-Hant", "hi"],
+            "android": ["en", "zh-Hans", "zh-Hant", "hi"]
+          }
+        }
+      ]
+    ]
+  }
+}
