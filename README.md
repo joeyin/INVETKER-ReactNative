@@ -154,3 +154,9 @@ The screen allows users to share their thoughts on the ticker, such as its trend
 - [Expo Documentation](https://docs.expo.dev)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs)
 - [Figma Design File](https://www.figma.com/design/9KWybwFlFMnBry58EdXhuc/INVETKER?node-id=56-31&t=UF4HVS1iAsInW8B6-1)
+
+## Contributors
+
+* Designer: [joeyin](https://www.linkedin.com/in/chiweiyin/)
+* Developer: [joeyin](https://www.linkedin.com/in/chiweiyin/)
+
